@@ -2,7 +2,7 @@ from typing import Union, Optional
 from pathlib import Path
 from transformers import GPTJForCausalLM
 
-class GPTJEngine():
+class GPTJEngine:
     def __init__(
         self, 
         weights_path: Optional[Union[str, Path]] = None
