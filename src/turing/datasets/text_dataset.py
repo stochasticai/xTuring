@@ -6,6 +6,8 @@ from torch.utils.data import Dataset
 
 
 class TextDataset(Dataset):
+    config_name: str = "text_dataset"
+
     def __init__(self, path: Union[str, Path]):
         self.data = load_dataset(path)
         self._validate()
