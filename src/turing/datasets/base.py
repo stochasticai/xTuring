@@ -1,7 +1,8 @@
-from turing.registry import BaseParent
-from .text_dataset import TextDataset
-from .instruction_dataset import InstructionDataset
-from .text2image_dataset import Text2ImageDataset
+from registry import BaseParent
+from turing.datasets.text_dataset import TextDataset
+from turing.datasets.instruction_dataset import InstructionDataset
+from turing.datasets.text2image_dataset import Text2ImageDataset
+
 
 class BaseDataset(BaseParent):
     def __init__(self):
