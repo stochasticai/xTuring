@@ -5,7 +5,7 @@ from turing.datasets.instruction_dataset import InstructionDataset
 from turing.trainers.base import BaseTrainer
 
 
-class GPTJ(config_name="base_gptj"):
+class GPTJ:
     def __init__(self, weights_path: str):
         pass
     
