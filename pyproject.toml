@@ -45,7 +45,8 @@ dependencies = [
     "torch >= 1.9.0",
     "pytorch-lightning",
     "transformers",
-    "datasets"
+    "datasets",
+    "evaluate"
 ]
 
 
