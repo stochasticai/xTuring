@@ -1,6 +1,7 @@
 from registry import BaseParent
-from .gptj import GPTJ
-from .llama import Llama
+from turing.models.gptj import GPTJ
+from turing.models.llama import Llama
+from turing.models.stable_diffusion import StableDiffusion
 
 class BaseModel(BaseParent):
     def __init__(self):

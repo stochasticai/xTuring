@@ -1,8 +1,9 @@
 from typing import Union
 from pathlib import Path
 from datasets import load_dataset
+from torch.utils.data import Dataset
 
-class InstructionDataset:
+class InstructionDataset(Dataset):
     def __init__(
         self, 
         path: Union[str, Path]
