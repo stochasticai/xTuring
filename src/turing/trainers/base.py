@@ -1,5 +1,5 @@
 from registry import BaseParent
-from .lightning import LightningTrainer
+from turing.trainers.lightning_trainer import LightningTrainer
 
 class BaseTrainer(BaseParent):
     def __init__(self):

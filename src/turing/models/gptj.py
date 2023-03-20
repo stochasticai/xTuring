@@ -4,8 +4,8 @@ from turing.datasets.base import BaseDataset
 from turing.datasets.instruction_dataset import InstructionDataset
 from turing.datasets.text_dataset import TextDataset
 from turing.engines.base import BaseEngine
-from turing.trainers.lightning_trainer import LightningTrainer
 from turing.preprocessors.base import BasePreprocessor
+from turing.trainers.base import BaseTrainer
 
 
 class GPTJ:
@@ -20,7 +20,8 @@ class GPTJ:
         engine = BaseEngine("llama")(weights_path)
         dataset = BaseDataset(dataset_type)(dataset_path)
         collate_fn = BasePreprocessor(dataset_path)
-        self.trainer = LightningTrainer(engine, dataset, collate_fn)
+        
+        self.trainer = BaseTrainer("lightning_trainer")(engine, collate_fn)
     
     def finetune(
         self,
