@@ -1,6 +1,6 @@
 
-class TrainingModule(pl.LigthningModule):
-    def __init__(self, engine):
-        self.engine = engine
 
 
+class LightningTrainer:
+    def __init__(self):
+        pass
