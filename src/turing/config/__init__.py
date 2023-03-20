@@ -7,6 +7,3 @@ DEFAULT_DTYPE = torch.float16 if DEFAULT_DEVICE.type == "cuda" else torch.float3
 
 if DEFAULT_DEVICE.type == "cpu":
     print("WARNING: CUDA is not available, using CPU instead, can be very slow")
-
-
-

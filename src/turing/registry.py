@@ -1,4 +1,5 @@
-from typing import Dict, Any
+from typing import Any, Dict
+
 
 class BaseParent:
     def __init__(self, registry: Dict[str, Any]):

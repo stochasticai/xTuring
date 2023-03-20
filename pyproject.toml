@@ -48,5 +48,3 @@ dependencies = ["torch >= 1.9.0"]
 homepage = "https://turing.stochastic.ai/"
 documentation = "https://github.com/stochasticai/turing-docs"
 repository = "https://github.com/stochasticai/turing"
-
-

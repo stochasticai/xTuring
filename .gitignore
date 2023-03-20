@@ -9,7 +9,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# models 
+# models
 *.onnx
 *.pt
 
