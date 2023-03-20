@@ -41,7 +41,12 @@ keywords = [
     "training",
     "distributed",
 ]
-dependencies = ["torch >= 1.9.0"]
+dependencies = [
+    "torch >= 1.9.0",
+    "pytorch-lightning",
+    "transformers",
+    "datasets"
+]
 
 
 [project.urls]
