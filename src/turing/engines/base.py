@@ -8,7 +8,7 @@ class BaseEngine(BaseParent):
     def __init__(self):
         super().__init__(
             registry={
-                "gptj_engine": GPTJEngine,
-                "llama_engine": LLamaEngine,
+                GPTJEngine.config_name: GPTJEngine,
+                LLamaEngine.config_name: LLamaEngine,
             }
         )

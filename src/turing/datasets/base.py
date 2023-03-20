@@ -9,8 +9,8 @@ class BaseDataset(BaseParent):
     def __init__(self):
         super().__init__(
             registry={
-                "text_dataset": TextDataset,
-                "instruction_dataset": InstructionDataset,
-                "text2image_dataset": Text2ImageDataset,
+                TextDataset.config_name: TextDataset,
+                InstructionDataset.config_name: InstructionDataset,
+                Text2ImageDataset.config_name: Text2ImageDataset,
             }
         )

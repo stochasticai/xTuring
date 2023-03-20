@@ -38,6 +38,8 @@ class TuringLightningModule(pl.LightningModule):
 
 
 class LightningTrainer:
+    config_name: TuringLightningModule
+
     def __init__(
         self,
         model_engine: BaseEngine,
