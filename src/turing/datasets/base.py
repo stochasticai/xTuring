@@ -1,4 +1,4 @@
-from registry import BaseParent
+from turing.registry import BaseParent
 from .text_dataset import TextDataset
 from .instruction_dataset import InstructionDataset
 from .text2image_dataset import Text2ImageDataset
