@@ -1,4 +1,4 @@
-from registry import BaseParent
+from turing.registry import BaseParent
 
 from turing.trainers.lightning_trainer import LightningTrainer
 

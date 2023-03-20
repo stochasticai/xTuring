@@ -8,6 +8,7 @@ from turing.engines.base import BaseEngine
 from turing.preprocessors.base import BasePreprocessor
 from turing.trainers.base import BaseTrainer
 
+from transformers import AutoTokenizer
 
 class Llama:
     def __init__(
@@ -18,8 +19,10 @@ class Llama:
             "instruction_dataset",
         ], "Please make sure the dataset_type is text_dataset or instruction_dataset"
         engine = BaseEngine("llama")(weights_path)
+        tokenizer = AutoTokenizer.from_pretrained("decapoda-research/llama-7b-hf")
         dataset = BaseDataset(dataset_type)(dataset_path)
-        collate_fn = BasePreprocessor(dataset_type)(engine.tokenizer, 512)
+        
+        collate_fn = BasePreprocessor(dataset_type)(tokenizer, 512)
 
         self.trainer = BaseTrainer("lightning_trainer")(engine, dataset, collate_fn)
 
