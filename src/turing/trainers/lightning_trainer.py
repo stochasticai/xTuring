@@ -7,6 +7,7 @@ from pytorch_lightning.trainer.trainer import Trainer
 
 from turing.datasets.base import BaseDataset
 from turing.engines.base import BaseEngine
+from turing.preprocessors.base import BasePreprocessor
 
 
 class TuringLightningModule(pl.LightningModule):
@@ -38,11 +39,19 @@ class TuringLightningModule(pl.LightningModule):
 
 class LightningTrainer:
     def __init__(
-        self, model_engine: BaseEngine, train_dataset: BaseDataset, max_epochs: int = 3
+        self,
+        model_engine: BaseEngine,
+        train_dataset: BaseDataset,
+        preprocessor: BasePreprocessor,
+        max_epochs: int = 3,
     ):
         self.lightning_model = TuringLightningModule(model_engine)
         self.train_dl = torch.utils.data.DataLoader(
-            train_dataset, shuffle=True, num_workers=os.cpu_count(), pin_memory=True
+            train_dataset,
+            collate_fn=preprocessor,
+            shuffle=True,
+            num_workers=os.cpu_count(),
+            pin_memory=True,
         )
 
         training_callbacks = [
