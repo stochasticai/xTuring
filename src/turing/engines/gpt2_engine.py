@@ -4,19 +4,28 @@ from typing import Optional, Union
 import evaluate
 import torch
 import torch.nn as nn
-from transformers import AutoModelForCausalLM
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+from turing.config import DEFAULT_DTYPE
 
 
 class GPT2Engine:
+    config_name: str = "gpt2_engine"
+
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
         if weights_path is None:
-            self.model = AutoModelForCausalLM.from_pretrained("distilgpt2")
+            self.model = AutoModelForCausalLM.from_pretrained(
+                "distilgpt2", torch_dtype=DEFAULT_DTYPE
+            )
+            self.tokenizer = AutoTokenizer.from_pretrained("distilgpt2")
         else:
             assert Path(
                 weights_path
             ).is_dir(), "The weights path should be a existing directory"
-            self.model = AutoModelForCausalLM.from_pretrained(weights_path)
-
+            self.model = AutoModelForCausalLM.from_pretrained(
+                weights_path, torch_dtype=DEFAULT_DTYPE
+            )
+            self.tokenizer = AutoTokenizer.from_pretrained(weights_path)
         self.loss_fct = nn.CrossEntropyLoss()
 
     def configure_optimizers(self):

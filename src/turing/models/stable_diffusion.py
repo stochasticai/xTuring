@@ -5,6 +5,8 @@ from turing.datasets.text2image_dataset import Text2ImageDataset
 
 
 class StableDiffusion:
+    config_name: str = "stable_diffusion"
+
     def __init__(self, weights_path: str):
         pass
 
