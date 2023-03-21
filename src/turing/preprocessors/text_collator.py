@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Dict, List, Optional
 
 import torch
 import torch.nn.functional as F
@@ -14,13 +14,17 @@ class TextDataCollator:
         self.tokenizer = tokenizer
         self.max_length = max_length
 
-    def __call__(self, batches):
+    def __call__(self, batches: List[Dict]):
+        # batches
         flatten_samples = []
-        for samples in enumerate(batches):
-            input_text = self.tokenizer(samples["text"])
-            input_target = self.tokenizer(samples["output"])
 
-            input_ids = input_text["input_ids"] + input_target["input_ids"]
+        for sample in batches:
+            input_text = self.tokenizer(sample["text"])
+            input_ids = input_text["input_ids"]
+
+            if "target" in sample:
+                input_target = self.tokenizer(sample["target"])
+                input_ids += input_target["input_ids"]
 
             input_ids = input_ids[: self.max_length - 1]
             input_ids.append(self.tokenizer.eos_token_id)
