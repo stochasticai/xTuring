@@ -3,6 +3,7 @@ from turing.trainers.lightning_trainer import LightningTrainer
 
 
 class BaseTrainer(BaseParent):
-    registry = {
-        LightningTrainer.config_name: LightningTrainer,
-    }
+    registry = {}
+
+
+BaseTrainer.add_to_registry(LightningTrainer.config_name, LightningTrainer)

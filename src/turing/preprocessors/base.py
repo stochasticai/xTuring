@@ -5,7 +5,10 @@ from turing.registry import BaseParent
 
 
 class BasePreprocessor(BaseParent):
-    registry = {
-        InstructionDataCollator.config_name: InstructionDataCollator,
-        TextDataCollator.config_name: TextDataCollator,
-    }
+    registry = {}
+
+
+BasePreprocessor.add_to_registry(
+    InstructionDataCollator.config_name, InstructionDataCollator
+)
+BasePreprocessor.add_to_registry(TextDataCollator.config_name, TextDataCollator)

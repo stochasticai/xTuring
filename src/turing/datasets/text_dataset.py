@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import Union
 
+from datasets import Dataset as HFDataset
 from datasets import load_from_disk
 from torch.utils.data import Dataset
 
@@ -8,9 +9,14 @@ from torch.utils.data import Dataset
 class TextDataset(Dataset):
     config_name: str = "text_dataset"
 
-    def __init__(self, path: Union[str, Path]):
-        assert Path(path).exists(), "path does not exist"
-        self.data = load_from_disk(path)
+    def __init__(self, path: Union[str, Path, HFDataset, dict]):
+        if isinstance(path, HFDataset):
+            self.data = path
+        elif isinstance(path, dict):
+            self.data = {"train": HFDataset.from_dict(path)}
+        else:
+            assert Path(path).exists(), "path does not exist"
+            self.data = load_from_disk(path)
         self._validate()
 
     def _validate(self):
