@@ -8,6 +8,8 @@ from turing.engines.base import BaseEngine
 from turing.preprocessors.base import BasePreprocessor
 from turing.trainers.base import BaseTrainer
 
+from transformers import AutoTokenizer
+
 
 class GPTJ:
     config_name: str = "gptj"

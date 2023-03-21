@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Union
 
-from datasets import load_dataset
+from datasets import load_from_disk
 from torch.utils.data import Dataset
 
 
@@ -9,7 +9,8 @@ class InstructionDataset(Dataset):
     config_name: str = "instruction_dataset"
 
     def __init__(self, path: Union[str, Path]):
-        self.data = load_dataset(path)
+        assert Path(path).exists(), "path does not exist"
+        self.data = load_from_disk(path)
         self._validate()
 
     def _validate(self):
