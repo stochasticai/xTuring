@@ -4,20 +4,30 @@ from typing import Optional, Union
 import evaluate
 import torch
 import torch.nn as nn
-from transformers import LlamaForCausalLM
+from transformers import AutoTokenizer, LlamaForCausalLM
+
+from turing.config import DEFAULT_DTYPE
 
 
 class LLamaEngine:
+    config_name: str = "llama_engine"
+
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
         if weights_path is None:
             self.model = LlamaForCausalLM.from_pretrained(
+                "decapoda-research/llama-7b-hf", torch_dtype=DEFAULT_DTYPE
+            )
+            self.tokenizer = AutoTokenizer.from_pretrained(
                 "decapoda-research/llama-7b-hf"
             )
         else:
             assert Path(
                 weights_path
             ).is_dir(), "The weights path should be a existing directory"
-            self.model = LlamaForCausalLM.from_pretrained(weights_path)
+            self.model = LlamaForCausalLM.from_pretrained(
+                weights_path, torch_dtype=DEFAULT_DTYPE
+            )
+            self.tokenizer = AutoTokenizer.from_pretrained(weights_path)
 
         self.loss_fct = nn.CrossEntropyLoss()
 
