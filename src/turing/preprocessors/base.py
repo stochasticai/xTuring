@@ -6,10 +6,7 @@ from turing.preprocessors.text_collator import TextDataCollator
 
 
 class BasePreprocessor(BaseParent):
-    def __init__(self):
-        super().__init__(
-            registry={
-                InstructionDataCollator.config_name: InstructionDataCollator,
-                TextDataCollator.config_name: TextDataCollator,
-            }
-        )
+    registry = {
+        InstructionDataCollator.config_name: InstructionDataCollator,
+        TextDataCollator.config_name: TextDataCollator,
+    }

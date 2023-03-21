@@ -6,11 +6,8 @@ from turing.models.stable_diffusion import StableDiffusion
 
 
 class BaseModel(BaseParent):
-    def __init__(self):
-        super().__init__(
-            registry={
-                GPTJ.config_name: GPTJ,
-                Llama.config_name: Llama,
-                StableDiffusion.config_name: StableDiffusion,
-            }
-        )
+    registry = {
+        GPTJ.config_name: GPTJ,
+        Llama.config_name: Llama,
+        StableDiffusion.config_name: StableDiffusion,
+    }

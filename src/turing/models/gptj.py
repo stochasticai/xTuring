@@ -13,7 +13,7 @@ class GPTJ:
     config_name: str = "gptj"
 
     def __init__(self, weights_path: str):
-        self.engine = BaseEngine().create("gpt-j", weights_path)
+        self.engine = BaseEngine.create("gpt-j", weights_path)
 
         self.collate_fn = None
         self.trainer = None
@@ -23,10 +23,10 @@ class GPTJ:
             "text_dataset",
             "instruction_dataset",
         ], "Please make sure the dataset_type is text_dataset or instruction_dataset"
-        self.collate_fn = BasePreprocessor().create(
+        self.collate_fn = BasePreprocessor.create(
             dataset.config_name, self.engine.tokenizer, 512
         )
-        self.trainer = BaseTrainer().create(
+        self.trainer = BaseTrainer.create(
             "lightning_trainer", self.engine, dataset, self.collate_fn
         )
         self.trainer.fit()
