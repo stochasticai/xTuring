@@ -6,7 +6,7 @@ import torch
 import torch.nn as nn
 from transformers import AutoTokenizer, LlamaForCausalLM
 
-from src.turing.config import DEFAULT_DTYPE
+from turing.config import DEFAULT_DTYPE
 
 
 class LLamaEngine:

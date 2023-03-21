@@ -12,4 +12,7 @@ class BaseParent:
 
     @classmethod
     def __getitem__(cls, key):
+        assert (
+            key in cls.registry
+        ), f"Class {key} not found in base class {cls.__name__} registry {cls.registry}"
         return cls.registry[key]
