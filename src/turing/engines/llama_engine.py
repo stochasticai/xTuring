@@ -61,6 +61,10 @@ class LLamaEngine:
 
         return acc
 
+    def save(self, saving_path: Union[str, Path]):
+        self.model.save_pretrained(saving_path)
+        self.tokenizer.save_pretrained(saving_path)
+
 
 class LlamaLoraEngine(LLamaEngine):
     config_name: str = "llama_lora_engine"

@@ -58,6 +58,10 @@ class GPTJEngine:
 
         return acc
 
+    def save(self, saving_path: Union[str, Path]):
+        self.model.save_pretrained(saving_path)
+        self.tokenizer.save_pretrained(saving_path)
+
 
 class GPTJLoraEngine(GPTJEngine):
     config_name: str = "gptj_lora_engine"
