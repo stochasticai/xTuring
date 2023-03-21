@@ -10,4 +10,5 @@ class BaseModel(BaseParent):
         GPTJ.config_name: GPTJ,
         Llama.config_name: Llama,
         StableDiffusion.config_name: StableDiffusion,
+        GPT2.config_name: GPT2,
     }

@@ -48,7 +48,7 @@ class GPTJ:
         self.engine.model.eval()
 
         if texts is not None:
-            texts = [texts] if isinstance(texts) == str else texts
+            texts = [texts] if isinstance(texts, str) else texts
 
             outputs = []
             for text in tqdm(texts):
