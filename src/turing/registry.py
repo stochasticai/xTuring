@@ -2,14 +2,14 @@ from typing import Any, Dict
 
 
 class BaseParent:
-    def __init__(self, registry: Dict[str, Any]):
-        self.registry = registry
+    @classmethod
+    def add_to_registry(cls, name: str, obj: Any):
+        cls.registry[name] = obj
 
-    def add_to_registry(self, name: str, obj: Any):
-        self.registry[name] = obj
+    @classmethod
+    def create(cls, class_key, *args, **kwargs):
+        return cls.registry[class_key](*args, **kwargs)
 
-    def create(self, class_key, *args, **kwargs):
-        return self.registry[class_key](*args, **kwargs)
-
-    def __getitem__(self, key):
-        return self.registry[key]
+    @classmethod
+    def __getitem__(cls, key):
+        return cls.registry[key]

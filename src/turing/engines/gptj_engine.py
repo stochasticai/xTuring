@@ -4,7 +4,7 @@ from typing import Optional, Union
 import evaluate
 import torch
 import torch.nn as nn
-from transformers import GPTJForCausalLM
+from transformers import AutoTokenizer, GPTJForCausalLM
 
 from turing.config import DEFAULT_DTYPE
 
@@ -17,6 +17,7 @@ class GPTJEngine:
             self.model = GPTJForCausalLM.from_pretrained(
                 "EleutherAI/gpt-j-6B", torch_dtype=DEFAULT_DTYPE
             )
+            self.tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6B")
         else:
             assert Path(
                 weights_path
@@ -24,6 +25,7 @@ class GPTJEngine:
             self.model = GPTJForCausalLM.from_pretrained(
                 weights_path, torch_dtype=DEFAULT_DTYPE
             )
+            self.tokenizer = AutoTokenizer.from_pretrained(weights_path)
 
         self.loss_fct = nn.CrossEntropyLoss()
 
