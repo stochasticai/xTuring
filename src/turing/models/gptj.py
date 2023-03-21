@@ -98,4 +98,4 @@ class GPTJ:
         return outputs
 
     def save(self, path: Union[str, Path]):
-        pass
+        self.engine.save(path)
