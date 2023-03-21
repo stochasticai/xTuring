@@ -26,12 +26,9 @@ class GPT2Engine:
                 weights_path, torch_dtype=DEFAULT_DTYPE
             )
             self.tokenizer = AutoTokenizer.from_pretrained(weights_path)
-        self.loss_fct = nn.CrossEntropyLoss()
 
-    def configure_optimizers(self):
-        optimizer = torch.optim.Adam(self.model.parameters(), lr=self.learning_rate)
-        lr_scheduler = torch.optim.lr_scheduler.LinearLR(optimizer=optimizer)
-        return [optimizer], [lr_scheduler]
+        self.tokenizer.pad_token = self.tokenizer.eos_token
+        self.loss_fct = nn.CrossEntropyLoss()
 
     def training_step(self, batch):
         outputs = self.model(
@@ -40,11 +37,14 @@ class GPT2Engine:
         )
 
         if "label_mask" in batch:
-            loss = self.loss_fct(
-                outputs.get("logits"), batch["targets"], mask=batch["label_mask"]
-            )
+            logits = outputs.get("logits").view(-1, outputs.get("logits").size(-1))
+            targets = batch["targets"].view(-1)
+
+            loss = self.loss_fct(logits, targets, mask=batch["label_mask"])
         else:
-            loss = self.loss_fct(outputs.get("logits"), batch["targets"])
+            logits = outputs.get("logits").view(-1, outputs.get("logits").size(-1))
+            targets = batch["targets"].view(-1)
+            loss = self.loss_fct(logits, targets)
 
         return loss
 
@@ -57,6 +57,6 @@ class GPT2Engine:
 
         logits = outputs.get("logits")
         preds = torch.argmax(logits, -1)
-        acc = metrics.compute(preds, batch["targets"])
+        acc = metrics.compute(preds, batch["labels"])
 
         return acc
