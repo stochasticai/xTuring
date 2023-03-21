@@ -46,7 +46,8 @@ dependencies = [
     "pytorch-lightning",
     "transformers",
     "datasets",
-    "evaluate"
+    "evaluate",
+    "peft"
 ]
 
 
