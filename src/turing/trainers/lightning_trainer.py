@@ -17,11 +17,12 @@ class TuringLightningModule(pl.LightningModule):
         model_engine: BaseEngine,
         train_dataset: BaseDataset,
         preprocessor: Optional[BasePreprocessor] = None,
-        batch_size: int = 8,
+        batch_size: int = 2,
         learning_rate: float = 5e-5,
     ):
         super().__init__()
         self.model_engine = model_engine
+        self.pytorch_model = self.model_engine.model
         self.train_dataset = train_dataset
         self.preprocessor = preprocessor
 
@@ -31,7 +32,7 @@ class TuringLightningModule(pl.LightningModule):
 
     def configure_optimizers(self):
         optimizer = torch.optim.Adam(
-            self.model_engine.model.parameters(), lr=self.learning_rate
+            self.pytorch_model.parameters(), lr=self.learning_rate
         )
         lr_scheduler = torch.optim.lr_scheduler.LinearLR(optimizer=optimizer)
         return [optimizer], [lr_scheduler]
@@ -41,8 +42,9 @@ class TuringLightningModule(pl.LightningModule):
             self.train_dataset,
             collate_fn=self.preprocessor,
             shuffle=True,
-            num_workers=os.cpu_count(),
+            num_workers=1,
             pin_memory=True,
+            batch_size=self.batch_size,
         )
 
         return self.train_dl
@@ -55,7 +57,7 @@ class TuringLightningModule(pl.LightningModule):
 
 
 class LightningTrainer:
-    config_name = "lightning_trainer"
+    config_name: str = "lightning_trainer"
 
     def __init__(
         self,
@@ -83,7 +85,6 @@ class LightningTrainer:
             callbacks=training_callbacks,
             enable_checkpointing=False,
             log_every_n_steps=50,
-            precision=16,
         )
 
     def fit(self):

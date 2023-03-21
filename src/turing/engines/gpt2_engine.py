@@ -3,10 +3,11 @@ from typing import Optional, Union
 
 import evaluate
 import torch
-import torch.nn as nn
+from peft import LoraConfig, TaskType, get_peft_model
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from turing.config import DEFAULT_DTYPE
+from turing.utils.loss_fns import CrossEntropyLoss
 
 
 class GPT2Engine:
@@ -26,12 +27,9 @@ class GPT2Engine:
                 weights_path, torch_dtype=DEFAULT_DTYPE
             )
             self.tokenizer = AutoTokenizer.from_pretrained(weights_path)
-        self.loss_fct = nn.CrossEntropyLoss()
 
-    def configure_optimizers(self):
-        optimizer = torch.optim.Adam(self.model.parameters(), lr=self.learning_rate)
-        lr_scheduler = torch.optim.lr_scheduler.LinearLR(optimizer=optimizer)
-        return [optimizer], [lr_scheduler]
+        self.tokenizer.pad_token = self.tokenizer.eos_token
+        self.loss_fct = CrossEntropyLoss()
 
     def training_step(self, batch):
         outputs = self.model(
@@ -57,6 +55,37 @@ class GPT2Engine:
 
         logits = outputs.get("logits")
         preds = torch.argmax(logits, -1)
-        acc = metrics.compute(preds, batch["targets"])
+        acc = metrics.compute(preds, batch["labels"])
 
         return acc
+
+
+class GPT2LoraEngine(GPT2Engine):
+    def __init__(self, weights_path: Optional[Union[str, Path]] = None):
+        super().__init__(weights_path)
+        if weights_path is None:
+            self.model = AutoModelForCausalLM.from_pretrained(
+                "distilgpt2", torch_dtype=DEFAULT_DTYPE
+            )
+            self.tokenizer = AutoTokenizer.from_pretrained("distilgpt2")
+        else:
+            assert Path(
+                weights_path
+            ).is_dir(), "The weights path should be a existing directory"
+            self.model = AutoModelForCausalLM.from_pretrained(
+                weights_path, torch_dtype=DEFAULT_DTYPE
+            )
+            self.tokenizer = AutoTokenizer.from_pretrained(weights_path)
+
+        peft_config = LoraConfig(
+            task_type=TaskType.CAUSAL_LM,
+            inference_mode=False,
+            r=8,
+            lora_alpha=32,
+            lora_dropout=0.1,
+        )
+
+        self.model = get_peft_model(self.model, peft_config)
+        self.model.print_trainable_parameters()
+
+        self.loss_fct = CrossEntropyLoss()
