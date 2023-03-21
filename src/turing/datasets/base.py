@@ -5,8 +5,9 @@ from turing.registry import BaseParent
 
 
 class BaseDataset(BaseParent):
-    registry = {
-        TextDataset.config_name: TextDataset,
-        InstructionDataset.config_name: InstructionDataset,
-        Text2ImageDataset.config_name: Text2ImageDataset,
-    }
+    registry = {}
+
+
+BaseDataset.add_to_registry(TextDataset.config_name, TextDataset)
+BaseDataset.add_to_registry(InstructionDataset.config_name, InstructionDataset)
+BaseDataset.add_to_registry(Text2ImageDataset.config_name, Text2ImageDataset)

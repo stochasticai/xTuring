@@ -3,8 +3,9 @@ from typing import Optional, Union
 
 import evaluate
 import torch
+import torch.nn as nn
 from peft import LoraConfig, TaskType, get_peft_model
-from transformers import AutoTokenizer, LlamaForCausalLM
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from turing.config import DEFAULT_DTYPE
 from turing.utils.loss_fns import CrossEntropyLoss
@@ -15,7 +16,7 @@ class LLamaEngine:
 
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
         if weights_path is None:
-            self.model = LlamaForCausalLM.from_pretrained(
+            self.model = AutoModelForCausalLM.from_pretrained(
                 "decapoda-research/llama-7b-hf", torch_dtype=DEFAULT_DTYPE
             )
             self.tokenizer = AutoTokenizer.from_pretrained(
@@ -25,7 +26,7 @@ class LLamaEngine:
             assert Path(
                 weights_path
             ).is_dir(), "The weights path should be a existing directory"
-            self.model = LlamaForCausalLM.from_pretrained(
+            self.model = AutoModelForCausalLM.from_pretrained(
                 weights_path, torch_dtype=DEFAULT_DTYPE
             )
             self.tokenizer = AutoTokenizer.from_pretrained(weights_path)
@@ -66,22 +67,6 @@ class LlamaLoraEngine(LLamaEngine):
 
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
         super().__init__(weights_path)
-        if weights_path is None:
-            self.model = LlamaForCausalLM.from_pretrained(
-                "decapoda-research/llama-7b-hf", torch_dtype=DEFAULT_DTYPE
-            )
-            self.tokenizer = AutoTokenizer.from_pretrained(
-                "decapoda-research/llama-7b-hf"
-            )
-        else:
-            assert Path(
-                weights_path
-            ).is_dir(), "The weights path should be a existing directory"
-            self.model = LlamaForCausalLM.from_pretrained(
-                weights_path, torch_dtype=DEFAULT_DTYPE
-            )
-            self.tokenizer = AutoTokenizer.from_pretrained(weights_path)
-
         peft_config = LoraConfig(
             task_type=TaskType.CAUSAL_LM,
             inference_mode=False,
