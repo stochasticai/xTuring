@@ -1,7 +1,7 @@
 from typing import Optional
 
 from turing.engines.gptj_engine import GPTJEngine, GPTJLoraEngine
-from turing.models.causal import CausalModel
+from turing.models.causal import CausalLoraModel, CausalModel
 
 
 class GPTJ(CausalModel):
@@ -11,7 +11,7 @@ class GPTJ(CausalModel):
         super().__init__(GPTJEngine.config_name, weights_path)
 
 
-class GPTJLORA(CausalModel):
+class GPTJLORA(CausalLoraModel):
     config_name: str = "gptj_lora"
 
     def __init__(self, weights_path: Optional[str] = None):
