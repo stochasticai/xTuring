@@ -60,6 +60,10 @@ class CausalEngine(BaseEngine):
 
         return acc
 
+    def save(self, saving_path: Union[str, Path]):
+        self.model.save_pretrained(saving_path)
+        self.tokenizer.save_pretrained(saving_path)
+
 
 class CausalLoraEngine(CausalEngine):
     def __init__(

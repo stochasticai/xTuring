@@ -22,15 +22,20 @@ class CausalModel(BaseModel):
     def _make_collate_fn(self, dataset: Union[TextDataset, InstructionDataset]):
         return BasePreprocessor.create(dataset.config_name, self.engine.tokenizer, 512)
 
+    def _make_trainer(self, dataset: Union[TextDataset, InstructionDataset]):
+        return BaseTrainer.create(
+            LightningTrainer.config_name,
+            self.engine,
+            dataset,
+            self._make_collate_fn(dataset),
+        )
+
     def finetune(self, dataset: Union[TextDataset, InstructionDataset]):
         assert dataset.config_name in [
             "text_dataset",
             "instruction_dataset",
         ], "Please make sure the dataset_type is text_dataset or instruction_dataset"
-        collate_fn = self._make_collate_fn(dataset)
-        trainer = BaseTrainer.create(
-            LightningTrainer.config_name, self.engine, dataset, collate_fn
-        )
+        trainer = self._make_trainer(dataset)
         trainer.fit()
 
     def evaluate(self, dataset: Union[TextDataset, InstructionDataset]):
@@ -96,4 +101,22 @@ class CausalModel(BaseModel):
         return outputs
 
     def save(self, path: Union[str, Path]):
-        pass
+        self.engine.save(path)
+
+
+class CausalLoraModel(CausalModel):
+    def __init__(self, engine: str, weights_path: Optional[str] = None):
+        super().__init__(engine, weights_path)
+
+    def _make_trainer(self, dataset: Union[TextDataset, InstructionDataset]):
+        return BaseTrainer.create(
+            LightningTrainer.config_name,
+            self.engine,
+            dataset,
+            self._make_collate_fn(dataset),
+            3,
+            8,
+            4e-3,
+            True,
+            True,
+        )
