@@ -4,6 +4,9 @@ from typing import Any, Dict
 class BaseParent:
     @classmethod
     def add_to_registry(cls, name: str, obj: Any):
+        assert (
+            name not in cls.registry
+        ), f"Class {name} already exists in base class {cls.__name__} registry {cls.registry}"
         cls.registry[name] = obj
 
     @classmethod
