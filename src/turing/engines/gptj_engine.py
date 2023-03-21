@@ -4,18 +4,28 @@ from typing import Optional, Union
 import evaluate
 import torch
 import torch.nn as nn
-from transformers import GPTJForCausalLM
+from transformers import AutoTokenizer, GPTJForCausalLM
+
+from turing.config import DEFAULT_DTYPE
 
 
 class GPTJEngine:
+    config_name: str = "gptj_engine"
+
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
         if weights_path is None:
-            self.model = GPTJForCausalLM.from_pretrained("EleutherAI/gpt-j-6B")
+            self.model = GPTJForCausalLM.from_pretrained(
+                "EleutherAI/gpt-j-6B", torch_dtype=DEFAULT_DTYPE
+            )
+            self.tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6B")
         else:
             assert Path(
                 weights_path
             ).is_dir(), "The weights path should be a existing directory"
-            self.model = GPTJForCausalLM.from_pretrained(weights_path)
+            self.model = GPTJForCausalLM.from_pretrained(
+                weights_path, torch_dtype=DEFAULT_DTYPE
+            )
+            self.tokenizer = AutoTokenizer.from_pretrained(weights_path)
 
         self.loss_fct = nn.CrossEntropyLoss()
 
