@@ -61,6 +61,8 @@ class GPT2Engine:
 
 
 class GPT2LoraEngine(GPT2Engine):
+    config_name: str = "gpt2_lora_engine"
+
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
         super().__init__(weights_path)
         if weights_path is None:

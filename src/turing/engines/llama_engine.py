@@ -4,9 +4,8 @@ from typing import Optional, Union
 import evaluate
 import torch
 import torch.nn as nn
-from transformers import AutoModelForCausalLM, AutoTokenizer
 from peft import LoraConfig, TaskType, get_peft_model
-from transformers import AutoTokenizer, LlamaForCausalLM
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from turing.config import DEFAULT_DTYPE
 from turing.utils.loss_fns import CrossEntropyLoss
