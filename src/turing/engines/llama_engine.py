@@ -38,11 +38,14 @@ class LLamaEngine:
         )
 
         if "label_mask" in batch:
-            loss = self.loss_fct(
-                outputs.get("logits"), batch["targets"], mask=batch["label_mask"]
-            )
+            logits = outputs.get("logits").view(-1, outputs.get("logits").size(-1))
+            targets = batch["targets"].view(-1)
+
+            loss = self.loss_fct(logits, targets, mask=batch["label_mask"])
         else:
-            loss = self.loss_fct(outputs.get("logits"), batch["targets"])
+            logits = outputs.get("logits").view(-1, outputs.get("logits").size(-1))
+            targets = batch["targets"].view(-1)
+            loss = self.loss_fct(logits, targets)
 
         return loss
 

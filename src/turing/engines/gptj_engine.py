@@ -29,11 +29,6 @@ class GPTJEngine:
 
         self.loss_fct = nn.CrossEntropyLoss()
 
-    def configure_optimizers(self):
-        optimizer = torch.optim.Adam(self.model.parameters(), lr=self.learning_rate)
-        lr_scheduler = torch.optim.lr_scheduler.LinearLR(optimizer=optimizer)
-        return [optimizer], [lr_scheduler]
-
     def training_step(self, batch):
         outputs = self.model(
             input_ids=batch["input_ids"],
@@ -41,11 +36,14 @@ class GPTJEngine:
         )
 
         if "label_mask" in batch:
-            loss = self.loss_fct(
-                outputs.get("logits"), batch["targets"], mask=batch["label_mask"]
-            )
+            logits = outputs.get("logits").view(-1, outputs.get("logits").size(-1))
+            targets = batch["targets"].view(-1)
+
+            loss = self.loss_fct(logits, targets, mask=batch["label_mask"])
         else:
-            loss = self.loss_fct(outputs.get("logits"), batch["targets"])
+            logits = outputs.get("logits").view(-1, outputs.get("logits").size(-1))
+            targets = batch["targets"].view(-1)
+            loss = self.loss_fct(logits, targets)
 
         return loss
 
