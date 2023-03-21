@@ -1,4 +1,8 @@
+import datetime
 import os
+import tempfile
+import uuid
+from pathlib import Path
 from typing import Optional
 
 import pytorch_lightning as pl
@@ -50,7 +54,10 @@ class TuringLightningModule(pl.LightningModule):
         return self.train_dl
 
     def training_step(self, batch, batch_idx):
-        return self.model_engine.training_step(batch)
+        loss = self.model_engine.training_step(batch)
+        self.log("loss", loss)
+
+        return loss
 
     def validation_step(self, batch, batch_idx):
         return self.model_engine.validation_step(batch)
@@ -69,6 +76,7 @@ class LightningTrainer:
         learning_rate: float = 1e-3,
         use_lora: bool = False,
         use_deepspeed: bool = False,
+        max_training_time_in_secs: Optional[int] = None,
     ):
         self.lightning_model = TuringLightningModule(
             model_engine=model_engine,
@@ -78,10 +86,28 @@ class LightningTrainer:
             learning_rate=learning_rate,
         )
 
+        checkpoints_dir_path = Path(tempfile.gettempdir()) / str(uuid.uuid4())
+
+        if not checkpoints_dir_path.exists():
+            checkpoints_dir_path.mkdir(exist_ok=True, parents=True)
+
         training_callbacks = [
             callbacks.LearningRateFinder(),
             callbacks.BatchSizeFinder(),
+            callbacks.ModelCheckpoint(
+                dirpath=str(checkpoints_dir_path),
+                save_top_k=3,
+                monitor="loss",
+                mode="min",  # Best model = min loss
+                every_n_train_steps=200,
+            ),
         ]
+        if max_training_time_in_secs is not None:
+            training_callbacks.append(
+                callbacks.Timer(
+                    duration=datetime.timedelta(seconds=max_training_time_in_secs)
+                )
+            )
 
         if not use_lora and use_deepspeed:
             self.trainer = Trainer(
@@ -107,6 +133,8 @@ class LightningTrainer:
 
     def fit(self):
         self.trainer.fit(self.lightning_model)
+        if self.trainer.checkpoint_callback is not None:
+            self.trainer.checkpoint_callback.best_model_path
 
     def engine(self):
         return self.lightning_model.model_engine

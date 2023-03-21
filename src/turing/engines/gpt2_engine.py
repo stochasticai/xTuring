@@ -59,6 +59,10 @@ class GPT2Engine:
 
         return acc
 
+    def save(self, saving_path: Union[str, Path]):
+        self.model.save_pretrained(saving_path)
+        self.tokenizer.save_pretrained(saving_path)
+
 
 class GPT2LoraEngine(GPT2Engine):
     config_name: str = "gpt2_lora_engine"
