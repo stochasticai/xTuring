@@ -55,7 +55,7 @@ class TuringLightningModule(pl.LightningModule):
 
 
 class LightningTrainer:
-    config_name: TuringLightningModule
+    config_name = "lightning_trainer"
 
     def __init__(
         self,

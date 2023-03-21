@@ -49,7 +49,7 @@ class Llama:
         self.engine.model.eval()
 
         if texts is not None:
-            texts = [texts] if isinstance(texts) == str else texts
+            texts = [texts] if isinstance(texts, str) else texts
 
             outputs = []
             for text in tqdm(texts):
@@ -68,7 +68,7 @@ class Llama:
 
         elif dataset is not None:
             collate_fn = (
-                BasePreprocessor("text_dataset")(self.engine.tokenizer, 512)
+                BasePreprocessor.create(dataset.con, self.engine.tokenizer, 512)
                 if isinstance(dataset) == TextDataset
                 else BasePreprocessor("instruction_dataset")(self.engine.tokenizer, 512)
             )

@@ -1,3 +1,2 @@
 pre-commit
-torch
-transformers
+pytest
