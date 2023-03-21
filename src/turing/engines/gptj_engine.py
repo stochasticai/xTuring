@@ -3,11 +3,11 @@ from typing import Optional, Union
 
 import evaluate
 import torch
-import torch.nn as nn
 from peft import LoraConfig, TaskType, get_peft_model
 from transformers import AutoTokenizer, GPTJForCausalLM
 
 from turing.config import DEFAULT_DTYPE
+from turing.utils.loss_fns import CrossEntropyLoss
 
 
 class GPTJEngine:
@@ -28,7 +28,7 @@ class GPTJEngine:
             )
             self.tokenizer = AutoTokenizer.from_pretrained(weights_path)
 
-        self.loss_fct = nn.CrossEntropyLoss()
+        self.loss_fct = CrossEntropyLoss()
 
     def training_step(self, batch):
         outputs = self.model(
@@ -37,14 +37,11 @@ class GPTJEngine:
         )
 
         if "label_mask" in batch:
-            logits = outputs.get("logits").view(-1, outputs.get("logits").size(-1))
-            targets = batch["targets"].view(-1)
-
-            loss = self.loss_fct(logits, targets, mask=batch["label_mask"])
+            loss = self.loss_fct(
+                outputs.get("logits"), batch["targets"], mask=batch["label_mask"]
+            )
         else:
-            logits = outputs.get("logits").view(-1, outputs.get("logits").size(-1))
-            targets = batch["targets"].view(-1)
-            loss = self.loss_fct(logits, targets)
+            loss = self.loss_fct(outputs.get("logits"), batch["targets"])
 
         return loss
 
@@ -92,4 +89,4 @@ class GPTJLoraEngine(GPTJEngine):
         self.model = get_peft_model(self.model, peft_config)
         self.model.print_trainable_parameters()
 
-        self.loss_fct = nn.CrossEntropyLoss()
+        self.loss_fct = CrossEntropyLoss()

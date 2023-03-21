@@ -13,6 +13,8 @@ from turing.trainers.base import BaseTrainer
 
 
 class GPT2:
+    config_name: str = "gpt2"
+
     def __init__(self, weights_path: Optional[str] = None):
         self.engine = BaseEngine.create("gpt2_engine", weights_path)
 

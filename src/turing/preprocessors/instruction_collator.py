@@ -17,10 +17,11 @@ class InstructionDataCollator:
     def __call__(self, batches):
         flatten_samples = []
         label_masks = []
-        for samples in enumerate(batches):
-            input_instruction = self.tokenizer(samples["instruction"])
-            input_text = self.tokenizer(samples["text"])
-            input_target = self.tokenizer(samples["output"])
+
+        for sample in batches:
+            input_instruction = self.tokenizer(sample["instruction"])
+            input_text = self.tokenizer(sample["text"])
+            input_target = self.tokenizer(sample["target"])
 
             input_ids = (
                 input_instruction["input_ids"]
