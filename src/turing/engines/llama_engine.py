@@ -4,6 +4,7 @@ from typing import Optional, Union
 import evaluate
 import torch
 import torch.nn as nn
+from peft import LoraConfig, TaskType, get_peft_model
 from transformers import AutoTokenizer, LlamaForCausalLM
 
 from turing.config import DEFAULT_DTYPE
@@ -61,3 +62,38 @@ class LLamaEngine:
         acc = metrics.compute(preds, batch["targets"])
 
         return acc
+
+
+class LlamaLoraEngine(LLamaEngine):
+    config_name: str = "llama_lora_engine"
+
+    def __init__(self, weights_path: Optional[Union[str, Path]] = None):
+        super().__init__(weights_path)
+        if weights_path is None:
+            self.model = LlamaForCausalLM.from_pretrained(
+                "decapoda-research/llama-7b-hf", torch_dtype=DEFAULT_DTYPE
+            )
+            self.tokenizer = AutoTokenizer.from_pretrained(
+                "decapoda-research/llama-7b-hf"
+            )
+        else:
+            assert Path(
+                weights_path
+            ).is_dir(), "The weights path should be a existing directory"
+            self.model = LlamaForCausalLM.from_pretrained(
+                weights_path, torch_dtype=DEFAULT_DTYPE
+            )
+            self.tokenizer = AutoTokenizer.from_pretrained(weights_path)
+
+        peft_config = LoraConfig(
+            task_type=TaskType.CAUSAL_LM,
+            inference_mode=False,
+            r=8,
+            lora_alpha=32,
+            lora_dropout=0.1,
+        )
+
+        self.model = get_peft_model(self.model, peft_config)
+        self.model.print_trainable_parameters()
+
+        self.loss_fct = nn.CrossEntropyLoss()
