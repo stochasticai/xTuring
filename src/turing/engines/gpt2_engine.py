@@ -3,11 +3,11 @@ from typing import Optional, Union
 
 import evaluate
 import torch
-import torch.nn as nn
 from peft import LoraConfig, TaskType, get_peft_model
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from turing.config import DEFAULT_DTYPE
+from turing.utils.loss_fns import CrossEntropyLoss
 
 
 class GPT2Engine:
@@ -27,12 +27,9 @@ class GPT2Engine:
                 weights_path, torch_dtype=DEFAULT_DTYPE
             )
             self.tokenizer = AutoTokenizer.from_pretrained(weights_path)
-        self.loss_fct = nn.CrossEntropyLoss()
 
-    def configure_optimizers(self):
-        optimizer = torch.optim.Adam(self.model.parameters(), lr=self.learning_rate)
-        lr_scheduler = torch.optim.lr_scheduler.LinearLR(optimizer=optimizer)
-        return [optimizer], [lr_scheduler]
+        self.tokenizer.pad_token = self.tokenizer.eos_token
+        self.loss_fct = CrossEntropyLoss()
 
     def training_step(self, batch):
         outputs = self.model(
@@ -58,7 +55,7 @@ class GPT2Engine:
 
         logits = outputs.get("logits")
         preds = torch.argmax(logits, -1)
-        acc = metrics.compute(preds, batch["targets"])
+        acc = metrics.compute(preds, batch["labels"])
 
         return acc
 
@@ -79,7 +76,6 @@ class GPT2LoraEngine(GPT2Engine):
                 weights_path, torch_dtype=DEFAULT_DTYPE
             )
             self.tokenizer = AutoTokenizer.from_pretrained(weights_path)
-        self.loss_fct = nn.CrossEntropyLoss()
 
         peft_config = LoraConfig(
             task_type=TaskType.CAUSAL_LM,
@@ -92,4 +88,4 @@ class GPT2LoraEngine(GPT2Engine):
         self.model = get_peft_model(self.model, peft_config)
         self.model.print_trainable_parameters()
 
-        self.loss_fct = nn.CrossEntropyLoss()
+        self.loss_fct = CrossEntropyLoss()
