@@ -12,9 +12,11 @@ from turing.preprocessors.base import BasePreprocessor
 from turing.trainers.base import BaseTrainer
 
 
-class GPT2:
-    def __init__(self, weights_path: Optional[str] = None):
-        self.engine = BaseEngine.create("gpt2_engine", weights_path)
+class GPTJ:
+    config_name: str = "gptj"
+
+    def __init__(self, weights_path: str):
+        self.engine = BaseEngine.create("gptj_engine", weights_path)
 
         self.collate_fn = None
         self.trainer = None
