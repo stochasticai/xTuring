@@ -1,9 +1,6 @@
 *.egg-info/**
 .model_weights
 
-data_ingestor/examples/*
-test*
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
