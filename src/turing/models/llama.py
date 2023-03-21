@@ -8,7 +8,6 @@ from turing.engines.base import BaseEngine
 from turing.preprocessors.base import BasePreprocessor
 from turing.trainers.base import BaseTrainer
 
-from transformers import AutoTokenizer
 
 class Llama:
     config_name: str = "llama"

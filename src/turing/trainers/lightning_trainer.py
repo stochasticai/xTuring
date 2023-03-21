@@ -1,11 +1,10 @@
 import os
+from typing import Optional
 
 import pytorch_lightning as pl
 import torch
 from pytorch_lightning import callbacks
 from pytorch_lightning.trainer.trainer import Trainer
-
-from typing import Optional
 
 from turing.datasets.base import BaseDataset
 from turing.engines.base import BaseEngine
@@ -36,7 +35,7 @@ class TuringLightningModule(pl.LightningModule):
         )
         lr_scheduler = torch.optim.lr_scheduler.LinearLR(optimizer=optimizer)
         return [optimizer], [lr_scheduler]
-    
+
     def train_dataloader(self):
         self.train_dl = torch.utils.data.DataLoader(
             self.train_dataset,
@@ -45,9 +44,8 @@ class TuringLightningModule(pl.LightningModule):
             num_workers=os.cpu_count(),
             pin_memory=True,
         )
-        
-        return self.train_dl
 
+        return self.train_dl
 
     def training_step(self, batch, batch_idx):
         return self.model_engine.training_step(batch)
@@ -69,7 +67,7 @@ class LightningTrainer:
         self.lightning_model = TuringLightningModule(
             model_engine=model_engine,
             train_dataset=train_dataset,
-            preprocessor=preprocessor
+            preprocessor=preprocessor,
         )
 
         training_callbacks = [
@@ -85,7 +83,7 @@ class LightningTrainer:
             callbacks=training_callbacks,
             enable_checkpointing=False,
             log_every_n_steps=50,
-            precision=16
+            precision=16,
         )
 
     def fit(self):

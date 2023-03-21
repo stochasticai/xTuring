@@ -1,6 +1,8 @@
 from pathlib import Path
 from typing import List, Optional, Union
 
+from transformers import AutoTokenizer
+
 from turing.datasets.base import BaseDataset
 from turing.datasets.instruction_dataset import InstructionDataset
 from turing.datasets.text_dataset import TextDataset
@@ -8,14 +10,12 @@ from turing.engines.base import BaseEngine
 from turing.preprocessors.base import BasePreprocessor
 from turing.trainers.base import BaseTrainer
 
-from transformers import AutoTokenizer
-
 
 class GPTJ:
     config_name: str = "gptj"
 
     def __init__(self, weights_path: str):
-        self.engine = BaseEngine.create("gpt-j", weights_path)
+        self.engine = BaseEngine.create("gptj_engine", weights_path)
 
         self.collate_fn = None
         self.trainer = None
