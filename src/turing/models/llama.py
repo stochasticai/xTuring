@@ -1,6 +1,10 @@
 from pathlib import Path
 from typing import List, Optional, Union
 
+import torch
+from torch.utils.data import DataLoader
+from tqdm import tqdm
+
 from turing.datasets.base import BaseDataset
 from turing.datasets.instruction_dataset import InstructionDataset
 from turing.datasets.text_dataset import TextDataset
@@ -39,7 +43,60 @@ class Llama:
         texts: Optional[Union[List[str], str]] = None,
         dataset: Optional[Union[TextDataset, InstructionDataset]] = None,
     ):
-        pass
+        device = (
+            torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+        )
+        self.engine.model.eval()
+
+        if texts is not None:
+            texts = [texts] if isinstance(texts) == str else texts
+
+            outputs = []
+            for text in tqdm(texts):
+                inputs = self.engine.tokenizer(text, return_tensors="pt")
+                input_ids = inputs.input_ids.to(device)
+                with torch.no_grad():
+                    with torch.autocast("cuda"):
+                        output = self.engine.model.generate(
+                            input_ids=input_ids, do_sample=False, max_new_tokens=300
+                        )
+
+                output = self.engine.tokenizer.decode(
+                    output[0], skip_special_tokens=False
+                )
+                outputs.append(output)
+
+        elif dataset is not None:
+            collate_fn = (
+                BasePreprocessor("text_dataset")(self.engine.tokenizer, 512)
+                if isinstance(dataset) == TextDataset
+                else BasePreprocessor("instruction_dataset")(self.engine.tokenizer, 512)
+            )
+            dataloader = DataLoader(
+                dataset,
+                batch_size=1,
+                shuffle=False,
+                drop_last=False,
+                collate_fn=collate_fn,
+            )
+
+            outputs = []
+            for i, batch in enumerate(tqdm(dataloader)):
+                input_ids = batch["input_ids"].to(self.device)
+                with torch.no_grad():
+                    with torch.autocast("cuda"):
+                        output = self.engine.model.generate(
+                            input_ids=input_ids, do_sample=False, max_new_tokens=300
+                        )
+
+                output = self.engine.tokenizer.decode(
+                    output[0], skip_special_tokens=False
+                )
+                outputs.append(output)
+        else:
+            raise ("Make sure texts or dataset is not None")
+
+        return outputs
 
     def save(self, path: Union[str, Path]):
         pass
