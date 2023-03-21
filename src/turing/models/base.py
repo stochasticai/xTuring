@@ -1,6 +1,6 @@
-from turing.models.gpt2 import GPT2
-from turing.models.gptj import GPTJ
-from turing.models.llama import Llama
+from turing.models.gpt2 import GPT2, GPT2LORA
+from turing.models.gptj import GPTJ, GPTJLORA
+from turing.models.llama import Llama, LlamaLORA
 from turing.models.stable_diffusion import StableDiffusion
 from turing.registry import BaseParent
 
@@ -13,3 +13,6 @@ BaseModel.add_to_registry(GPTJ.config_name, GPTJ)
 BaseModel.add_to_registry(Llama.config_name, Llama)
 BaseModel.add_to_registry(StableDiffusion.config_name, StableDiffusion)
 BaseModel.add_to_registry(GPT2.config_name, GPT2)
+BaseModel.add_to_registry(GPTJLORA.config_name, GPTJLORA)
+BaseModel.add_to_registry(LlamaLORA.config_name, LlamaLORA)
+BaseModel.add_to_registry(GPT2LORA.config_name, GPT2LORA)

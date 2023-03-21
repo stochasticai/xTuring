@@ -72,12 +72,18 @@ class LightningTrainer:
         train_dataset: BaseDataset,
         preprocessor: BasePreprocessor,
         max_epochs: int = 3,
+        batch_size: int = 2,
+        learning_rate: float = 1e-3,
+        use_lora: bool = False,
+        use_deepspeed: bool = False,
         max_training_time_in_secs: Optional[int] = None,
     ):
         self.lightning_model = TuringLightningModule(
             model_engine=model_engine,
             train_dataset=train_dataset,
             preprocessor=preprocessor,
+            batch_size=batch_size,
+            learning_rate=learning_rate,
         )
 
         checkpoints_dir_path = Path(tempfile.gettempdir()) / str(uuid.uuid4())
@@ -96,7 +102,6 @@ class LightningTrainer:
                 every_n_train_steps=200,
             ),
         ]
-
         if max_training_time_in_secs is not None:
             training_callbacks.append(
                 callbacks.Timer(
@@ -104,15 +109,27 @@ class LightningTrainer:
                 )
             )
 
-        self.trainer = Trainer(
-            num_nodes=1,
-            accelerator="gpu",
-            devices=torch.cuda.device_count(),
-            max_epochs=max_epochs,
-            callbacks=training_callbacks,
-            enable_checkpointing=False,
-            log_every_n_steps=50,
-        )
+        if not use_lora and use_deepspeed:
+            self.trainer = Trainer(
+                num_nodes=1,
+                accelerator="gpu",
+                devices=torch.cuda.device_count(),
+                max_epochs=max_epochs,
+                callbacks=training_callbacks,
+                enable_checkpointing=False,
+                log_every_n_steps=50,
+            )
+        else:
+            self.trainer = Trainer(
+                num_nodes=1,
+                accelerator="gpu",
+                devices=torch.cuda.device_count(),
+                strategy="deepspeed_stage_2",
+                precision=16,
+                max_epochs=max_epochs,
+                enable_checkpointing=False,
+                log_every_n_steps=50,
+            )
 
     def fit(self):
         self.trainer.fit(self.lightning_model)
