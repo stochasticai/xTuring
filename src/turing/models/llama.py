@@ -16,7 +16,7 @@ from turing.models.causal import CausalLoraModel, CausalModel
 class Llama(CausalModel):
     config_name: str = "llama"
 
-    def __init__(self, weights_path: str):
+    def __init__(self, weights_path: Optional[str] = None):
         super().__init__(LLamaEngine.config_name, weights_path)
 
 
