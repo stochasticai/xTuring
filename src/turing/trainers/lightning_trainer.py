@@ -34,6 +34,8 @@ class TuringLightningModule(pl.LightningModule):
         self.batch_size = batch_size
         self.learning_rate = learning_rate
 
+        self.losses = []
+
     def configure_optimizers(self):
         optimizer = torch.optim.Adam(
             self.pytorch_model.parameters(), lr=self.learning_rate
@@ -55,7 +57,8 @@ class TuringLightningModule(pl.LightningModule):
 
     def training_step(self, batch, batch_idx):
         loss = self.model_engine.training_step(batch)
-        self.log("loss", loss)
+        self.losses.append(loss.item())
+        self.log("loss", loss.item(), prog_bar=True)
 
         return loss
 
@@ -86,7 +89,7 @@ class LightningTrainer:
             learning_rate=learning_rate,
         )
 
-        checkpoints_dir_path = Path(tempfile.gettempdir()) / str(uuid.uuid4())
+        checkpoints_dir_path = Path("saved_model")
 
         if not checkpoints_dir_path.exists():
             checkpoints_dir_path.mkdir(exist_ok=True, parents=True)
@@ -116,10 +119,20 @@ class LightningTrainer:
                 devices=torch.cuda.device_count(),
                 max_epochs=max_epochs,
                 callbacks=training_callbacks,
-                enable_checkpointing=False,
+                enable_checkpointing=True,
                 log_every_n_steps=50,
             )
         else:
+            training_callbacks = [
+                callbacks.ModelCheckpoint(
+                    dirpath=str(checkpoints_dir_path),
+                    save_top_k=3,
+                    monitor="loss",
+                    mode="min",  # Best model = min loss
+                    every_n_train_steps=200,
+                ),
+            ]
+
             self.trainer = Trainer(
                 num_nodes=1,
                 accelerator="gpu",
@@ -127,7 +140,8 @@ class LightningTrainer:
                 strategy="deepspeed_stage_2",
                 precision=16,
                 max_epochs=max_epochs,
-                enable_checkpointing=False,
+                callbacks=training_callbacks,
+                enable_checkpointing=True,
                 log_every_n_steps=50,
             )
 
