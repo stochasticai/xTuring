@@ -5,6 +5,29 @@ import torch.nn.functional as F
 from transformers.tokenization_utils_base import PreTrainedTokenizerBase
 
 
+def gen_instruction_prompt(instruction, input):
+    if len(input) > 0:
+        prompt = f"""Below is an instruction that describes a task, paired with an input that provides further context. Write a comprehensive and informative response that appropriately completes the request. The response must have at least 50 words. Must not repeat text.
+
+### Instruction:
+{instruction}
+
+### Input:
+{input}
+
+### Response:
+"""
+    else:
+        prompt = f"""Below is an instruction that describes a task, paired with an input that provides further context. Write a comprehensive and informative response that appropriately completes the request. The response must have at least 50 words. Must not repeat text.
+
+### Instruction:
+{instruction}
+
+### Response:
+"""
+    return prompt
+
+
 class InstructionDataCollator:
     config_name = "instruction_dataset"
 
@@ -19,26 +42,20 @@ class InstructionDataCollator:
         label_masks = []
 
         for sample in batches:
-            input_instruction = self.tokenizer(sample["instruction"])
-            input_text = self.tokenizer(sample["text"])
+            prompt = gen_instruction_prompt(sample["instruction"], sample["text"])
+            input_prompt = self.tokenizer(prompt)
             input_target = self.tokenizer(sample["target"])
 
-            input_ids = (
-                input_instruction["input_ids"]
-                + input_text["input_ids"]
-                + input_target["input_ids"]
-            )
+            input_ids = input_prompt["input_ids"] + input_target["input_ids"]
 
             input_ids = input_ids[: self.max_length - 1]
             input_ids.append(self.tokenizer.eos_token_id)
             attention_mask = [1] * len(input_ids)
 
-            label_mask = (
-                [False] * len(input_instruction["input_ids"])
-                + [False] * len(input_text["input_ids"])
-                + [True] * len(input_target["input_ids"])
+            label_mask = [False] * len(input_prompt["input_ids"]) + [True] * len(
+                input_target["input_ids"]
             )
-            label_mask = label_mask[: self.max_length]
+            label_mask = label_mask[: self.max_length - 1]
             label_mask = label_mask + [True]
 
             flatten_samples.append(
