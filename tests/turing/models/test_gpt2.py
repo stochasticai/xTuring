@@ -23,5 +23,5 @@ def test_text_dataset_gpt2():
 
 
 def test_text_dataset_gpt2_lora():
-    other_model = BaseModel.create("gpt2", engine=GPT2LoraEngine.config_name)
+    other_model = BaseModel.create("gpt2_lora")
     assert other_model.generate(texts="I want to")[: len(EXAMPLE)] == EXAMPLE
