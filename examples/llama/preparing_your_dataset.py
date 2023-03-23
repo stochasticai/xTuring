@@ -2,8 +2,7 @@ import json
 
 from datasets import Dataset, DatasetDict
 
-from turing.datasets.instruction_dataset import InstructionDataset
-from turing.models.base import BaseModel
+# Convert the alpaca JSON dataset to HF format
 
 
 # Right now only the HuggingFace datasets are supported, that's why the JSON Alpaca dataset
@@ -33,15 +32,3 @@ def preprocess_alapca_json_data(alpaca_dataset_path: str):
         dataset[k] = Dataset.from_dict(v)
 
     dataset.save_to_disk(str("./alpaca_data"))
-
-
-preprocess_alapca_json_data("alpaca_data.json")
-
-instruction_dataset = InstructionDataset("./alpaca_data")
-# Initializes the model
-model = BaseModel.create("llama_lora")
-# Finetuned the model
-model.finetune(dataset=instruction_dataset)
-# Once the model has been finetuned, you can start doing inferences
-output = model.generate(texts=["Why LLM models are becoming so important?"])
-print("Generated output by the model: {}".format(output))
