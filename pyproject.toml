@@ -1,5 +1,5 @@
 [project]
-name = "turing"
+name = "xturing"
 version = "0.0.1"
 description = "Fine-tuning, evaluation and data generation for LLMs"
 
@@ -54,6 +54,6 @@ dependencies = [
 
 
 [project.urls]
-homepage = "https://turing.stochastic.ai/"
-documentation = "https://github.com/stochasticai/turing-docs"
-repository = "https://github.com/stochasticai/turing"
+homepage = "https://xturing.stochastic.ai/"
+documentation = "https://github.com/stochasticai/xturing-docs"
+repository = "https://github.com/stochasticai/xturing"
