@@ -4,15 +4,21 @@ import torch
 import torch.nn.functional as F
 from transformers.tokenization_utils_base import PreTrainedTokenizerBase
 
+from turing.datasets import TextDatasetMeta
+
 
 class TextDataCollator:
     config_name = "text_dataset"
 
     def __init__(
-        self, tokenizer: PreTrainedTokenizerBase, max_length: Optional[int] = None
+        self,
+        tokenizer: PreTrainedTokenizerBase,
+        max_length: Optional[int] = None,
+        meta: TextDatasetMeta = TextDatasetMeta(),
     ):
         self.tokenizer = tokenizer
         self.max_length = max_length
+        self.meta = meta
 
     def __call__(self, batches: List[Dict]):
         # batches
