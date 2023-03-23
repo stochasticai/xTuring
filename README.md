@@ -44,6 +44,8 @@ You can find the data folder [here](examples/llama_lora_alpaca/alpaca_data/).
 - [Preparing your dataset](examples/llama/preparing_your_dataset.py)
 - [LLaMA efficient fine-tuning with LoRA](examples/llama/llama_lora.py)
 - [LLaMA fine-tuning](examples/llama/llama.py)
+- [GPT-J efficient fine-tuning with LoRA](examples/gptj/gptj_lora.py)
+- [GPT2 efficient fine-tuning with LoRA](examples/gpt2/gpt2_lora.py)
 
 <br>
 
