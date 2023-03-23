@@ -9,7 +9,10 @@ from torch.utils.data import Dataset
 class InstructionDataset(Dataset):
     config_name: str = "instruction_dataset"
 
-    def __init__(self, path: Union[str, Path, HFDataset, dict]):
+    def __init__(
+        self,
+        path: Union[str, Path, HFDataset, dict],
+    ):
         if isinstance(path, HFDataset):
             self.data = path
         elif isinstance(path, dict):
