@@ -10,6 +10,7 @@ import torch
 from pytorch_lightning import callbacks
 from pytorch_lightning.trainer.trainer import Trainer
 
+from turing.config import DEFAULT_DEVICE
 from turing.datasets.base import BaseDataset
 from turing.engines.base import BaseEngine
 from turing.preprocessors.base import BasePreprocessor
@@ -75,8 +76,8 @@ class LightningTrainer:
         train_dataset: BaseDataset,
         preprocessor: BasePreprocessor,
         max_epochs: int = 3,
-        batch_size: int = 1,
-        learning_rate: float = 1e-4,
+        batch_size: int = 2,
+        learning_rate: float = 1e-3,
         use_lora: bool = False,
         use_deepspeed: bool = False,
         max_training_time_in_secs: Optional[int] = None,
@@ -97,12 +98,13 @@ class LightningTrainer:
         training_callbacks = [
             callbacks.LearningRateFinder(),
             callbacks.BatchSizeFinder(),
-            callbacks.ModelCheckpoint(
-                dirpath=str(checkpoints_dir_path),
-                # monitor="loss",
-                # mode="min",  # Best model = min loss
-                every_n_train_steps=2000,
-            ),
+            # callbacks.ModelCheckpoint(
+            #     dirpath=str(checkpoints_dir_path),
+            #     save_top_k=3,
+            #     monitor="loss",
+            #     mode="min",  # Best model = min loss
+            #     every_n_train_steps=200,
+            # ),
         ]
         if max_training_time_in_secs is not None:
             training_callbacks.append(
@@ -111,11 +113,19 @@ class LightningTrainer:
                 )
             )
 
-        if not use_lora and use_deepspeed:
+        if DEFAULT_DEVICE.type == "cpu":
+            self.trainer = Trainer(
+                num_nodes=1,
+                accelerator="cpu",
+                max_epochs=max_epochs,
+                callbacks=training_callbacks,
+                enable_checkpointing=False,
+                log_every_n_steps=50,
+            )
+        elif not use_lora and use_deepspeed:
             self.trainer = Trainer(
                 num_nodes=1,
                 accelerator="gpu",
-                devices=torch.cuda.device_count(),
                 max_epochs=max_epochs,
                 callbacks=training_callbacks,
                 enable_checkpointing=True,
@@ -125,17 +135,16 @@ class LightningTrainer:
             training_callbacks = [
                 callbacks.ModelCheckpoint(
                     dirpath=str(checkpoints_dir_path),
-                    # save_top_k=3,
-                    # monitor="loss",
-                    # mode="min",  # Best model = min loss
-                    save_on_train_epoch_end=True,
+                    save_top_k=3,
+                    monitor="loss",
+                    mode="min",  # Best model = min loss
+                    every_n_train_steps=200,
                 ),
             ]
 
             self.trainer = Trainer(
                 num_nodes=1,
                 accelerator="gpu",
-                devices=torch.cuda.device_count(),
                 strategy="deepspeed_stage_2",
                 precision=16,
                 max_epochs=max_epochs,

@@ -20,7 +20,9 @@ class CausalModel(BaseModel):
         self.engine = BaseEngine.create(engine, weights_path)
 
     def _make_collate_fn(self, dataset: Union[TextDataset, InstructionDataset]):
-        return BasePreprocessor.create(dataset.config_name, self.engine.tokenizer, 512)
+        return BasePreprocessor.create(
+            dataset.config_name, self.engine.tokenizer, 512, dataset.meta
+        )
 
     def _make_trainer(self, dataset: Union[TextDataset, InstructionDataset]):
         return BaseTrainer.create(
