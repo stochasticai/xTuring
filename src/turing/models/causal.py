@@ -70,6 +70,7 @@ class CausalModel(BaseModel):
         dataset: Optional[Union[TextDataset, InstructionDataset]] = None,
     ):
         self.engine.model.eval()
+        self.engine.model = self.engine.model.to(DEFAULT_DEVICE)
 
         outputs = []
 
