@@ -75,8 +75,8 @@ class LightningTrainer:
         train_dataset: BaseDataset,
         preprocessor: BasePreprocessor,
         max_epochs: int = 3,
-        batch_size: int = 2,
-        learning_rate: float = 1e-3,
+        batch_size: int = 1,
+        learning_rate: float = 1e-4,
         use_lora: bool = False,
         use_deepspeed: bool = False,
         max_training_time_in_secs: Optional[int] = None,
@@ -99,10 +99,9 @@ class LightningTrainer:
             callbacks.BatchSizeFinder(),
             callbacks.ModelCheckpoint(
                 dirpath=str(checkpoints_dir_path),
-                save_top_k=3,
-                monitor="loss",
-                mode="min",  # Best model = min loss
-                every_n_train_steps=200,
+                # monitor="loss",
+                # mode="min",  # Best model = min loss
+                every_n_train_steps=2000,
             ),
         ]
         if max_training_time_in_secs is not None:
@@ -126,10 +125,10 @@ class LightningTrainer:
             training_callbacks = [
                 callbacks.ModelCheckpoint(
                     dirpath=str(checkpoints_dir_path),
-                    save_top_k=3,
-                    monitor="loss",
-                    mode="min",  # Best model = min loss
-                    every_n_train_steps=200,
+                    # save_top_k=3,
+                    # monitor="loss",
+                    # mode="min",  # Best model = min loss
+                    save_on_train_epoch_end=True,
                 ),
             ]
 
