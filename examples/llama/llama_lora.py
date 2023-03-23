@@ -1,5 +1,5 @@
-from turing.datasets.instruction_dataset import InstructionDataset
-from turing.models.base import BaseModel
+from xturing.datasets.instruction_dataset import InstructionDataset
+from xturing.models.base import BaseModel
 
 instruction_dataset = InstructionDataset("./alpaca_data")
 # Initializes the model
