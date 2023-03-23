@@ -1,17 +1,25 @@
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Union
 
 from datasets import Dataset as HFDataset
 from datasets import load_from_disk
-from torch.utils.data import Dataset
+
+from turing.datasets.base import BaseDataset
 
 
-class InstructionDataset(Dataset):
+@dataclass
+class InstructionDatasetMeta:
+    infix_instruction: bool = False
+
+
+class InstructionDataset(BaseDataset):
     config_name: str = "instruction_dataset"
 
     def __init__(
         self,
         path: Union[str, Path, HFDataset, dict],
+        infix_instruction: bool = False,
     ):
         if isinstance(path, HFDataset):
             self.data = path
@@ -21,6 +29,7 @@ class InstructionDataset(Dataset):
             assert Path(path).exists(), "path does not exist"
             self.data = load_from_disk(path)
         self._validate()
+        self._meta = InstructionDatasetMeta(infix_instruction=infix_instruction)
 
     def _validate(self):
         # check is hf dataset has train split and if it has column text, and if there are any other - it should be target

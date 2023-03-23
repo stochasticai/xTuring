@@ -4,15 +4,21 @@ import torch
 import torch.nn.functional as F
 from transformers.tokenization_utils_base import PreTrainedTokenizerBase
 
+from turing.datasets import InstructionDatasetMeta
+
 
 class InstructionDataCollator:
     config_name = "instruction_dataset"
 
     def __init__(
-        self, tokenizer: PreTrainedTokenizerBase, max_length: Optional[int] = None
+        self,
+        tokenizer: PreTrainedTokenizerBase,
+        max_length: Optional[int] = None,
+        meta: InstructionDatasetMeta = InstructionDatasetMeta(),
     ):
         self.tokenizer = tokenizer
         self.max_length = max_length
+        self.meta = meta
 
     def _process_instruction(self, instruction, tags=None):
         # check if the instruction is valid
@@ -33,18 +39,19 @@ class InstructionDataCollator:
             parts.append(left)
             instruction = right
 
+        parts.append(instruction)
+
         return parts
 
-    def __call__(self, batches, infix_instruction=False):
+    def __call__(self, batches):
         flatten_samples = []
         label_masks = []
 
         for sample in batches:
-            input_instruction = self.tokenizer(sample["instruction"])
             input_text = self.tokenizer(sample["text"])
             input_target = self.tokenizer(sample["target"])
 
-            if not infix_instruction:
+            if not self.meta.infix_instruction:
                 input_instruction = self.tokenizer(sample["instruction"])
                 input_ids = (
                     input_instruction["input_ids"]
@@ -67,19 +74,19 @@ class InstructionDataCollator:
                 ), "There should be exactly three parts in the instruction."
 
                 input_ids = (
-                    input_instruction[0]["input_ids"]
+                    input_instructions[0]["input_ids"]
                     + input_text["input_ids"]
-                    + input_instruction[1]["input_ids"]
+                    + input_instructions[1]["input_ids"]
                     + input_target["input_ids"]
-                    + input_instruction[2]["input_ids"]
+                    + input_instructions[2]["input_ids"]
                 )
 
                 label_mask = (
-                    [False] * len(input_instruction[0]["input_ids"])
+                    [False] * len(input_instructions[0]["input_ids"])
                     + [False] * len(input_text["input_ids"])
-                    + [False] * len(input_instruction[1]["input_ids"])
+                    + [False] * len(input_instructions[1]["input_ids"])
                     + [True] * len(input_target["input_ids"])
-                    + [False] * len(input_instruction[2]["input_ids"])
+                    + [False] * len(input_instructions[2]["input_ids"])
                 )
 
             input_ids = input_ids[: self.max_length - 1]
