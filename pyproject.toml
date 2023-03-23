@@ -44,10 +44,10 @@ keywords = [
 dependencies = [
     "torch >= 1.9.0",
     "pytorch-lightning",
-    "transformers@git+https://github.com/huggingface/transformers.git",
+    "transformers",
     "datasets",
     "evaluate",
-    "peft@git+https://github.com/huggingface/peft.git",
+    "peft",
     "sentencepiece",
     "deepspeed"
 ]
