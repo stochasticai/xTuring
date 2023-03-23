@@ -10,9 +10,13 @@ class GPTJEngine(CausalEngine):
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
         super().__init__("EleutherAI/gpt-j-6B", weights_path)
 
+        self.tokenizer.pad_token = self.tokenizer.eos_token
+
 
 class GPTJLoraEngine(CausalLoraEngine):
     config_name: str = "gptj_lora_engine"
 
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
         super().__init__("EleutherAI/gpt-j-6B", weights_path)
+
+        self.tokenizer.pad_token = self.tokenizer.eos_token
