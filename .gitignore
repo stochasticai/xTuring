@@ -1,15 +1,12 @@
 *.egg-info/**
 .model_weights
 
-data_ingestor/examples/*
-test*
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
 
-# models 
+# models
 *.onnx
 *.pt
 
@@ -36,6 +33,10 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+
+lightning_logs/
+
+internal_tests
 
 # PyInstaller
 #  Usually these files are written by a python script from a template

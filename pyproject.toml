@@ -1,0 +1,59 @@
+[project]
+name = "xturing"
+version = "0.0.1"
+description = "Fine-tuning, evaluation and data generation for LLMs"
+
+authors = [
+    { name = "Glenn Ko", email = "glenn@stochastic.ai" },
+    { name = "Yuji Chai", email = "yuji.chai@stochastic.ai" },
+    { name = "Roman Ageev", email = "roman.ageev@stochastic.ai" },
+    { name = "Toan Do", email = "toan.do@stochastic.ai" },
+    { name = "Marcos R M", email = "marcos.rm@stochastic.ai" },
+    { name = "Sarthak Langde", email = "sarthak.langde@stochastic.ai" },
+    { name = "Riccardo Romagnoli", email = "riccardo.romagnoli@stochastic.ai" },
+    { name = "Subhash G N", email = "subhash.gn@stochastic.ai" },
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Linguistic",
+]
+
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.6"
+keywords = [
+    "nlp",
+    "llm",
+    "finetuning",
+    "evaluation",
+    "data-generation",
+    "training",
+    "distributed",
+]
+dependencies = [
+    "torch >= 1.9.0",
+    "pytorch-lightning",
+    "transformers@git+https://github.com/huggingface/transformers.git",
+    "datasets",
+    "evaluate",
+    "peft@git+https://github.com/huggingface/peft.git",
+    "sentencepiece",
+    "deepspeed"
+]
+
+
+[project.urls]
+homepage = "https://xturing.stochastic.ai/"
+documentation = "https://github.com/stochasticai/xturing-docs"
+repository = "https://github.com/stochasticai/xturing"
