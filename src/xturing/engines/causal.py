@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Optional, Union
+from typing import Any, List, Optional, Union
 
 import evaluate
 import torch
@@ -16,14 +16,16 @@ class CausalEngine(BaseEngine):
         self,
         model_name: Optional[str] = None,
         weights_path: Optional[Union[str, Path]] = None,
+        model: Optional[Any] = None,
+        tokenizer: Optional[Any] = None,
     ):
         self.model_name = model_name
-        if weights_path is None:
+        if model_name is not None:
             self.model = AutoModelForCausalLM.from_pretrained(
                 model_name, torch_dtype=DEFAULT_DTYPE
             )
             self.tokenizer = AutoTokenizer.from_pretrained(model_name)
-        else:
+        elif weights_path is not None:
             assert Path(
                 weights_path
             ).is_dir(), "The weights path should be a existing directory"
@@ -31,6 +33,13 @@ class CausalEngine(BaseEngine):
                 weights_path, torch_dtype=DEFAULT_DTYPE
             )
             self.tokenizer = AutoTokenizer.from_pretrained(weights_path)
+        elif model is not None and tokenizer is not None:
+            self.model = model
+            self.tokenizer = tokenizer
+        else:
+            raise ValueError(
+                "Please provide a model_name, the weights path or model and tokenizer."
+            )
 
         self.loss_fct = CrossEntropyLoss()
 
@@ -69,15 +78,21 @@ class CausalEngine(BaseEngine):
 
 class CausalLoraEngine(CausalEngine):
     def __init__(
-        self, model_name: str, weights_path: Optional[Union[str, Path]] = None
+        self,
+        model_name: Optional[str] = None,
+        weights_path: Optional[Union[str, Path]] = None,
+        model: Optional[Any] = None,
+        tokenizer: Optional[Any] = None,
+        target_modules: Optional[Union[List[str], str]] = None,
     ):
-        super().__init__(model_name, weights_path)
+        super().__init__(model_name, weights_path, model, tokenizer)
         peft_config = LoraConfig(
             task_type=TaskType.CAUSAL_LM,
             inference_mode=False,
             r=8,
             lora_alpha=32,
             lora_dropout=0.1,
+            target_modules=target_modules,
         )
 
         self.model = get_peft_model(self.model, peft_config)
