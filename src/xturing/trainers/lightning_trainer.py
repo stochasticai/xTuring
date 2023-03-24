@@ -43,7 +43,7 @@ class TuringLightningModule(pl.LightningModule):
 
     def configure_optimizers(self):
         if self.optimizer_name == "adamw":
-            optimizer = torch.optim.adamw(
+            optimizer = torch.optim.AdamW(
                 self.pytorch_model.parameters(), lr=self.learning_rate
             )
         elif self.optimizer_name == "adam":
@@ -155,7 +155,6 @@ class LightningTrainer:
 
             self.trainer = Trainer(
                 num_nodes=1,
-                devices=4,
                 accelerator="gpu",
                 strategy="deepspeed_stage_2_offload"
                 if optimizer_name == "cpu_adam"
