@@ -10,11 +10,11 @@ class LLamaEngine(CausalEngine):
     config_name: str = "llama_engine"
 
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
-        super().__init__("/mnt/disks/datadrive/llama_7b_hf", weights_path)
+        super().__init__("sallywww/Llama-7B", weights_path)
 
         if weights_path is None:
             self.tokenizer = LlamaTokenizer.from_pretrained(
-                "/mnt/disks/datadrive/llama_7b_hf", add_bos_token=False
+                "sallywww/Llama-7B", add_bos_token=False
             )
         else:
             assert Path(
@@ -33,11 +33,11 @@ class LlamaLoraEngine(CausalLoraEngine):
     config_name: str = "llama_lora_engine"
 
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
-        super().__init__("/mnt/disks/datadrive/llama_7b_hf", weights_path)
+        super().__init__("sallywww/Llama-7B", weights_path)
 
         if weights_path is None:
             self.tokenizer = LlamaTokenizer.from_pretrained(
-                "/mnt/disks/datadrive/llama_7b_hf", add_bos_token=False
+                "sallywww/Llama-7B", add_bos_token=False
             )
         else:
             assert Path(
