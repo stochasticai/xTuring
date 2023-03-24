@@ -51,10 +51,15 @@ You can find the data folder [here](examples/llama_lora_alpaca/alpaca_data/).
 
 <br>
 
-## Performance comparison
+## 📊 Performance
 
-Hardware: 4 A100 40GB GPU with 335GB CPU RAM
-Parameters:
+Here is a comparison for the performance of different fine-tuning techniques on the LLaMA 7B model. We use the [Alpaca dataset](examples/llama/alpaca_data/) for fine-tuning. The dataset contains 52K instructions.
+
+Hardware:
+
+4xA100 40GB GPU, 335GB CPU RAM
+
+Fine-tuning parameters:
 
 ```javascript
 {
@@ -63,9 +68,13 @@ Parameters:
 }
 ```
 
-|   Model         | Full Finetuning DeepSpeed with CPU Offloading | PEFT-LoRA DeepSpeed  | PEFT-LoRA DeepSpeed with CPU Offloading |
+|      LLaMA 7B      | DeepSpeed + CPU Offloading | LoRA + DeepSpeed  | LoRA + DeepSpeed + CPU Offloading |
 | --------- | ---- | ---- | ---- |
-| LLaMA 7B | 33.5GB GPU / 190GB CPU  | 23.7GB GPU / 10.2GB CPU | 21.9GB GPU / 14.9GB CPU |
+| GPU | 33.5 GB | 23.7 GB | 21.9 GB |
+| CPU | 190 GB  | 10.2 GB | 14.9 GB |
+| Time per epoch | 21 hours  | 20 mins | 20 mins |
+
+<br >
 
 ## 📈 Roadmap
 - [x] Support for LLaMA, GPT-J, GPT-2
