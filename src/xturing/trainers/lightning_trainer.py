@@ -11,7 +11,7 @@ from deepspeed.ops.adam import DeepSpeedCPUAdam
 from pytorch_lightning import callbacks
 from pytorch_lightning.trainer.trainer import Trainer
 
-from xturing.config import DEFAULT_DEVICE
+from xturing.config import DEFAULT_DEVICE, IS_INTERACTIVE
 from xturing.datasets.base import BaseDataset
 from xturing.engines.base import BaseEngine
 from xturing.preprocessors.base import BasePreprocessor
@@ -112,7 +112,6 @@ class LightningTrainer:
 
         training_callbacks = [
             callbacks.LearningRateFinder(),
-            callbacks.BatchSizeFinder(),
             # callbacks.ModelCheckpoint(
             #     dirpath=str(checkpoints_dir_path),
             #     save_top_k=3,
@@ -121,6 +120,10 @@ class LightningTrainer:
             #     every_n_train_steps=200,
             # ),
         ]
+
+        if not IS_INTERACTIVE:
+            training_callbacks.append(callbacks.BatchSizeFinder())
+
         if max_training_time_in_secs is not None:
             training_callbacks.append(
                 callbacks.Timer(
@@ -153,12 +156,18 @@ class LightningTrainer:
                 ),
             ]
 
+            strategy = "auto"
+            if not IS_INTERACTIVE:
+                strategy = (
+                    "deepspeed_stage_2_offload"
+                    if optimizer_name == "cpu_adam"
+                    else "deepspeed_stage_2"
+                )
+
             self.trainer = Trainer(
                 num_nodes=1,
                 accelerator="gpu",
-                strategy="deepspeed_stage_2_offload"
-                if optimizer_name == "cpu_adam"
-                else "deepspeed_stage_2",
+                strategy=strategy,
                 precision=16,
                 max_epochs=max_epochs,
                 callbacks=training_callbacks,
