@@ -31,7 +31,7 @@ class CausalModel(BaseModel):
         model_name = engine.replace("_engine", "")
         if model_name in configs:
             self.args.update(configs[model_name])
-        logger.debug(f"Finetune parameters: {self.args}")
+        logger.debug(f"Finetuning parameters: {self.args}")
 
     def _make_collate_fn(self, dataset: Union[TextDataset, InstructionDataset]):
         return BasePreprocessor.create(

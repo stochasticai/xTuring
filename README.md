@@ -51,6 +51,22 @@ You can find the data folder [here](examples/llama_lora_alpaca/alpaca_data/).
 
 <br>
 
+## Performance comparison
+
+Hardware: 4 A100 40GB GPU with 335GB CPU RAM
+Parameters:
+
+```javascript
+{
+  'maximum sequence length': 512,
+  'batch size': 1,
+}
+```
+
+|   Model         | Full Finetuning DeepSpeed with CPU Offloading | PEFT-LoRA DeepSpeed  | PEFT-LoRA DeepSpeed with CPU Offloading |
+| --------- | ---- | ---- | ---- |
+| LLaMA 7B | 33.5GB GPU / 190GB CPU  | 23.7GB GPU / 10.2GB CPU | 21.9GB GPU / 14.9GB CPU |
+
 ## 📈 Roadmap
 - [x] Support for LLaMA, GPT-J, GPT-2
 - [ ] Support for Stable Diffusion
