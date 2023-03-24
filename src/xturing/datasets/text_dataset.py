@@ -26,6 +26,7 @@ class TextDataset(BaseDataset):
             self.data = load_from_disk(path)
         self._validate()
         self._meta = TextDatasetMeta()
+        self._template = None
 
     def _validate(self):
         # check is hf dataset has train split and if it has column text, and if there are any other - it should be target
