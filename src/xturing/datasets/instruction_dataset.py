@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Union
+from typing import List, Optional, Union
 
 from datasets import Dataset as HFDataset
 from datasets import load_from_disk
@@ -8,48 +8,27 @@ from datasets import load_from_disk
 from xturing.datasets.base import BaseDataset
 
 
-@dataclass
-class InstructionDatasetMeta:
-    infix_instruction: bool = False
-
-
 class ListPromptTemplate:
     def __init__(
         self,
         template: str,
         input_variables: List[str],
-        list_templates: Dict[str, str] = None,
     ):
         self.template = template
         self.input_variables = input_variables
-
-        self.list_templates = (
-            list_templates  # key words in the list template are number and text
-        )
-        if self.list_templates is None:
-            self.list_templates = {}
-
-    def check_list_template(self, list_template: str):
-        return list_template in self.list_templates
-
-    @classmethod
-    def process_list_template(cls, inputs: List[str], list_template: str):
-        return "\n".join(
-            list_template.format(number=i, text=text) for i, text in enumerate(inputs)
-        )
 
     def build(self, **kwargs) -> str:
         for i in self.input_variables:
             if i not in kwargs:
                 raise ValueError(f"Missing input variable {i}")
 
-        for k, v in kwargs.items():
-            if isinstance(v, list):
-                if k not in self.list_templates:
-                    raise ValueError(f"Missing list template for variable {k}")
-                kwargs[k] = self.process_list_template(v, self.list_templates[k])
-
         return self.template.format(**kwargs)
+
+
+@dataclass
+class InstructionDatasetMeta:
+    infix_instruction: bool = False
+    list_prompt_template: Optional[ListPromptTemplate] = None
 
 
 class InstructionDataset(BaseDataset):
@@ -69,11 +48,17 @@ class InstructionDataset(BaseDataset):
             assert Path(path).exists(), "path does not exist"
             self.data = load_from_disk(path)
         self._validate()
-        self._meta = InstructionDatasetMeta(infix_instruction=infix_instruction)
-        self._template = (
-            ListPromptTemplate(promt_template, input_variables=["instruction", "text"])
-            if promt_template != None
-            else None
+
+        list_prompt_template = None
+
+        if promt_template is not None:
+            list_prompt_template = ListPromptTemplate(
+                promt_template, input_variables=["instruction", "text"]
+            )
+
+        self._meta = InstructionDatasetMeta(
+            infix_instruction=infix_instruction,
+            list_prompt_template=list_prompt_template,
         )
 
     def _validate(self):

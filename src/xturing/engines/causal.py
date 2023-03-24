@@ -14,6 +14,7 @@ from xturing.utils.loss_fns import CrossEntropyLoss
 class CausalEngine(BaseEngine):
     def __init__(
         self,
+        *,
         model_name: Optional[str] = None,
         weights_path: Optional[Union[str, Path]] = None,
         model: Optional[Any] = None,
@@ -79,13 +80,19 @@ class CausalEngine(BaseEngine):
 class CausalLoraEngine(CausalEngine):
     def __init__(
         self,
+        *,
         model_name: Optional[str] = None,
         weights_path: Optional[Union[str, Path]] = None,
         model: Optional[Any] = None,
         tokenizer: Optional[Any] = None,
         target_modules: Optional[Union[List[str], str]] = None,
     ):
-        super().__init__(model_name, weights_path, model, tokenizer)
+        super().__init__(
+            model_name=model_name,
+            weights_path=weights_path,
+            model=model,
+            tokenizer=tokenizer,
+        )
         peft_config = LoraConfig(
             task_type=TaskType.CAUSAL_LM,
             inference_mode=False,

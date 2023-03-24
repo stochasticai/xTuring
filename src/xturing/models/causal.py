@@ -25,7 +25,6 @@ class CausalModel(BaseModel):
             self.engine.tokenizer,
             512,
             dataset.meta,
-            dataset._template,
         )
 
     def _make_trainer(self, dataset: Union[TextDataset, InstructionDataset]):
