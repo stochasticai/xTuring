@@ -51,6 +51,31 @@ You can find the data folder [here](examples/llama_lora_alpaca/alpaca_data/).
 
 <br>
 
+## 📊 Performance
+
+Here is a comparison for the performance of different fine-tuning techniques on the LLaMA 7B model. We use the [Alpaca dataset](examples/llama/alpaca_data/) for fine-tuning. The dataset contains 52K instructions.
+
+Hardware:
+
+4xA100 40GB GPU, 335GB CPU RAM
+
+Fine-tuning parameters:
+
+```javascript
+{
+  'maximum sequence length': 512,
+  'batch size': 1,
+}
+```
+
+|      LLaMA 7B      | DeepSpeed + CPU Offloading | LoRA + DeepSpeed  | LoRA + DeepSpeed + CPU Offloading |
+| --------- | ---- | ---- | ---- |
+| GPU | 33.5 GB | 23.7 GB | 21.9 GB |
+| CPU | 190 GB  | 10.2 GB | 14.9 GB |
+| Time per epoch | 21 hours  | 20 mins | 20 mins |
+
+<br >
+
 ## 📈 Roadmap
 - [x] Support for LLaMA, GPT-J, GPT-2
 - [ ] Support for Stable Diffusion
