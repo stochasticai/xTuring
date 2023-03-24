@@ -124,6 +124,7 @@ class CausalLoraModel(CausalModel):
             3,
             8,
             4e-3,
+            "adamw",
             True,
             True,
         )

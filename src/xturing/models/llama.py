@@ -51,6 +51,7 @@ class LlamaLORA(CausalLoraModel):
             3,
             4,
             1e-4,
+            "adamw",
             True,
             True,
         )
