@@ -1,0 +1,49 @@
+defaults:
+  learning_rate: 1e-5
+  gradient_accumulation_steps: 1
+  batch_size: 1
+  weight_decay: 0.00
+  warmup_steps: 50
+  eval_steps: 5000
+  save_steps: 5000
+  max_length: 512
+  num_train_epochs: 1
+  logging_steps: 10
+  max_grad_norm: 2.0
+  save_total_limit: 4
+  optimizer_name: adamw
+  output_dir: saved_model
+
+llama:
+  learning_rate: 5e-5
+  weight_decay: 0.01
+  num_train_epochs: 3
+
+llama_lora:
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 4
+
+gptj:
+  learning_rate: 5e-5
+  weight_decay: 0.01
+  num_train_epochs: 3
+
+gptj_lora:
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 4
+
+gpt2:
+  learning_rate: 1e-3
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 8
+
+gpt2_lora:
+  learning_rate: 3e-3
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 16
