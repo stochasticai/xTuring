@@ -19,7 +19,8 @@ pip install xturing
 
 ## 🚀 Quickstart
 ```python
-from xturing import BaseModel, InstructionDataset
+from xturing.datasets import InstructionDataset
+from xturing.models import BaseModel
 
 # Load the dataset
 instruction_dataset = InstructionDataset("./alpaca_data")
@@ -38,17 +39,6 @@ print("Generated output by the model: {}".format(output))
 
 You can find the data folder [here](examples/llama_lora_alpaca/alpaca_data/).
 
-<br>
-
-## ✅ Requirements
-- Source version of transformers library
-    ```bash
-    pip uninstall transformers && pip install git+https://github.com/huggingface/transformers.git
-    ```
-- Source version of peft library
-    ```bash
-    pip uninstall peft && pip install git+https://github.com/huggingface/peft.git
-    ```
 <br>
 
 
