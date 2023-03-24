@@ -1,9 +1,5 @@
 from .base import BaseDataset
-from .instruction_dataset import (
-    InstructionDataset,
-    InstructionDatasetMeta,
-    ListPromptTemplate,
-)
+from .instruction_dataset import InstructionDataset, InstructionDatasetMeta
 from .text2image_dataset import Text2ImageDataset
 from .text_dataset import TextDataset, TextDatasetMeta
 
