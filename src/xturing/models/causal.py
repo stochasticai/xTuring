@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from typing import Iterable, List, Optional, Union
 
@@ -13,17 +14,30 @@ from xturing.models.base import BaseModel
 from xturing.preprocessors.base import BasePreprocessor
 from xturing.trainers.base import BaseTrainer
 from xturing.trainers.lightning_trainer import LightningTrainer
+from xturing.utils.logging import configure_logger
+from xturing.utils.utils import read_yamls
+
+logger = configure_logger(__name__)
 
 
 class CausalModel(BaseModel):
     def __init__(self, engine: str, weights_path: Optional[str] = None):
         self.engine = BaseEngine.create(engine, weights_path)
+        configs = read_yamls(
+            os.path.dirname(os.path.realpath(__file__)) + "/../config/config.yaml"
+        )
+        self.args = {}
+        self.args.update(configs["defaults"])
+        model_name = engine.replace("_engine", "")
+        if model_name in configs:
+            self.args.update(configs[model_name])
+        logger.debug(f"Finetune parameters: {self.args}")
 
     def _make_collate_fn(self, dataset: Union[TextDataset, InstructionDataset]):
         return BasePreprocessor.create(
             dataset.config_name,
             self.engine.tokenizer,
-            512,
+            int(self.args["max_length"]),
             dataset.meta,
         )
 
@@ -33,6 +47,10 @@ class CausalModel(BaseModel):
             self.engine,
             dataset,
             self._make_collate_fn(dataset),
+            int(self.args["num_train_epochs"]),
+            int(self.args["batch_size"]),
+            float(self.args["learning_rate"]),
+            self.args["optimizer_name"],
         )
 
     def finetune(self, dataset: Union[TextDataset, InstructionDataset]):
@@ -120,10 +138,10 @@ class CausalLoraModel(CausalModel):
             self.engine,
             dataset,
             self._make_collate_fn(dataset),
-            3,
-            8,
-            4e-3,
-            "adamw",
+            int(self.args["num_train_epochs"]),
+            int(self.args["batch_size"]),
+            float(self.args["learning_rate"]),
+            self.args["optimizer_name"],
             True,
             True,
         )
