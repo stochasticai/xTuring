@@ -5,7 +5,6 @@ import torch.nn.functional as F
 from transformers.tokenization_utils_base import PreTrainedTokenizerBase
 
 from xturing.datasets import InstructionDatasetMeta
-from xturing.datasets.instruction_dataset import ListPromptTemplate
 
 
 class InstructionDataCollator:
@@ -16,12 +15,10 @@ class InstructionDataCollator:
         tokenizer: PreTrainedTokenizerBase,
         max_length: Optional[int] = None,
         meta: InstructionDatasetMeta = InstructionDatasetMeta(),
-        prompt_template: Optional[ListPromptTemplate] = None,
     ):
         self.tokenizer = tokenizer
         self.max_length = max_length
         self.meta = meta
-        self.prompt_template = prompt_template
 
     def _process_instruction(self, instruction, tags=None):
         # check if the instruction is valid
@@ -54,8 +51,8 @@ class InstructionDataCollator:
             input_text = self.tokenizer(sample["text"])
             input_target = self.tokenizer(sample["target"])
 
-            if self.prompt_template is not None:
-                combine = self.prompt_template.build(
+            if self.meta.list_prompt_template is not None:
+                combine = self.list_prompt_template.build(
                     instruction=sample["instruction"], text=sample["text"]
                 )
                 input_combine = self.tokenizer(combine)
