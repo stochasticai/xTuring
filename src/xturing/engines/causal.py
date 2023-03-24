@@ -73,6 +73,7 @@ class CausalLoraEngine(CausalEngine):
         peft_config = LoraConfig(
             task_type=TaskType.CAUSAL_LM,
             inference_mode=False,
+            target_modules=["q_proj", "v_proj"],
             r=8,
             lora_alpha=32,
             lora_dropout=0.1,
