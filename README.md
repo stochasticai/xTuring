@@ -40,17 +40,6 @@ You can find the data folder [here](examples/llama_lora_alpaca/alpaca_data/).
 
 <br>
 
-## ✅ Requirements
-- Source version of transformers library
-    ```bash
-    pip uninstall transformers && pip install git+https://github.com/huggingface/transformers.git
-    ```
-- Source version of peft library
-    ```bash
-    pip uninstall peft && pip install git+https://github.com/huggingface/peft.git
-    ```
-<br>
-
 
 ## 📚 Tutorials
 - [Preparing your dataset](examples/llama/preparing_your_dataset.py)
