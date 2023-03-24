@@ -51,7 +51,16 @@ class InstructionDataCollator:
             input_text = self.tokenizer(sample["text"])
             input_target = self.tokenizer(sample["target"])
 
-            if not self.meta.infix_instruction:
+            if self.meta.list_prompt_template is not None:
+                combine = self.list_prompt_template.build(
+                    instruction=sample["instruction"], text=sample["text"]
+                )
+                input_combine = self.tokenizer(combine)
+                input_ids = input_combine["input_ids"] + input_target["input_ids"]
+                label_mask = [False] * len(input_combine["input_ids"]) + [True] * len(
+                    input_target["input_ids"]
+                )
+            elif not self.meta.infix_instruction:
                 input_instruction = self.tokenizer(sample["instruction"])
                 input_ids = (
                     input_instruction["input_ids"]
@@ -93,7 +102,7 @@ class InstructionDataCollator:
             input_ids.append(self.tokenizer.eos_token_id)
             attention_mask = [1] * len(input_ids)
 
-            label_mask = label_mask[: self.max_length]
+            label_mask = label_mask[: self.max_length - 1]
             label_mask = label_mask + [True]
 
             flatten_samples.append(

@@ -21,6 +21,20 @@ class Llama(CausalModel):
     def __init__(self, weights_path: Optional[str] = None):
         super().__init__(LLamaEngine.config_name, weights_path)
 
+    def _make_trainer(self, dataset: Union[TextDataset, InstructionDataset]):
+        return BaseTrainer.create(
+            LightningTrainer.config_name,
+            self.engine,
+            dataset,
+            self._make_collate_fn(dataset),
+            3,
+            1,
+            1e-4,
+            "cpu_adam",
+            False,
+            True,
+        )
+
 
 class LlamaLORA(CausalLoraModel):
     config_name: str = "llama_lora"
@@ -37,6 +51,7 @@ class LlamaLORA(CausalLoraModel):
             3,
             4,
             1e-4,
+            "adamw",
             True,
             True,
         )

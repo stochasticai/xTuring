@@ -21,7 +21,10 @@ class CausalModel(BaseModel):
 
     def _make_collate_fn(self, dataset: Union[TextDataset, InstructionDataset]):
         return BasePreprocessor.create(
-            dataset.config_name, self.engine.tokenizer, 512, dataset.meta
+            dataset.config_name,
+            self.engine.tokenizer,
+            512,
+            dataset.meta,
         )
 
     def _make_trainer(self, dataset: Union[TextDataset, InstructionDataset]):
@@ -120,6 +123,7 @@ class CausalLoraModel(CausalModel):
             3,
             8,
             4e-3,
+            "adamw",
             True,
             True,
         )

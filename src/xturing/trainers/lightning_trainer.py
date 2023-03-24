@@ -7,6 +7,7 @@ from typing import Optional
 
 import pytorch_lightning as pl
 import torch
+from deepspeed.ops.adam import DeepSpeedCPUAdam
 from pytorch_lightning import callbacks
 from pytorch_lightning.trainer.trainer import Trainer
 
@@ -24,6 +25,7 @@ class TuringLightningModule(pl.LightningModule):
         preprocessor: Optional[BasePreprocessor] = None,
         batch_size: int = 2,
         learning_rate: float = 5e-5,
+        optimizer_name: str = "adamw",
     ):
         super().__init__()
         self.model_engine = model_engine
@@ -35,12 +37,23 @@ class TuringLightningModule(pl.LightningModule):
         self.batch_size = batch_size
         self.learning_rate = learning_rate
 
+        self.optimizer_name = optimizer_name
+
         self.losses = []
 
     def configure_optimizers(self):
-        optimizer = torch.optim.Adam(
-            self.pytorch_model.parameters(), lr=self.learning_rate
-        )
+        if self.optimizer_name == "adamw":
+            optimizer = torch.optim.AdamW(
+                self.pytorch_model.parameters(), lr=self.learning_rate
+            )
+        elif self.optimizer_name == "adam":
+            optimizer = torch.optim.adam(
+                self.pytorch_model.parameters(), lr=self.learning_rate
+            )
+        elif self.optimizer_name == "cpu_adam":
+            optimizer = DeepSpeedCPUAdam(
+                self.pytorch_model.parameters(), lr=self.learning_rate
+            )
         lr_scheduler = torch.optim.lr_scheduler.LinearLR(optimizer=optimizer)
         return [optimizer], [lr_scheduler]
 
@@ -78,6 +91,7 @@ class LightningTrainer:
         max_epochs: int = 3,
         batch_size: int = 2,
         learning_rate: float = 1e-3,
+        optimizer_name: str = "adamw",
         use_lora: bool = False,
         use_deepspeed: bool = False,
         max_training_time_in_secs: Optional[int] = None,
@@ -88,6 +102,7 @@ class LightningTrainer:
             preprocessor=preprocessor,
             batch_size=batch_size,
             learning_rate=learning_rate,
+            optimizer_name=optimizer_name,
         )
 
         checkpoints_dir_path = Path("saved_model")
@@ -122,7 +137,7 @@ class LightningTrainer:
                 enable_checkpointing=False,
                 log_every_n_steps=50,
             )
-        elif not use_lora and use_deepspeed:
+        elif not use_lora and not use_deepspeed:
             self.trainer = Trainer(
                 num_nodes=1,
                 accelerator="gpu",
@@ -134,18 +149,16 @@ class LightningTrainer:
         else:
             training_callbacks = [
                 callbacks.ModelCheckpoint(
-                    dirpath=str(checkpoints_dir_path),
-                    save_top_k=3,
-                    monitor="loss",
-                    mode="min",  # Best model = min loss
-                    every_n_train_steps=200,
+                    dirpath=str(checkpoints_dir_path), save_on_train_epoch_end=True
                 ),
             ]
 
             self.trainer = Trainer(
                 num_nodes=1,
                 accelerator="gpu",
-                strategy="deepspeed_stage_2",
+                strategy="deepspeed_stage_2_offload"
+                if optimizer_name == "cpu_adam"
+                else "deepspeed_stage_2",
                 precision=16,
                 max_epochs=max_epochs,
                 callbacks=training_callbacks,
