@@ -13,7 +13,9 @@ from xturing.utils.loss_fns import CrossEntropyLoss
 
 class CausalEngine(BaseEngine):
     def __init__(
-        self, model_name: str, weights_path: Optional[Union[str, Path]] = None
+        self,
+        model_name: Optional[str] = None,
+        weights_path: Optional[Union[str, Path]] = None,
     ):
         self.model_name = model_name
         if weights_path is None:
