@@ -47,7 +47,8 @@ You can find the data folder [here](examples/llama_lora_alpaca/alpaca_data/).
 - [LLaMA efficient fine-tuning with LoRA](examples/llama/llama_lora.py)
 - [LLaMA fine-tuning](examples/llama/llama.py)
 - [GPT-J efficient fine-tuning with LoRA](examples/gptj/gptj_lora.py)
-- [GPT2 efficient fine-tuning with LoRA](examples/gpt2/gpt2_lora.py)
+- [GPT2 efficient fine-tuning with LoRA](examples/gpt2/gpt2_lora.py) &ensp; [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://drive.google.com/file/d/1Sh-ocNpKn9pS7jv6oBb_Q8DitFyj1avL/view?usp=sharing)
+
 
 <br>
 
