@@ -4,7 +4,8 @@ import torch
 import torch.nn.functional as F
 from transformers.tokenization_utils_base import PreTrainedTokenizerBase
 
-from xturing.datasets import InstructionDatasetMeta, ListPromptTemplate
+from xturing.datasets import InstructionDatasetMeta
+from xturing.datasets.instruction_dataset import ListPromptTemplate
 
 
 class InstructionDataCollator:
