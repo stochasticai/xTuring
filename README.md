@@ -19,7 +19,8 @@ pip install xturing
 
 ## 🚀 Quickstart
 ```python
-from xturing import BaseModel, InstructionDataset
+from xturing.datasets import InstructionDataset
+from xturing.models import BaseModel
 
 # Load the dataset
 instruction_dataset = InstructionDataset("./alpaca_data")
