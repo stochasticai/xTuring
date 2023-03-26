@@ -18,20 +18,28 @@ git clone https://github.com/<YOUR_USERNAME>/xturing.git
 git checkout -b <BRANCH_NAME>
 ```
 
-4. Make your changes and commit them
+4. Use pre-commit hooks to ensure your code is properly formatted
+
+```bash
+pip install pre-commit
+pre-commit install
+pre-commit install --hook-type commit-msg
+```
+
+5. Make your changes and commit them
 
 ```bash
 git add <FILES YOU ADDED/EDITED>
 git commit -m "Commit message"
 ```
 
-5. Push your changes to your forked repository
+6. Push your changes to your forked repository
 
 ```bash
 git push origin <BRANCH_NAME>
 ```
 
-6. Create a Pull Request on GitHub
+7. Create a Pull Request on GitHub
 
 ## Pull Request Guidelines
 
