@@ -2,7 +2,7 @@
   <img src=".github/stochastic_logo_light.svg#gh-light-mode-only" width="250" alt="Stochastic.ai"/>
   <img src=".github/stochastic_logo_dark.svg#gh-dark-mode-only" width="250" alt="Stochastic.ai"/>
 </p>
-<h3 align="center">Efficient, fast, and simple fine-tuning of LLM models</h3>
+<h3 align="center">Build and control your own LLMs</h3>
 
 ___
 
@@ -80,6 +80,7 @@ Fine-tuning parameters:
 ## 📈 Roadmap
 - [x] Support for LLaMA, GPT-J, GPT-2
 - [ ] Support for Stable Diffusion
+- [ ] 2x more memory-efficient fine-tuning and unsupervised fine-tuning
 - [ ] Dataset generation using self-instruction
 - [ ] Evaluation of LLM models
 
