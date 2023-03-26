@@ -1,6 +1,6 @@
 [project]
 name = "xturing"
-version = "0.0.2"
+version = "0.0.3"
 description = "Fine-tuning, evaluation and data generation for LLMs"
 
 authors = [
@@ -58,3 +58,7 @@ dependencies = [
 homepage = "https://xturing.stochastic.ai/"
 documentation = "https://github.com/stochasticai/xturing-docs"
 repository = "https://github.com/stochasticai/xturing"
+
+
+[tool.setuptools.packages.find]
+where = ["src"]
