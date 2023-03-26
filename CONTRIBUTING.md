@@ -1,7 +1,6 @@
 # Contributing to xturing
 
-We welcome and appreciate contributions to xturing! Whether it's a bug fix, a new feature, or simply a typo, every
-little bit helps.
+We welcome and appreciate contributions to xturing! Whether it's a bug fix, a new feature, or simply a typo, every little bit helps.
 
 ## Getting Started
 
@@ -39,7 +38,7 @@ git commit -m "Commit message"
 git push origin <BRANCH_NAME>
 ```
 
-7. Create a Pull Request on GitHub
+7. Create a pull request to the `dev` branch
 
 ## Pull Request Guidelines
 
