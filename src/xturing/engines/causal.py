@@ -3,10 +3,14 @@ from typing import Any, List, Optional, Union
 
 import evaluate
 import torch
-from peft import LoraConfig, TaskType, get_peft_model
+from peft import LoraConfig, PeftModel, TaskType, get_peft_model
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from xturing.config import DEFAULT_DTYPE
+from xturing.config.read_config import (
+    exists_xturing_config_file,
+    read_xturing_config_file,
+)
 from xturing.engines.base import BaseEngine
 from xturing.utils.loss_fns import CrossEntropyLoss
 
@@ -94,23 +98,28 @@ class CausalLoraEngine(CausalEngine):
             model=model,
             tokenizer=tokenizer,
         )
-        peft_config = LoraConfig(
-            task_type=TaskType.CAUSAL_LM,
-            inference_mode=False,
-            r=8,
-            lora_alpha=32,
-            lora_dropout=0.1,
-            target_modules=target_modules,
-        )
 
         # The model before applying LoRA
         self.base_model = self.model
-        self.model = get_peft_model(self.model, peft_config)
-        self.model.print_trainable_parameters()
+
+        if weights_path is not None:
+            self.model = PeftModel.from_pretrained(self.base_model, weights_path)
+        else:
+            peft_config = LoraConfig(
+                task_type=TaskType.CAUSAL_LM,
+                inference_mode=False,
+                r=8,
+                lora_alpha=32,
+                lora_dropout=0.1,
+                target_modules=target_modules,
+            )
+            self.model = get_peft_model(self.model, peft_config)
+            self.model.print_trainable_parameters()
 
         self.loss_fct = CrossEntropyLoss()
 
     def save(self, saving_path: Union[str, Path]):
         super().save(saving_path=saving_path)
+
         self.base_model.save_pretrained(saving_path)
         self.tokenizer.save_pretrained(saving_path)

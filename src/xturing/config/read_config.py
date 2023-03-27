@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 from typing import Union
 
@@ -28,3 +29,28 @@ def load_config(model_name: str, config_path: Union[Path, str], data_class: Base
     config_object = data_class.parse_obj(config)
 
     return config_object
+
+
+def exists_xturing_config_file(dir_path: Union[Path, str]):
+    dir_path = Path(dir_path)
+    assert dir_path.is_dir(), "The following path {} should be a directory".format(
+        str(dir_path)
+    )
+
+    xturing_config_file_path = dir_path / "xturing.json"
+
+    return xturing_config_file_path.is_file()
+
+
+def read_xturing_config_file(dir_path: Union[Path, str]):
+    dir_path = Path(dir_path)
+    assert dir_path.is_dir(), "The following path {} should be a directory".format(
+        str(dir_path)
+    )
+
+    xturing_config_file_path = dir_path / "xturing.json"
+
+    with open(str(xturing_config_file_path)) as file:
+        xturing_config = json.load(file)
+
+    return xturing_config
