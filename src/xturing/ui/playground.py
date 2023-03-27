@@ -1,4 +1,3 @@
-import random
 import time
 
 import gradio as gr
@@ -12,30 +11,37 @@ class Playground:
         model_path: str,
     ):
         self.model_path = model_path
+        # load the model
+        # self.model = BaseModel.create(weight_path=self.model_path)
 
     def launch(self) -> None:
         with gr.Blocks() as demo:
-            chatbot = gr.Chatbot()
-            msg = gr.Textbox()
-            clear = gr.Button("Clear")
+            with gr.Row():
+                text1 = gr.Textbox(label="t1")
 
-            def user(user_message, history):
-                return "", history + [[user_message, None]]
+            with gr.Row():
+                with gr.Column(scale=1, min_width=600):
+                    text1 = gr.Textbox(label="prompt 1")
+                with gr.Column(scale=2, min_width=600):
+                    chatbot = gr.Chatbot()
+                    msg = gr.Textbox()
+                    clear = gr.Button("Clear")
 
-            def model(history):
-                # load the model
-                # model = BaseModel.create(weight_path=self.model_path)
-                # model_output = model.generate(texts=["Why LLM models are becoming so important?"])
-                # model_output = random.choice(["Yes", "No"])
-                model_output = history[-1][0]
-                history[-1][1] = model_output
-                time.sleep(1)
-                return history
+                    def user(user_message, history):
+                        return "", history + [[user_message, None]]
 
-            msg.submit(user, [msg, chatbot], [msg, chatbot], queue=False).then(
-                model, chatbot, chatbot
-            )
+                    def model(history):
+                        # Pass user input to the model
+                        # model_output = model.generate(texts=[history[-1][0]])
 
-            clear.click(lambda: None, None, chatbot, queue=False)
+                        model_output = history[-1][0]
+                        history[-1][1] = model_output
+                        time.sleep(1)
+                        return history
 
+                    msg.submit(user, [msg, chatbot], [msg, chatbot], queue=False).then(
+                        model, chatbot, chatbot
+                    )
+
+                    clear.click(lambda: None, None, chatbot, queue=False)
         demo.launch()
