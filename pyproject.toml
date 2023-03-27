@@ -50,7 +50,8 @@ dependencies = [
     "peft",
     "sentencepiece",
     "deepspeed",
-    "sentencepiece"
+    "sentencepiece",
+    "pydantic"
 ]
 
 
