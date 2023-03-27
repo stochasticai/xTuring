@@ -12,6 +12,7 @@ from xturing.config.read_config import load_config
 from xturing.datasets.instruction_dataset import InstructionDataset
 from xturing.datasets.text_dataset import TextDataset
 from xturing.engines.base import BaseEngine
+from xturing.engines.causal import CausalLoraEngine
 from xturing.models.base import BaseModel
 from xturing.preprocessors.base import BasePreprocessor
 from xturing.trainers.base import BaseTrainer
@@ -111,7 +112,9 @@ class CausalModel(BaseModel):
         texts: Optional[Union[List[str], str]] = None,
         dataset: Optional[Union[TextDataset, InstructionDataset]] = None,
     ):
-        self.engine.model.eval()
+        if not isinstance(self.engine, CausalLoraEngine):
+            # It fails to do model.eval() for LoRA models
+            self.engine.model.eval()
         self.engine.model = self.engine.model.to(DEFAULT_DEVICE)
 
         outputs = []
