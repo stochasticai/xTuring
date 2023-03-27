@@ -38,7 +38,7 @@ class CausalModel(BaseModel):
             dataset.config_name,
             self.engine.tokenizer,
             int(self.args["max_length"]),
-            dataset.meta,
+            dataset._meta,
         )
 
     def _make_trainer(self, dataset: Union[TextDataset, InstructionDataset]):

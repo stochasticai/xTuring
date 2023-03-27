@@ -35,6 +35,7 @@ share/python-wheels/
 MANIFEST
 
 lightning_logs/
+log
 
 internal_tests
 

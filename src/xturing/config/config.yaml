@@ -23,7 +23,13 @@ llama_lora:
   learning_rate: 1e-4
   weight_decay: 0.01
   num_train_epochs: 3
-  batch_size: 4
+  batch_size: 1
+
+llama_lora_int8:
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 1
 
 gptj:
   learning_rate: 5e-5
@@ -34,7 +40,13 @@ gptj_lora:
   learning_rate: 1e-4
   weight_decay: 0.01
   num_train_epochs: 3
-  batch_size: 4
+  batch_size: 1
+
+gptj_lora_int8:
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 1
 
 gpt2:
   learning_rate: 1e-3
@@ -43,6 +55,12 @@ gpt2:
   batch_size: 8
 
 gpt2_lora:
+  learning_rate: 3e-3
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 16
+
+gpt2_lora_int8:
   learning_rate: 3e-3
   weight_decay: 0.01
   num_train_epochs: 3
