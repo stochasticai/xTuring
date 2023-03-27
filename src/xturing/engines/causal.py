@@ -21,12 +21,8 @@ class CausalEngine(BaseEngine):
         tokenizer: Optional[Any] = None,
     ):
         self.model_name = model_name
-        if model_name is not None:
-            self.model = AutoModelForCausalLM.from_pretrained(
-                model_name, torch_dtype=DEFAULT_DTYPE
-            )
-            self.tokenizer = AutoTokenizer.from_pretrained(model_name)
-        elif weights_path is not None:
+
+        if weights_path is not None:
             assert Path(
                 weights_path
             ).is_dir(), "The weights path should be a existing directory"
@@ -37,6 +33,11 @@ class CausalEngine(BaseEngine):
         elif model is not None and tokenizer is not None:
             self.model = model
             self.tokenizer = tokenizer
+        elif model_name is not None:
+            self.model = AutoModelForCausalLM.from_pretrained(
+                model_name, torch_dtype=DEFAULT_DTYPE
+            )
+            self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         else:
             raise ValueError(
                 "Please provide a model_name, the weights path or model and tokenizer."
@@ -102,7 +103,14 @@ class CausalLoraEngine(CausalEngine):
             target_modules=target_modules,
         )
 
+        # The model before applying LoRA
+        self.base_model = self.model
         self.model = get_peft_model(self.model, peft_config)
         self.model.print_trainable_parameters()
 
         self.loss_fct = CrossEntropyLoss()
+
+    def save(self, saving_path: Union[str, Path]):
+        super().save(saving_path=saving_path)
+        self.base_model.save_pretrained(saving_path)
+        self.tokenizer.save_pretrained(saving_path)

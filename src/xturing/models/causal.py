@@ -1,4 +1,4 @@
-import os
+import json
 from pathlib import Path
 from typing import Iterable, List, Optional, Union
 
@@ -7,6 +7,8 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 
 from xturing.config import DEFAULT_DEVICE
+from xturing.config.config_data_classes import FinetuningConfig, GenerationConfig
+from xturing.config.read_config import load_config
 from xturing.datasets.instruction_dataset import InstructionDataset
 from xturing.datasets.text_dataset import TextDataset
 from xturing.engines.base import BaseEngine
@@ -15,7 +17,6 @@ from xturing.preprocessors.base import BasePreprocessor
 from xturing.trainers.base import BaseTrainer
 from xturing.trainers.lightning_trainer import LightningTrainer
 from xturing.utils.logging import configure_logger
-from xturing.utils.utils import read_yamls
 
 logger = configure_logger(__name__)
 
@@ -23,21 +24,41 @@ logger = configure_logger(__name__)
 class CausalModel(BaseModel):
     def __init__(self, engine: str, weights_path: Optional[str] = None):
         self.engine = BaseEngine.create(engine, weights_path)
-        configs = read_yamls(
-            os.path.dirname(os.path.realpath(__file__)) + "/../config/config.yaml"
+
+        self.model_name = engine.replace("_engine", "")
+
+        # Finetuning config
+        self.finetuning_args = load_config(
+            model_name=self.model_name,
+            config_path=Path(__file__).parent.parent
+            / "config"
+            / "finetuning_config.yaml",
+            data_class=FinetuningConfig,
         )
-        self.args = {}
-        self.args.update(configs["defaults"])
-        model_name = engine.replace("_engine", "")
-        if model_name in configs:
-            self.args.update(configs[model_name])
-        logger.debug(f"Finetuning parameters: {self.args}")
+
+        # Generation config
+        self.generation_args = load_config(
+            model_name=engine.replace("_engine", ""),
+            config_path=Path(__file__).parent.parent
+            / "config"
+            / "generation_config.yaml",
+            data_class=GenerationConfig,
+        )
+
+        logger.debug(f"Finetuning parameters: {self.finetuning_args}")
+        logger.debug(f"Generation parameters: {self.generation_args}")
+
+    def finetuning_config(self):
+        return self.finetuning_args
+
+    def generation_config(self):
+        return self.generation_args
 
     def _make_collate_fn(self, dataset: Union[TextDataset, InstructionDataset]):
         return BasePreprocessor.create(
             dataset.config_name,
             self.engine.tokenizer,
-            int(self.args["max_length"]),
+            int(self.finetuning_args.max_length),
             dataset.meta,
         )
 
@@ -47,10 +68,10 @@ class CausalModel(BaseModel):
             self.engine,
             dataset,
             self._make_collate_fn(dataset),
-            int(self.args["num_train_epochs"]),
-            int(self.args["batch_size"]),
-            float(self.args["learning_rate"]),
-            self.args["optimizer_name"],
+            int(self.finetuning_args.num_train_epochs),
+            int(self.finetuning_args.batch_size),
+            float(self.finetuning_args.learning_rate),
+            self.finetuning_args.optimizer_name,
         )
 
     def finetune(self, dataset: Union[TextDataset, InstructionDataset]):
@@ -76,7 +97,7 @@ class CausalModel(BaseModel):
             with torch.no_grad():
                 with torch.autocast("cuda"):
                     output = self.engine.model.generate(
-                        input_ids=input_ids, do_sample=False, max_new_tokens=300
+                        input_ids=input_ids, **self.generation_args.dict()
                     )
 
             output = self.engine.tokenizer.decode(output[0], skip_special_tokens=False)
@@ -124,8 +145,24 @@ class CausalModel(BaseModel):
 
         return outputs
 
+    def _save_config(self, path: Union[str, Path]):
+        xturing_config_path = Path(path) / "xturing.json"
+        xturing_config = {
+            "model_name": self.model_name,
+            "finetuning_config": self.finetuning_args.dict(),
+            "generation_config": self.generation_args.dict(),
+        }
+
+        with open(str(xturing_config_path), "w", encoding="utf-8") as f:
+            json.dump(xturing_config, f, ensure_ascii=False, indent=4)
+
     def save(self, path: Union[str, Path]):
+        path = Path(path)
+        if not path.exists():
+            path.mkdir(parents=True, exist_ok=True)
+
         self.engine.save(path)
+        self._save_config(path=path)
 
 
 class CausalLoraModel(CausalModel):
@@ -138,10 +175,10 @@ class CausalLoraModel(CausalModel):
             self.engine,
             dataset,
             self._make_collate_fn(dataset),
-            int(self.args["num_train_epochs"]),
-            int(self.args["batch_size"]),
-            float(self.args["learning_rate"]),
-            self.args["optimizer_name"],
+            int(self.finetuning_args.num_train_epochs),
+            int(self.finetuning_args.batch_size),
+            float(self.finetuning_args.learning_rate),
+            self.finetuning_args.optimizer_name,
             True,
             True,
         )
