@@ -29,7 +29,8 @@ llama_lora_int8:
   learning_rate: 1e-4
   weight_decay: 0.01
   num_train_epochs: 3
-  batch_size: 1
+  batch_size: 8
+  max_length: 256
 
 gptj:
   learning_rate: 5e-5
@@ -46,7 +47,7 @@ gptj_lora_int8:
   learning_rate: 1e-4
   weight_decay: 0.01
   num_train_epochs: 3
-  batch_size: 1
+  batch_size: 8
 
 gpt2:
   learning_rate: 1e-3
