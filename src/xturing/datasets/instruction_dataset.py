@@ -7,9 +7,8 @@ from datasets import Dataset as HFDataset
 from datasets import load_from_disk
 
 from xturing.datasets.base import BaseDataset
+from xturing.model_apis.openai import DAVINCI
 from xturing.self_instruct import (
-    BaseOpenaiModel,
-    Davinci,
     bootstrap_instructions,
     generate_instances,
     identify_if_classification,
@@ -126,15 +125,12 @@ class InstructionDataset(BaseDataset):
         api_key: str,
         path: str,
         organization: Optional[str] = None,
-        engine: Union[BaseOpenaiModel, str] = Davinci(),
+        engine: str = DAVINCI,
         num_instructions: int = 10,
         num_instructions_for_finetuning: int = 5,
         num_prompt_instructions: int = 1,
         request_batch_size: int = 1,
     ):
-        if isinstance(engine, BaseOpenaiModel):
-            engine = engine.name
-
         cache_directory = create_temp_directory(
             f"./self_instruct_{engine}_cache_{num_instructions}_{num_instructions_for_finetuning}"
         )
