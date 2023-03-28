@@ -4,18 +4,18 @@ from pathlib import Path
 from typing import List, Optional, Union
 
 from datasets import Dataset as HFDataset
-from datasets import load_dataset, load_from_disk, logging
+from datasets import load_from_disk
 
 from xturing.datasets.base import BaseDataset
 from xturing.self_instruct import (
+    BaseOpenaiModel,
+    Davinci,
     bootstrap_instructions,
     generate_instances,
     identify_if_classification,
     prepare_for_finetuning,
 )
 from xturing.utils.utils import create_temp_directory, no_std_out
-
-logging.set_verbosity_warning()
 
 
 class ListPromptTemplate:
@@ -126,12 +126,15 @@ class InstructionDataset(BaseDataset):
         api_key: str,
         path: str,
         organization: Optional[str] = None,
-        engine="davinci",
-        num_instructions=10,
-        num_instructions_for_finetuning=5,
-        num_prompt_instructions=1,
-        request_batch_size=1,
+        engine: Union[BaseOpenaiModel, str] = Davinci(),
+        num_instructions: int = 10,
+        num_instructions_for_finetuning: int = 5,
+        num_prompt_instructions: int = 1,
+        request_batch_size: int = 1,
     ):
+        if isinstance(engine, BaseOpenaiModel):
+            engine = engine.name
+
         cache_directory = create_temp_directory(
             f"./self_instruct_{engine}_cache_{num_instructions}_{num_instructions_for_finetuning}"
         )
