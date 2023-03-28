@@ -19,7 +19,6 @@ classifiers = [
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.6",
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
@@ -31,7 +30,7 @@ classifiers = [
 
 license = { file = "LICENSE" }
 readme = "README.md"
-requires-python = ">=3.6"
+requires-python = ">=3.7"
 keywords = [
     "nlp",
     "llm",
@@ -50,7 +49,9 @@ dependencies = [
     "peft",
     "sentencepiece",
     "deepspeed",
-    "sentencepiece"
+    "openai >= 0.27.0",
+    "pydantic >= 1.10.0",
+    "rouge-score >= 0.1.2",
 ]
 
 
