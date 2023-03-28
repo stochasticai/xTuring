@@ -1,4 +1,5 @@
 from .base import BaseEngine
+from .distilgpt2_engine import DistilGPT2Engine, DistilGPT2LoraEngine
 from .gpt2_engine import GPT2Engine, GPT2Int8Engine, GPT2LoraEngine, GPT2LoraInt8Engine
 from .gptj_engine import GPTJEngine, GPTJInt8Engine, GPTJLoraEngine, GPTJLoraInt8Engine
 from .llama_engine import (
@@ -8,6 +9,8 @@ from .llama_engine import (
     LlamaLoraInt8Engine,
 )
 
+BaseEngine.add_to_registry(DistilGPT2Engine.config_name, DistilGPT2Engine)
+BaseEngine.add_to_registry(DistilGPT2LoraEngine.config_name, DistilGPT2LoraEngine)
 BaseEngine.add_to_registry(GPTJEngine.config_name, GPTJEngine)
 BaseEngine.add_to_registry(GPTJLoraEngine.config_name, GPTJLoraEngine)
 BaseEngine.add_to_registry(GPTJInt8Engine.config_name, GPTJInt8Engine)

@@ -56,6 +56,9 @@ class CausalEngine(BaseEngine):
                 self.model = AutoModelForCausalLM.from_pretrained(
                     model_name, torch_dtype=DEFAULT_DTYPE
                 )
+            self.model = AutoModelForCausalLM.from_pretrained(
+                model_name, torch_dtype=DEFAULT_DTYPE
+            )
             self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         else:
             raise ValueError(
@@ -116,13 +119,19 @@ class CausalLoraEngine(CausalEngine):
         load_8bit: Optional[bool] = False,
         target_modules: Optional[Union[List[str], str]] = None,
     ):
+        # The base model should always be loaded from the original model
+        # That's why weights_path is None. If not model.eval() will fail later
         super().__init__(
             model_name=model_name,
-            weights_path=weights_path,
+            weights_path=None,
             model=model,
             tokenizer=tokenizer,
             load_8bit=load_8bit,
         )
+
+        # The model before applying LoRA
+        self.base_model = self.model
+
         peft_config = LoraConfig(
             r=8,
             lora_alpha=32,
@@ -131,8 +140,21 @@ class CausalLoraEngine(CausalEngine):
             bias="none",
             task_type="CAUSAL_LM",
         )
+        self.model = get_peft_model(self.base_model, peft_config)
 
-        self.model = get_peft_model(self.model, peft_config)
-        self.model.print_trainable_parameters()
+        if weights_path is not None:
+            model_weights_path = str(Path(weights_path).resolve() / "pytorch_model.bin")
+            self.model.load_state_dict(torch.load(model_weights_path))
+        else:
+            self.model.print_trainable_parameters()
 
         self.loss_fct = CrossEntropyLoss()
+
+    def save(self, saving_path: Union[str, Path]):
+        # Save HF config file
+        self.base_model.config.save_pretrained(str(saving_path))
+        # Save model weights
+        model_weights = str(Path(saving_path).resolve() / "pytorch_model.bin")
+        torch.save(self.model.state_dict(), model_weights)
+        # Save tokenizer
+        self.tokenizer.save_pretrained(saving_path)
