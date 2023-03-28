@@ -1,0 +1,2 @@
+DAVINCI = "davinci"
+ADA = "ada"
