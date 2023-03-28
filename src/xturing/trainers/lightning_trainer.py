@@ -26,7 +26,6 @@ class TuringLightningModule(pl.LightningModule):
         batch_size: int = 2,
         learning_rate: float = 5e-5,
         optimizer_name: str = "adamw",
-        saved_path: Optional[Union[str, Path]] = "saved_model",
     ):
         super().__init__()
         self.model_engine = model_engine
@@ -41,7 +40,6 @@ class TuringLightningModule(pl.LightningModule):
         self.optimizer_name = optimizer_name
 
         self.losses = []
-        self.saved_path = saved_path
 
     def configure_optimizers(self):
         if self.optimizer_name == "adamw":
