@@ -7,10 +7,6 @@ from peft import LoraConfig, PeftModel, TaskType, get_peft_model
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from xturing.config import DEFAULT_DTYPE
-from xturing.config.read_config import (
-    exists_xturing_config_file,
-    read_xturing_config_file,
-)
 from xturing.engines.base import BaseEngine
 from xturing.utils.loss_fns import CrossEntropyLoss
 
@@ -92,9 +88,11 @@ class CausalLoraEngine(CausalEngine):
         tokenizer: Optional[Any] = None,
         target_modules: Optional[Union[List[str], str]] = None,
     ):
+        # The base model should always be loaded from the original model
+        # That's why weights_path is None. If not model.eval() will fail later
         super().__init__(
             model_name=model_name,
-            weights_path=weights_path,
+            weights_path=None,
             model=model,
             tokenizer=tokenizer,
         )
@@ -102,24 +100,29 @@ class CausalLoraEngine(CausalEngine):
         # The model before applying LoRA
         self.base_model = self.model
 
+        peft_config = LoraConfig(
+            task_type=TaskType.CAUSAL_LM,
+            inference_mode=False,
+            r=8,
+            lora_alpha=32,
+            lora_dropout=0.1,
+            target_modules=target_modules,
+        )
+        self.model = get_peft_model(self.base_model, peft_config)
+
         if weights_path is not None:
-            self.model = PeftModel.from_pretrained(self.base_model, weights_path)
+            model_weights_path = str(Path(weights_path).resolve() / "pytorch_model.bin")
+            self.model.load_state_dict(torch.load(model_weights_path))
         else:
-            peft_config = LoraConfig(
-                task_type=TaskType.CAUSAL_LM,
-                inference_mode=False,
-                r=8,
-                lora_alpha=32,
-                lora_dropout=0.1,
-                target_modules=target_modules,
-            )
-            self.model = get_peft_model(self.model, peft_config)
             self.model.print_trainable_parameters()
 
         self.loss_fct = CrossEntropyLoss()
 
     def save(self, saving_path: Union[str, Path]):
-        super().save(saving_path=saving_path)
-
-        self.base_model.save_pretrained(saving_path)
+        # Save HF config file
+        self.base_model.config.save_pretrained(str(saving_path))
+        # Save model weights
+        model_weights = str(Path(saving_path).resolve() / "pytorch_model.bin")
+        torch.save(self.model.state_dict(), model_weights)
+        # Save tokenizer
         self.tokenizer.save_pretrained(saving_path)
