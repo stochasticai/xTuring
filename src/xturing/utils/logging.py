@@ -1,4 +1,6 @@
 import logging
+import tempfile
+from pathlib import Path
 
 
 class CustomFormatter(logging.Formatter):
@@ -58,7 +60,8 @@ def configure_logger(name, fmt=None):
     stdout_handler.setFormatter(CustomFormatter(fmt))
 
     # Create file handler for logging to a file (logs all five levels)
-    file_handler = logging.FileHandler(str("log"))
+    xturing_logs_path = Path(tempfile.gettempdir()) / "xturing.log"
+    file_handler = logging.FileHandler(str(xturing_logs_path))
     file_handler.setLevel(logging.DEBUG)
     file_handler.setFormatter(logging.Formatter(fmt))
 

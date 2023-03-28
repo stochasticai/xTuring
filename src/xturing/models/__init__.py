@@ -1,9 +1,12 @@
 from .base import BaseModel
+from .distilgpt2 import DistilGPT2, DistilGPT2LORA
 from .gpt2 import GPT2, GPT2LORA
 from .gptj import GPTJ, GPTJLORA
 from .llama import Llama, LlamaLORA
 from .stable_diffusion import StableDiffusion
 
+BaseModel.add_to_registry(DistilGPT2.config_name, DistilGPT2)
+BaseModel.add_to_registry(DistilGPT2LORA.config_name, DistilGPT2LORA)
 BaseModel.add_to_registry(GPTJ.config_name, GPTJ)
 BaseModel.add_to_registry(Llama.config_name, Llama)
 BaseModel.add_to_registry(StableDiffusion.config_name, StableDiffusion)
