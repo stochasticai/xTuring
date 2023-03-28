@@ -1,20 +1,7 @@
 from xturing.datasets.instruction_dataset import InstructionDataset
-from xturing.models.base import BaseModel
+from xturing.models import BaseModel
 
-prompt_template = f"""Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.
-
-### Instruction:
-{{instruction}}
-
-### Input:
-{{text}}
-
-### Response:
-"""
-
-instruction_dataset = InstructionDataset(
-    "./alpaca_data", promt_template=prompt_template
-)
+instruction_dataset = InstructionDataset("./alpaca_data")
 # Initializes the model
 model = BaseModel.create("llama")
 # Finetuned the model

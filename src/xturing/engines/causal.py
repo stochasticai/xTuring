@@ -3,7 +3,7 @@ from typing import Any, List, Optional, Union
 
 import evaluate
 import torch
-from peft import LoraConfig, PeftModel, TaskType, get_peft_model
+from peft import LoraConfig, TaskType, get_peft_model, prepare_model_for_int8_training
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from xturing.config import DEFAULT_DTYPE
@@ -19,6 +19,7 @@ class CausalEngine(BaseEngine):
         weights_path: Optional[Union[str, Path]] = None,
         model: Optional[Any] = None,
         tokenizer: Optional[Any] = None,
+        load_8bit: Optional[bool] = False,
     ):
         self.model_name = model_name
 
@@ -26,14 +27,35 @@ class CausalEngine(BaseEngine):
             assert Path(
                 weights_path
             ).is_dir(), "The weights path should be a existing directory"
-            self.model = AutoModelForCausalLM.from_pretrained(
-                weights_path, torch_dtype=DEFAULT_DTYPE
-            )
+            if load_8bit:
+                self.model = AutoModelForCausalLM.from_pretrained(
+                    weights_path,
+                    torch_dtype=DEFAULT_DTYPE,
+                    load_in_8bit=True,
+                    device_map="auto",
+                )
+                self.model = prepare_model_for_int8_training(self.model)
+            else:
+                self.model = AutoModelForCausalLM.from_pretrained(
+                    weights_path, torch_dtype=DEFAULT_DTYPE
+                )
             self.tokenizer = AutoTokenizer.from_pretrained(weights_path)
         elif model is not None and tokenizer is not None:
             self.model = model
             self.tokenizer = tokenizer
         elif model_name is not None:
+            if load_8bit:
+                self.model = AutoModelForCausalLM.from_pretrained(
+                    model_name,
+                    torch_dtype=DEFAULT_DTYPE,
+                    load_in_8bit=True,
+                    device_map="auto",
+                )
+                self.model = prepare_model_for_int8_training(self.model)
+            else:
+                self.model = AutoModelForCausalLM.from_pretrained(
+                    model_name, torch_dtype=DEFAULT_DTYPE
+                )
             self.model = AutoModelForCausalLM.from_pretrained(
                 model_name, torch_dtype=DEFAULT_DTYPE
             )
@@ -44,12 +66,20 @@ class CausalEngine(BaseEngine):
             )
 
         self.loss_fct = CrossEntropyLoss()
+        self.load_8bit = load_8bit
 
     def training_step(self, batch):
-        outputs = self.model(
-            input_ids=batch["input_ids"],
-            attention_mask=batch.get("attention_mask", None),
-        )
+        if self.load_8bit:
+            with torch.autocast("cuda", dtype=torch.float16):
+                outputs = self.model(
+                    input_ids=batch["input_ids"],
+                    attention_mask=batch.get("attention_mask", None),
+                )
+        else:
+            outputs = self.model(
+                input_ids=batch["input_ids"],
+                attention_mask=batch.get("attention_mask", None),
+            )
 
         if "label_mask" in batch:
             loss = self.loss_fct(
@@ -86,6 +116,7 @@ class CausalLoraEngine(CausalEngine):
         weights_path: Optional[Union[str, Path]] = None,
         model: Optional[Any] = None,
         tokenizer: Optional[Any] = None,
+        load_8bit: Optional[bool] = False,
         target_modules: Optional[Union[List[str], str]] = None,
     ):
         # The base model should always be loaded from the original model
@@ -95,18 +126,19 @@ class CausalLoraEngine(CausalEngine):
             weights_path=None,
             model=model,
             tokenizer=tokenizer,
+            load_8bit=load_8bit,
         )
 
         # The model before applying LoRA
         self.base_model = self.model
 
         peft_config = LoraConfig(
-            task_type=TaskType.CAUSAL_LM,
-            inference_mode=False,
             r=8,
             lora_alpha=32,
-            lora_dropout=0.1,
             target_modules=target_modules,
+            lora_dropout=0.05,
+            bias="none",
+            task_type="CAUSAL_LM",
         )
         self.model = get_peft_model(self.base_model, peft_config)
 
