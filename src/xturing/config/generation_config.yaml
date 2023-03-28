@@ -4,8 +4,6 @@
 
 # Contrastive search
 defaults:
-  penalty_alpha: 0.6
-  top_k: 4
   max_new_tokens: 256
 
 # Contrastive search
