@@ -5,11 +5,13 @@ import re
 import string
 from functools import partial
 from multiprocessing import Pool
+from pathlib import Path
 
 import numpy as np
-import tqdm
-from gpt3_api import make_requests as make_gpt3_requests
 from rouge_score import rouge_scorer
+from tqdm import tqdm
+
+from xturing.self_instruct.api import make_requests as make_gpt3_requests
 
 random.seed(42)
 
@@ -43,7 +45,6 @@ def sample_machine_instructions(machine_instructions, n):
 
     Args:
         machine_instructions: a list of strings representing the machine instructions.
-        similarities: a list of similarity scores for the machine instructions.
         n: an integer representing the number of instructions to sample.
 
     Returns:
@@ -121,8 +122,8 @@ def post_process_gpt3_response(response):
     return instructions
 
 
-def load_data_from_jsonl_file(file_path):
-    data = [json.loads(l) for l in open(file_path, "r")]
+def load_data_from_jsonl_file(file_path: Path):
+    data = [json.loads(l) for l in file_path.open("r")]
     return data
 
 
@@ -134,9 +135,9 @@ def extract_seed_instructions(seed_tasks, use_clf_seed_tasks_only):
     return seed_instructions
 
 
-def generate_instructions(
-    target_dir: str,
-    seed_tasks_path: str,
+def bootstrap_instructions(
+    seed_tasks_path: Path,
+    output_file: Path,
     num_instructions_to_generate: int,
     use_clf_seed_tasks_only: bool,
     engine: str,
@@ -149,8 +150,8 @@ def generate_instructions(
     Generates machine-generated instructions using OpenAI's GPT-3 and saves them to a file.
 
     Args:
-        target_dir: The directory where the generated instructions should be saved.
         seed_tasks_path: The path to a JSONL file containing the seed tasks.
+        output_file: The file where the generated instructions should be saved.
         num_instructions_to_generate: The number of machine-generated instructions to generate.
         use_clf_seed_tasks_only: Whether to use only the seed tasks that were classified as valid.
         engine: The name of the OpenAI GPT-3 engine to use.
@@ -166,17 +167,11 @@ def generate_instructions(
     # Extract the seed instructions from the seed tasks
     seed_instructions = extract_seed_instructions(seed_tasks, use_clf_seed_tasks_only)
 
-    # Create the target directory if it doesn't exist
-    os.makedirs(target_dir, exist_ok=True)
-
     # Load the existing machine-generated instructions from a file, if it exists
     request_idx = 0
     machine_instructions = []
-    machine_instructions_file = os.path.join(
-        target_dir, "machine_generated_instructions.jsonl"
-    )
-    if os.path.exists(machine_instructions_file):
-        with open(machine_instructions_file, "r") as f:
+    if output_file.exists():
+        with output_file.open("r") as f:
             for line in f:
                 instruction_info = json.loads(line)
                 machine_instructions.append(instruction_info["instruction"])
@@ -196,9 +191,7 @@ def generate_instructions(
         progress_bar.update(len(machine_instructions))
 
     # Open output file for writing generated instructions
-    with open(
-        os.path.join(target_dir, "machine_generated_instructions.jsonl"), "a"
-    ) as fout:
+    with output_file.open("a") as fout:
         # Generate new instructions until desired number of instructions is reached
         while len(machine_instructions) < num_instructions_to_generate:
             # Initialize batch inputs
@@ -207,7 +200,7 @@ def generate_instructions(
             for _ in range(request_batch_size):
                 # Sample machine instructions from the pool
                 prompt_instructions = sample_machine_instructions(
-                    machine_instructions, similarities=None, n=2
+                    machine_instructions, n=2
                 )
 
                 # Sample human instructions from the pool
