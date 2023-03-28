@@ -3,7 +3,7 @@ import os
 import tempfile
 import uuid
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 import pytorch_lightning as pl
 import torch

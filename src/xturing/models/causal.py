@@ -13,7 +13,7 @@ from xturing.datasets.instruction_dataset import InstructionDataset
 from xturing.datasets.text_dataset import TextDataset
 from xturing.engines.base import BaseEngine
 from xturing.engines.causal import CausalLoraEngine
-from xturing.models.base import BaseModel
+from xturing.models import BaseModel
 from xturing.preprocessors.base import BasePreprocessor
 from xturing.trainers.base import BaseTrainer
 from xturing.trainers.lightning_trainer import LightningTrainer
