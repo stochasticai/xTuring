@@ -60,13 +60,15 @@ class GPTJLoraInt8Engine(CausalLoraEngine):
 
         device_map = {"": int(os.environ.get("LOCAL_RANK") or 0)}
         model = AutoModelForCausalLM.from_pretrained(
-            "philschmid/gpt-j-6B-fp16-sharded",
+            "/home/toandv/Downloads/models/gpt_j/",
             torch_dtype=torch.float16,
             load_in_8bit=True,
             device_map=device_map,
         )
 
-        tokenizer = AutoTokenizer.from_pretrained("philschmid/gpt-j-6B-fp16-sharded")
+        tokenizer = AutoTokenizer.from_pretrained(
+            "/home/toandv/Downloads/models/gpt_j/"
+        )
         tokenizer.pad_token = tokenizer.eos_token
         for param in model.parameters():
             param.data = param.data.contiguous()

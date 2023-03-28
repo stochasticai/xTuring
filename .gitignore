@@ -36,6 +36,7 @@ MANIFEST
 
 lightning_logs/
 log
+saved_model/
 
 internal_tests
 
