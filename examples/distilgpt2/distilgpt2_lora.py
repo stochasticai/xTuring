@@ -10,6 +10,6 @@ model.finetune(dataset=instruction_dataset)
 output = model.generate(texts=["Why LLM models are becoming so important?"])
 print("Generated output by the model: {}".format(output))
 # Save the model
-model.save("./distilgpt2")
+model.save("./distilgpt2_weights")
 
-# If you want to load the model just do BaseModel.load("./distilgpt2")
+# If you want to load the model just do BaseModel.load("./distilgpt2_weights")
