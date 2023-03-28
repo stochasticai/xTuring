@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel, validator
 
 
@@ -27,10 +29,10 @@ class FinetuningConfig(BaseModel):
 
 
 class GenerationConfig(BaseModel):
-    penalty_alpha: float
-    top_k: int
-    max_new_tokens: int
-    do_sample: bool
-    top_k: int
-    top_p: float
-    max_new_tokens: int
+    penalty_alpha: Optional[float] = None
+    top_k: Optional[int] = None
+    max_new_tokens: Optional[int] = None
+    do_sample: Optional[bool] = None
+    top_k: Optional[int] = None
+    top_p: Optional[float] = None
+    max_new_tokens: Optional[int] = None
