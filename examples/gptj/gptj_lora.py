@@ -10,6 +10,6 @@ model.finetune(dataset=instruction_dataset)
 output = model.generate(texts=["Why LLM models are becoming so important?"])
 print("Generated output by the model: {}".format(output))
 # Save the model
-model.save("./gptj")
+model.save("./gptj_weights")
 
-# If you want to load the model just do BaseModel.load("./gptj")
+# If you want to load the model just do BaseModel.load("./gptj_weights")

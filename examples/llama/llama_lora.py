@@ -23,6 +23,6 @@ model.finetune(dataset=instruction_dataset)
 output = model.generate(texts=["Why LLM models are becoming so important?"])
 print("Generated output by the model: {}".format(output))
 # Save the model
-model.save("./llama")
+model.save("./llama_weights")
 
-# If you want to load the model just do BaseModel.load("./llama")
+# If you want to load the model just do BaseModel.load("./llama_weights")
