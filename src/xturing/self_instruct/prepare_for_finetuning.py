@@ -2,13 +2,32 @@ import json
 import os
 import random
 import re
+from pathlib import Path
+from typing import List
 
 from tqdm import tqdm
 
 random.seed(123)
 
 
-def encode_instance(instruction, input, output, random_template=True):
+def encode_instance(
+    instruction: str,
+    input: str,
+    output: str,
+    random_template: bool = True,
+):
+    """
+    Encode the instance as a string.
+
+    Args:
+        instruction (str): the instruction
+        input (str): the input
+        output (str): the output
+        random_template (bool, optional): Whether to use a random template. Defaults to True
+
+    Returns:
+        data (dict): a dictionary containing { prompt, completion, instruction, input, output }
+    """
     encoding_templates_w_input = [
         ("{instruction}\nInput: {input}\nOutput:", " {output}<|endoftext|>"),
         ("{instruction}\n\nInput: {input}\n\nOutput:", " {output}<|endoftext|>"),
@@ -55,7 +74,20 @@ def encode_instance(instruction, input, output, random_template=True):
     return data
 
 
-def parse_input_output(response_text):
+def parse_input_output(
+    response_text: str,
+):
+    """
+    Parse the input and output from the response text.
+
+    Args:
+        response_text (str): the response text
+
+    Returns:
+        inst_input (str): the input
+        inst_output (str): the output
+
+    """
     if re.findall(r"Output\s*\d*\s*:", response_text):
         inst_input = re.split(r"Output\s*\d*\s*:", response_text)[0].strip()
         inst_output = re.split(r"Output\s*\d*\s*:", response_text)[1].strip()
@@ -70,7 +102,16 @@ def parse_input_output(response_text):
     return inst_input, inst_output
 
 
-def filter_duplicate_instances(instances):
+def filter_duplicate_instances(instances: list):
+    """
+    Filter the duplicate instances.
+
+    Args:
+        instances (list): a list of instances, each instance is a tuple of (instruction, input, output)
+
+    Returns:
+        instances (list): a filtered list of instances, each instance is a tuple of (instruction, input, output)
+    """
     # if the instances have same non-empty input, but different output, we will not use such instances
     same_input_diff_output = False
     for i in range(1, len(instances)):
@@ -91,7 +132,16 @@ def filter_duplicate_instances(instances):
     return instances
 
 
-def filter_invalid_instances(instances):
+def filter_invalid_instances(instances: list):
+    """
+    Filter the invalid instances.
+
+    Args:
+        instances (list): a list of instances, each instance is a tuple of (instruction, input, output)
+
+    Returns:
+        instances (list): a filtered list of instances, each instance is a tuple of (instruction, input, output)
+    """
     filtered_instances = []
     for instance in instances:
         # if input and output are the same, we will not use such instances
@@ -107,7 +157,22 @@ def filter_invalid_instances(instances):
     return filtered_instances
 
 
-def parse_instances_for_generation_task(raw_text, instruction, response_metadata):
+def parse_instances_for_generation_task(
+    raw_text: str,
+    instruction: str,
+    response_metadata: dict,
+):
+    """
+    Parse the instances for the generation task.
+
+    Args:
+        raw_text (str): the raw text of the response
+        instruction (str): the instruction of the task
+        response_metadata (dict): the metadata of the response
+
+    Returns:
+        instances (list): a list of instances, each instance is a tuple of (instruction, input, output)
+    """
     instances = []
     raw_text = raw_text.strip()
     if re.findall("Example\s?\d*\.?", raw_text):
@@ -133,7 +198,20 @@ def parse_instances_for_generation_task(raw_text, instruction, response_metadata
     return instances
 
 
-def parse_instances_for_classification_task(raw_text, instruction, response_metadata):
+def parse_instances_for_classification_task(
+    raw_text: str, instruction: str, response_metadata: dict
+):
+    """
+    Parse the instances for the classification task.
+
+    Args:
+        raw_text (str): the raw text of the response
+        instruction (str): the instruction of the task
+        response_metadata (dict): the metadata of the response
+
+    Returns:
+        instances (list): a list of instances, each instance is a tuple of (instruction, input, output)
+    """
     instances = []
     if not "Class label:" in raw_text:
         return []
@@ -163,25 +241,28 @@ def parse_instances_for_classification_task(raw_text, instruction, response_meta
 
 
 def prepare_for_finetuning(
-    instance_files,
-    classification_type_files,
-    output_dir,
-    num_instructions,
-    include_seed_tasks,
-    seed_tasks_path,
+    instance_files: List[Path],
+    classification_type_files: List[Path],
+    all_generated: Path,
+    sampled_generated: Path,
+    finetuning: Path,
+    seed_tasks_path: Path,
+    num_instructions: int,
+    include_seed_tasks: bool,
 ):
     training_instances = []
 
     generated_tasks = []
     for instance_file in instance_files:
-        with open(instance_file) as fin:
+        with instance_file.open() as fin:
             for line in fin:
                 generated_tasks.append(json.loads(line))
+
     print(f"Loaded {len(generated_tasks)} raw generated tasks")
 
     task_clf_types = {}
     for file in classification_type_files:
-        with open(file) as fin:
+        with file.open() as fin:
             for line in fin:
                 data = json.loads(line)
                 task_clf_types[data["instruction"]] = data[
@@ -211,8 +292,7 @@ def prepare_for_finetuning(
 
         training_instances += task_instances
 
-    os.makedirs(output_dir, exist_ok=True)
-    with open(os.path.join(output_dir, "all_generated_instances.jsonl"), "w") as fout:
+    with all_generated.open("w") as fout:
         for instance in training_instances:
             fout.write(
                 json.dumps(
@@ -249,26 +329,21 @@ def prepare_for_finetuning(
         print(
             f"Only using {len(training_instances)} instances for these sampled instructions."
         )
-        with open(
-            os.path.join(
-                output_dir, f"sampled_generated_instances_{num_instructions}.jsonl"
-            ),
-            "w",
-        ) as fout:
+        with sampled_generated.open("w") as fout:
             for instance in training_instances:
                 fout.write(
                     json.dumps(
                         {
                             "instruction": instance[0],
-                            "input": instance[1],
-                            "output": instance[2],
+                            "text": instance[1],
+                            "target": instance[2],
                         }
                     )
                     + "\n"
                 )
 
     if include_seed_tasks:
-        seed_tasks = [json.loads(l) for l in open(seed_tasks_path, "r")]
+        seed_tasks = [json.loads(l) for l in seed_tasks_path.open("r")]
         for task in seed_tasks:
             for instance in task["instances"]:
                 training_instances.append(
@@ -306,10 +381,7 @@ def prepare_for_finetuning(
 
     # shuffle
     random.shuffle(gpt3_instances)
-    with open(
-        os.path.join(output_dir, f"gpt3_finetuning_data_{len(gpt3_instances)}.jsonl"),
-        "w",
-    ) as fout:
+    with finetuning.open("w") as fout:
         for instance in gpt3_instances:
             fout.write(
                 json.dumps(

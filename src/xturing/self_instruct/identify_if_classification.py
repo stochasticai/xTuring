@@ -2,10 +2,12 @@ import json
 import os
 import random
 from collections import OrderedDict
+from pathlib import Path
 
-from gpt3_api import make_requests as make_gpt3_requests
-from templates.clf_task_template import template_1
 from tqdm import tqdm
+
+from xturing.self_instruct.api import make_requests as make_gpt3_requests
+from xturing.self_instruct.templates.clf_task_template import template_1
 
 random.seed(42)
 
@@ -16,28 +18,28 @@ templates = {"template_1": template_1}
 # Creates a function out of the main function that accepts batch_dir, num_instructions, template, engine, request_batch_size, api_key, and organization as arguments.
 
 
-def identify_tasks_as_type_classification(
-    target_dir,
-    num_instructions,
-    template,
-    engine,
-    request_batch_size,
-    api_key,
-    organization,
+def identify_if_classification(
+    input_file: Path,
+    output_file: Path,
+    num_instructions: int,
+    template: str,
+    engine: str,
+    request_batch_size: int,
+    api_key: str,
+    organization: str,
 ):
     # Load the machine generated instructions
-    with open(os.path.join(target_dir, "machine_generated_instructions.jsonl")) as fin:
+    with input_file.open() as fin:
         lines = fin.readlines()
         if num_instructions is not None:
             lines = lines[:num_instructions]
 
     # Create the output path
-    output_path = os.path.join(target_dir, f"is_clf_or_not_{engine}_{template}.jsonl")
 
     # Load the existing requests
     existing_requests = {}
-    if os.path.exists(output_path):
-        with open(output_path) as fin:
+    if output_file.exists():
+        with output_file.open() as fin:
             for line in tqdm(fin):
                 try:
                     data = json.loads(line)
@@ -50,7 +52,7 @@ def identify_tasks_as_type_classification(
     progress_bar = tqdm(total=len(lines))
 
     # Write the output to file
-    with open(output_path, "w") as fout:
+    with output_file.open("w") as fout:
         # Iterate over the lines in batches
         for batch_idx in range(0, len(lines), request_batch_size):
             batch = [
