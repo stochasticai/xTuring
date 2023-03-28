@@ -112,9 +112,7 @@ class CausalModel(BaseModel):
         texts: Optional[Union[List[str], str]] = None,
         dataset: Optional[Union[TextDataset, InstructionDataset]] = None,
     ):
-        if not isinstance(self.engine, CausalLoraEngine):
-            # It fails to do model.eval() for LoRA models
-            self.engine.model.eval()
+        self.engine.model.eval()
         self.engine.model = self.engine.model.to(DEFAULT_DEVICE)
 
         outputs = []
