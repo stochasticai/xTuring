@@ -5,8 +5,8 @@ from .engines import (
     GPT2LoraEngine,
     GPTJEngine,
     GPTJLoraEngine,
-    LLamaEngine,
-    LlamaLoraEngine,
+    LLaMAEngine,
+    LLaMALoraEngine,
 )
-from .models import GPT2, GPT2LORA, GPTJLORA, BaseModel, Llama, LlamaLORA
+from .models import GPT2, GPT2LORA, GPTJLORA, BaseModel, LLaMA, LLaMALORA
 from .trainers import BaseTrainer, LightningTrainer

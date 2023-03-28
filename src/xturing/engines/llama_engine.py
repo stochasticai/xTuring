@@ -11,7 +11,7 @@ from xturing.engines.causal import CausalEngine, CausalLoraEngine
 from xturing.engines.llama_utils import LlamaConfig, LlamaForCausalLM, LlamaTokenizer
 
 
-class LLamaEngine(CausalEngine):
+class LLaMAEngine(CausalEngine):
     config_name: str = "llama_engine"
 
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
@@ -28,7 +28,7 @@ class LLamaEngine(CausalEngine):
         self.tokenizer.save_pretrained(saving_path)
 
 
-class LlamaLoraEngine(CausalLoraEngine):
+class LLaMALoraEngine(CausalLoraEngine):
     config_name: str = "llama_lora_engine"
 
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
@@ -49,7 +49,7 @@ class LlamaLoraEngine(CausalLoraEngine):
         )
 
 
-class LLamaInt8Engine(CausalEngine):
+class LLaMAInt8Engine(CausalEngine):
     config_name: str = "llama_int8_engine"
 
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
@@ -75,11 +75,11 @@ class LLamaInt8Engine(CausalEngine):
         self.tokenizer.save_pretrained(saving_path)
 
 
-class LlamaLoraInt8Engine(CausalLoraEngine):
+class LLaMALoraInt8Engine(CausalLoraEngine):
     config_name: str = "llama_lora_int8_engine"
 
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
-        model_name = "aleksickx/llama-7b-hf"
+        model_name = "sallywww/Llama-7B"
         device_map = {"": int(os.environ.get("LOCAL_RANK") or 0)}
         model = LlamaForCausalLM.from_pretrained(
             model_name,
