@@ -95,8 +95,8 @@ Please submit your performance results on other GPUs.
 
 ## 📈 Roadmap
 - [x] Support for LLaMA, GPT-J, GPT-2
-- [ ] Dataset generation using self-instruction
-- [ ] 2x more memory-efficient fine-tuning vs LoRA and unsupervised fine-tuning
+- [x] Dataset generation using self-instruction
+- [x] 2x more memory-efficient fine-tuning vs LoRA and unsupervised fine-tuning
 - [ ] Evaluation of LLM models
 - [ ] Support for Stable Diffusion
 
