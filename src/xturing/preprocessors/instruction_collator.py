@@ -52,7 +52,7 @@ class InstructionDataCollator:
             input_target = self.tokenizer(sample["target"])
 
             if self.meta.list_prompt_template is not None:
-                combine = self.list_prompt_template.build(
+                combine = self.meta.list_prompt_template.build(
                     instruction=sample["instruction"], text=sample["text"]
                 )
                 input_combine = self.tokenizer(combine)
