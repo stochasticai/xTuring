@@ -94,7 +94,7 @@ Please submit your performance results on other GPUs.
 <br >
 
 ## 📈 Roadmap
-- [x] Support for LLaMA, GPT-J, GPT-2
+- [x] Support for LLaMA, Cerebras, OPT, BLOOM, Galactica, GPT-J and GPT-2 models
 - [x] Dataset generation using self-instruction
 - [x] 2x more memory-efficient fine-tuning vs LoRA and unsupervised fine-tuning
 - [ ] Evaluation of LLM models
