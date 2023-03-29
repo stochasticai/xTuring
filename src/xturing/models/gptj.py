@@ -16,7 +16,7 @@ class GPTJ(CausalModel):
         super().__init__(GPTJEngine.config_name, weights_path)
 
 
-class GPTJLORA(CausalLoraModel):
+class GPTJLora(CausalLoraModel):
     config_name: str = "gptj_lora"
 
     def __init__(self, weights_path: Optional[str] = None):
@@ -30,7 +30,7 @@ class GPTJInt8(CausalModel):
         super().__init__(GPTJInt8Engine.config_name, weights_path)
 
 
-class GPTJLORAInt8(CausalLoraModel):
+class GPTJLoraInt8(CausalLoraModel):
     config_name: str = "gptj_lora_int8"
 
     def __init__(self, weights_path: Optional[str] = None):
