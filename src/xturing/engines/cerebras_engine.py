@@ -1,11 +1,5 @@
-import os
 from pathlib import Path
 from typing import Optional, Union
-
-import torch
-import transformers
-from peft import prepare_model_for_int8_training
-from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from xturing.engines.causal import CausalEngine, CausalLoraEngine
 
@@ -15,7 +9,7 @@ class CerebrasEngine(CausalEngine):
 
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
         super().__init__(
-            model_name="cerebras/Cerebras-GPT-2.7B", weights_path=weights_path
+            model_name="cerebras/Cerebras-GPT-1.3B", weights_path=weights_path
         )
 
         self.tokenizer.pad_token = self.tokenizer.eos_token
@@ -27,7 +21,7 @@ class CerebrasLoraEngine(CausalLoraEngine):
 
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
         super().__init__(
-            model_name="cerebras/Cerebras-GPT-2.7B", weights_path=weights_path
+            model_name="cerebras/Cerebras-GPT-1.3B", weights_path=weights_path
         )
 
         self.tokenizer.pad_token = self.tokenizer.eos_token
@@ -39,7 +33,7 @@ class CerebrasInt8Engine(CausalEngine):
 
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
         super().__init__(
-            model_name="cerebras/Cerebras-GPT-2.7B",
+            model_name="cerebras/Cerebras-GPT-1.3B",
             weights_path=weights_path,
             load_8bit=True,
         )
@@ -52,7 +46,7 @@ class CerebrasLoraInt8Engine(CausalLoraEngine):
 
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
         super().__init__(
-            model_name="cerebras/Cerebras-GPT-2.7B",
+            model_name="cerebras/Cerebras-GPT-1.3B",
             weights_path=weights_path,
             load_8bit=True,
         )
