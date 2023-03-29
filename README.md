@@ -51,11 +51,17 @@ You can find the data folder [here](examples/llama/alpaca_data).
 
 ## 📚 Tutorials
 - [Preparing your dataset](examples/llama/preparing_your_dataset.py)
+- [Cerebras efficient fine-tuning with LoRA and INT8](examples/cerebras/cerebras_lora_int8.ipynb) &ensp; [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1eKq3oF7dnK8KuIfsTE70Gvvniwr1O9D0?usp=sharing)
+- [Cerebras efficient fine-tuning with LoRA](examples/cerebras/cerebras_lora.ipynb) &ensp; [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1VjqQhstm5pT4EjPjx4Je7b3W2X1V3vDo?usp=sharing)
 - [LLaMA efficient fine-tuning with LoRA and INT8](examples/llama/llama_lora_int8.py) &ensp; [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1SQUXq1AMZPSLD4mk3A3swUIc6Y2dclme?usp=sharing)
 - [LLaMA efficient fine-tuning with LoRA](examples/llama/llama_lora.py)
 - [LLaMA fine-tuning](examples/llama/llama.py)
 - [GPT-J efficient fine-tuning with LoRA and INT8](examples/gptj/gptj_lora_int8.py) &ensp; [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1hB_8s1V9K4IzifmlmN2AovGEJzTB1c7e?usp=sharing)
 - [GPT-J efficient fine-tuning with LoRA](examples/gptj/gptj_lora.py)
+- [Galactica efficient fine-tuning with LoRA and INT8](examples/galactica/galactica_lora_int8.py)
+- [Galactica efficient fine-tuning with LoRA](examples/galactica/galactica_lora.py)
+- [OPT efficient fine-tuning with LoRA and INT8](examples/opt/opt_lora_int8.py)
+- [OPT efficient fine-tuning with LoRA](examples/opt/opt_lora.py)
 - [GPT-2 efficient fine-tuning with LoRA](examples/gpt2/gpt2_lora.py) &ensp; [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://drive.google.com/file/d/1Sh-ocNpKn9pS7jv6oBb_Q8DitFyj1avL/view?usp=sharing)
 
 
@@ -88,9 +94,9 @@ Please submit your performance results on other GPUs.
 <br >
 
 ## 📈 Roadmap
-- [x] Support for LLaMA, GPT-J, GPT-2
-- [ ] Dataset generation using self-instruction
-- [ ] 2x more memory-efficient fine-tuning vs LoRA and unsupervised fine-tuning
+- [x] Support for LLaMA, Cerebras, OPT, Galactica, GPT-J and GPT-2 models
+- [x] Dataset generation using self-instruction
+- [x] 2x more memory-efficient fine-tuning vs LoRA and unsupervised fine-tuning
 - [ ] Evaluation of LLM models
 - [ ] Support for Stable Diffusion
 
