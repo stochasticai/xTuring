@@ -2,6 +2,8 @@ import gradio as gr
 
 from xturing.models.base import BaseModel
 
+model_to_class_map = {"GPT-2": "gpt2", "GPT-J": "gptj", "Llama": "llama"}
+
 
 class Playground:
     def __init__(
@@ -18,15 +20,23 @@ class Playground:
         self.model = None
 
         # load the model
-        # self.model = BaseModel.load(self.model_path) if model_path else None
-        # self.generation_config = self.model.generation_config()
+        self.model = BaseModel.load(self.model_path) if model_path else None
 
     def set_model(self, model_path=None, model_name=None):
         print(f"model_path:{model_path}, model_name: {model_name}")
-        # if model_path and model_path != "":
-        #     self.model = BaseModel.load(model_path)
-        # elif model_name and model_name != "":
-        #     self.model = BaseModel.create(model_name)
+
+        try:
+            if model_path:
+                self.model = BaseModel.load(model_path)
+                return True, ""
+            elif model_name:
+                self.model = BaseModel.create(model_to_class_map[model_name])
+                return True, ""
+            else:
+                return False, "Model path or model name is required."
+        except Exception as e:
+            print(f"Model loading failed: {str(e)}")
+            return False, str(e)
 
     def generate_output(self, user_input):
         generation_config = self.model.generation_config()
@@ -36,7 +46,13 @@ class Playground:
         generation_config.do_sample = self.do_sample
         generation_config.max_new_tokens = self.max_new_tokens
 
-        return self.model.generate(texts=[user_input])
+        print(f"Prompt:{user_input}, Params:{str(generation_config)}")
+
+        try:
+            return self.model.generate(texts=[user_input])
+        except Exception as e:
+            print(str(e))
+            return "Error generating output. Please try again."
 
     def set_penalty_alpha(self, penalty_alpha):
         self.penalty_alpha = penalty_alpha
@@ -64,8 +80,8 @@ class Playground:
             """
             )
 
-            # update_model_path.click()
             with gr.Row():
+                # LEFT COLUMN
                 with gr.Column(scale=3, min_width=600):
                     model_selection_type = gr.Radio(
                         label="How do you want to load the model?",
@@ -88,28 +104,57 @@ class Playground:
                         label="Select model",
                     )
 
+                    def load_func(model_path, model_name):
+                        success, message = self.set_model(model_path, model_name)
+
+                        if success:
+                            print("Model loaded successfully")
+                            return (
+                                gr.update(
+                                    visible=True,
+                                    value="""
+                            <h3 style="color:green;text-align:center">Model loaded successfully</h3>
+                            """,
+                                ),
+                                gr.update(
+                                    interactive=True,
+                                    placeholder="Enter your prompt here",
+                                ),
+                                gr.update(),
+                            )
+                        else:
+                            return (
+                                gr.update(
+                                    visible=True,
+                                    value="""<h3 style="color:red;text-align:center;word-break: break-all;">Model load failed:{}{}</h3>""".format(
+                                        " ", message
+                                    ),
+                                ),
+                                gr.update(),
+                                gr.update(),
+                            )
+
                     load_model_btn = gr.Button("Load")
-                    load_model_btn.click(
-                        lambda model_path, model_name: self.set_model(
-                            model_path, model_name
-                        ),
-                        inputs=[model_path_input, baseline_models_dropdown],
-                    )
+                    load_model_error = gr.Markdown(visible=False, value="")
 
                     def update_model_loading_input(model_selection_type):
                         if model_selection_type == "Finetuned model path":
-                            return gr.update(visible=True, value=""), gr.update(
-                                visible=False, value=""
+                            return (
+                                gr.update(visible=True, value=""),
+                                gr.update(visible=False, value=""),
+                                gr.update(visible=False),
                             )
                         else:
-                            return gr.update(visible=False, value=""), gr.update(
-                                visible=True, value="GPT-2"
+                            return (
+                                gr.update(visible=False, value=""),
+                                gr.update(visible=True, value="GPT-2"),
+                                gr.update(visible=False),
                             )
 
                     model_selection_type.change(
                         update_model_loading_input,
                         model_selection_type,
-                        [model_path_input, baseline_models_dropdown],
+                        [model_path_input, baseline_models_dropdown, load_model_error],
                     )
 
                     gr.Markdown(
@@ -118,6 +163,7 @@ class Playground:
                         """
                     )
 
+                    clear = gr.Button("Clear chat", show_label=False)
                     chatbot = gr.Chatbot(label="Chat with your model")
                     msg = gr.Textbox(
                         label="Prompt",
@@ -126,15 +172,24 @@ class Playground:
                         if self.model == None
                         else "Enter your prompt here",
                     )
-                    clear = gr.Button("Clear", show_label=False)
+
+                    load_model_btn.click(
+                        load_func,
+                        inputs=[
+                            model_path_input,
+                            baseline_models_dropdown,
+                        ],
+                        outputs=[load_model_error, msg, load_model_btn],
+                        show_progress=True,
+                    )
 
                     def user(user_message, history):
                         return "", history + [[user_message, None]]
 
                     def model(history):
                         # Pass user input to the model
-                        # model_output = self.generate_output(history[-1][0])
-                        model_output = "🤖" + history[-1][0]
+                        model_output = "🤖 :" + self.generate_output(history[-1][0])[0]
+                        # model_output =  + history[-1][0]
                         history[-1][1] = model_output
                         return history
 
@@ -144,6 +199,7 @@ class Playground:
 
                     clear.click(lambda: None, None, chatbot, queue=False)
 
+                # RIGHT COLUMN
                 with gr.Column(scale=1, min_width=600):
                     # All the parameters
                     decoding_method_radio = gr.Radio(
@@ -255,15 +311,15 @@ class Playground:
                                 gr.update(value=self.max_new_tokens),
                             )
                         else:
-                            self.set_top_k(None)
-                            self.set_do_sample(None)
-                            self.set_top_p(None)
+                            self.set_top_k(4)
+                            self.set_do_sample(False)
+                            self.set_top_p(1)
                             self.set_penalty_alpha(0.6)
                             return (
                                 gr.update(visible=False),
                                 gr.update(visible=True),
-                                gr.update(value=0),
-                                gr.update(value=0),
+                                gr.update(value=4),
+                                gr.update(value=1),
                                 gr.update(value=0.6),
                                 gr.update(value=self.max_new_tokens),
                                 gr.update(value=self.max_new_tokens),
@@ -281,6 +337,7 @@ class Playground:
                             max_new_tokens,
                             max_new_tokens2,
                         ],
+                        show_progress=True,
                     )
 
         demo.launch()
