@@ -1,3 +1,7 @@
+from .utils.external_loggers import configure_external_loggers
+
+configure_external_loggers()
+
 from .datasets import BaseDataset, InstructionDataset, TextDataset
 from .engines import (
     BaseEngine,
