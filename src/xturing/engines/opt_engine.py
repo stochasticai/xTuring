@@ -2,11 +2,6 @@ import os
 from pathlib import Path
 from typing import Optional, Union
 
-import torch
-import transformers
-from peft import prepare_model_for_int8_training
-from transformers import AutoModelForCausalLM, AutoTokenizer
-
 from xturing.engines.causal import CausalEngine, CausalLoraEngine
 
 
