@@ -17,7 +17,7 @@ class GPT2(CausalModel):
         super().__init__(GPT2Engine.config_name, weights_path)
 
 
-class GPT2LORA(CausalLoraModel):
+class GPT2Lora(CausalLoraModel):
     config_name: str = "gpt2_lora"
 
     def __init__(self, weights_path: Optional[str] = None):
@@ -31,7 +31,7 @@ class GPT2Int8(CausalModel):
         super().__init__(GPT2Int8Engine.config_name, weights_path)
 
 
-class GPT2LORAInt8(CausalLoraModel):
+class GPT2LoraInt8(CausalLoraModel):
     config_name: str = "gpt2_lora_int8"
 
     def __init__(self, weights_path: Optional[str] = None):

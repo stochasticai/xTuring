@@ -43,7 +43,7 @@ keywords = [
 dependencies = [
     "torch >= 1.9.0",
     "pytorch-lightning",
-    "transformers",
+    "transformers==4.27.3",
     "datasets",
     "evaluate",
     "peft",
