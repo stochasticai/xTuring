@@ -1,3 +1,4 @@
+import json
 from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional, Union
@@ -6,6 +7,14 @@ from datasets import Dataset as HFDataset
 from datasets import load_from_disk
 
 from xturing.datasets.base import BaseDataset
+from xturing.model_apis.openai import DAVINCI
+from xturing.self_instruct import (
+    bootstrap_instructions,
+    generate_instances,
+    identify_if_classification,
+    prepare_for_finetuning,
+)
+from xturing.utils.utils import create_temp_directory, no_std_out
 
 
 class ListPromptTemplate:
@@ -45,8 +54,14 @@ class InstructionDataset(BaseDataset):
         elif isinstance(path, dict):
             self.data = {"train": HFDataset.from_dict(path)}
         else:
+            path = Path(path)
             assert Path(path).exists(), "path does not exist"
-            self.data = load_from_disk(path)
+
+            if path.is_dir():
+                self.data = load_from_disk(str(path))
+            elif path.suffix == ".jsonl":
+                self.data = {"train": HFDataset.from_dict(self.from_jsonl(path))}
+
         self._validate()
 
         list_prompt_template = None
@@ -60,6 +75,24 @@ class InstructionDataset(BaseDataset):
             infix_instruction=infix_instruction,
             list_prompt_template=list_prompt_template,
         )
+
+    def from_jsonl(self, path: Path):
+        data = {
+            "text": [],
+            "instruction": [],
+            "target": [],
+        }
+        try:
+            for line in open(path):
+                json_line = json.loads(line)
+                data["text"].append(json_line["text"])
+                data["instruction"].append(json_line["instruction"])
+                data["target"].append(json_line["target"])
+        except KeyError:
+            raise ValueError(
+                "The jsonl file should have keys text, instruction and target"
+            )
+        return data
 
     def _validate(self):
         # check is hf dataset has train split and if it has column text, and if there are any other - it should be target
@@ -85,3 +118,80 @@ class InstructionDataset(BaseDataset):
 
     def __getitem__(self, idx):
         return self.data["train"][idx]
+
+    @classmethod
+    def generate_dataset(
+        cls,
+        api_key: str,
+        path: str,
+        organization: Optional[str] = None,
+        engine: str = DAVINCI,
+        num_instructions: int = 10,
+        num_instructions_for_finetuning: int = 5,
+        num_prompt_instructions: int = 1,
+        request_batch_size: int = 1,
+    ):
+        cache_directory = create_temp_directory(
+            f"./self_instruct_{engine}_cache_{num_instructions}_{num_instructions_for_finetuning}"
+        )
+        seed_tasks_path = Path(path)
+
+        machine_generated = (
+            Path(cache_directory) / "machine_generated_instructions.jsonl"
+        )
+        filtered = Path(cache_directory) / "filtered_instructions.jsonl"
+        is_clf = Path(cache_directory) / "is_clf_or_not.jsonl"
+        all_generated = Path(cache_directory) / "all_generated.jsonl"
+        sampled_generated = Path(cache_directory) / "sampled_generated.jsonl"
+        finetuning = Path(cache_directory) / "finetuning.jsonl"
+
+        bootstrap_instructions.bootstrap_instructions(
+            seed_tasks_path=seed_tasks_path,
+            output_file=machine_generated,
+            num_instructions_to_generate=num_instructions_for_finetuning,
+            use_clf_seed_tasks_only=False,
+            engine=engine,
+            num_prompt_instructions=num_prompt_instructions,
+            request_batch_size=request_batch_size,
+            api_key=api_key,
+            organization=organization,
+        )
+
+        identify_if_classification.identify_if_classification(
+            input_file=machine_generated,
+            output_file=is_clf,
+            num_instructions=num_instructions,
+            template="template_1",
+            engine=engine,
+            request_batch_size=request_batch_size,
+            api_key=api_key,
+            organization=organization,
+        )
+
+        generate_instances.generate_instances(
+            input_file=machine_generated,
+            classification_file=is_clf,
+            output_file=filtered,
+            num_instructions=num_instructions,
+            max_instances_to_generate=num_instructions,
+            generation_tasks_only=False,
+            classification_tasks_only=False,
+            engine=engine,
+            request_batch_size=request_batch_size,
+            api_key=api_key,
+            organization=organization,
+        )
+
+        prepare_for_finetuning.prepare_for_finetuning(
+            instance_files=[filtered],
+            classification_type_files=[is_clf],
+            all_generated=all_generated,
+            sampled_generated=sampled_generated,
+            finetuning=finetuning,
+            num_instructions=num_instructions_for_finetuning,
+            include_seed_tasks=True,
+            seed_tasks_path=seed_tasks_path,
+        )
+
+        path = Path("./self_instruct_davinci_cache_10_5/sampled_generated.jsonl")
+        return InstructionDataset(path)
