@@ -19,9 +19,6 @@ class Playground:
         self.model_path = model_path
         self.model = None
 
-        # load the model
-        self.model = BaseModel.load(self.model_path) if model_path else None
-
     def set_model(self, model_path=None, model_name=None):
         print(f"model_path:{model_path}, model_name: {model_name}")
 
@@ -33,12 +30,15 @@ class Playground:
                 self.model = BaseModel.create(model_to_class_map[model_name])
                 return True, ""
             else:
-                return False, "Model path or model name is required."
+                return False, "Model path is required."
         except Exception as e:
             print(f"Model loading failed: {str(e)}")
             return False, str(e)
 
     def generate_output(self, user_input):
+        if user_input == "":
+            return "Enter a valid prompt"
+
         generation_config = self.model.generation_config()
         generation_config.penalty_alpha = self.penalty_alpha
         generation_config.top_k = self.top_k
@@ -83,26 +83,26 @@ class Playground:
             with gr.Row():
                 # LEFT COLUMN
                 with gr.Column(scale=3, min_width=600):
-                    model_selection_type = gr.Radio(
-                        label="How do you want to load the model?",
-                        choices=["Finetuned model path", "Baseline model"],
-                        value="Finetuned model path",
-                    )
+                    # model_selection_type = gr.Radio(
+                    #     label="How do you want to load the model?",
+                    #     choices=["Finetuned model path", "Baseline model"],
+                    #     value="Finetuned model path",
+                    # )
 
                     model_path_input = gr.Textbox(
-                        value="",
+                        value=self.model_path if self.model_path else "",
                         interactive=True,
                         placeholder="Enter the model path",
                         label="Enter the model path",
                         visible=True,
                     )
 
-                    baseline_models_dropdown = gr.Dropdown(
-                        interactive=True,
-                        visible=False,
-                        choices=["GPT-2", "GPT-J", "Llama"],
-                        label="Select model",
-                    )
+                    # baseline_models_dropdown = gr.Dropdown(
+                    #     interactive=True,
+                    #     visible=False,
+                    #     choices=["GPT-2", "GPT-J", "Llama"],
+                    #     label="Select model",
+                    # )
 
                     def load_func(model_path, model_name):
                         success, message = self.set_model(model_path, model_name)
@@ -118,7 +118,7 @@ class Playground:
                                 ),
                                 gr.update(
                                     interactive=True,
-                                    placeholder="Enter your prompt here",
+                                    placeholder="Enter your prompt and press enter",
                                 ),
                                 gr.update(),
                             )
@@ -137,25 +137,25 @@ class Playground:
                     load_model_btn = gr.Button("Load")
                     load_model_error = gr.Markdown(visible=False, value="")
 
-                    def update_model_loading_input(model_selection_type):
-                        if model_selection_type == "Finetuned model path":
-                            return (
-                                gr.update(visible=True, value=""),
-                                gr.update(visible=False, value=""),
-                                gr.update(visible=False),
-                            )
-                        else:
-                            return (
-                                gr.update(visible=False, value=""),
-                                gr.update(visible=True, value="GPT-2"),
-                                gr.update(visible=False),
-                            )
+                    # def update_model_loading_input(model_selection_type):
+                    #     if model_selection_type == "Finetuned model path":
+                    #         return (
+                    #             gr.update(visible=True, value=""),
+                    #             gr.update(visible=False, value=""),
+                    #             gr.update(visible=False),
+                    #         )
+                    #     else:
+                    #         return (
+                    #             gr.update(visible=False, value=""),
+                    #             gr.update(visible=True, value="GPT-2"),
+                    #             gr.update(visible=False),
+                    #         )
 
-                    model_selection_type.change(
-                        update_model_loading_input,
-                        model_selection_type,
-                        [model_path_input, baseline_models_dropdown, load_model_error],
-                    )
+                    # model_selection_type.change(
+                    #     update_model_loading_input,
+                    #     model_selection_type,
+                    #     [model_path_input, baseline_models_dropdown, load_model_error],
+                    # )
 
                     gr.Markdown(
                         """
@@ -167,17 +167,15 @@ class Playground:
                     chatbot = gr.Chatbot(label="Chat with your model")
                     msg = gr.Textbox(
                         label="Prompt",
-                        interactive=self.model != None,
-                        placeholder="Load a model to enable the chat"
-                        if self.model == None
-                        else "Enter your prompt here",
+                        interactive=False,
+                        placeholder="Load a model to enable the chat",
                     )
 
                     load_model_btn.click(
                         load_func,
                         inputs=[
                             model_path_input,
-                            baseline_models_dropdown,
+                            # baseline_models_dropdown,
                         ],
                         outputs=[load_model_error, msg, load_model_btn],
                         show_progress=True,
@@ -189,7 +187,6 @@ class Playground:
                     def model(history):
                         # Pass user input to the model
                         model_output = "🤖 :" + self.generate_output(history[-1][0])[0]
-                        # model_output =  + history[-1][0]
                         history[-1][1] = model_output
                         return history
 
@@ -231,7 +228,7 @@ class Playground:
                             1,
                             40,
                             value=4,
-                            label="TopK",
+                            label="Top-k",
                             interactive=True,
                             info="Choose betwen 1 and 40",
                         )
@@ -256,7 +253,7 @@ class Playground:
                             0,
                             40,
                             value=0,
-                            label="TopK",
+                            label="Top-k",
                             interactive=False,
                             info="Always zero",
                             visible=False,
@@ -267,7 +264,7 @@ class Playground:
                             0,
                             1,
                             value=0.92,
-                            label="TopP",
+                            label="Top-p",
                             interactive=True,
                             info="Choose between 0 and 1",
                         )

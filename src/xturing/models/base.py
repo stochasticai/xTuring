@@ -1,9 +1,10 @@
-from xturing.registry import BaseParent
+from pathlib import Path
+
 from xturing.config.read_config import (
     exists_xturing_config_file,
     read_xturing_config_file,
 )
-from pathlib import Path
+from xturing.registry import BaseParent
 
 
 class BaseModel(BaseParent):
@@ -13,7 +14,7 @@ class BaseModel(BaseParent):
     def load(cls, weights_dir_path):
         weights_dir_path = Path(weights_dir_path)
         assert weights_dir_path.is_dir(), "The path {} should be a directory".format(
-            str(weights_dir_path)
+            str(weights_dir_path.resolve())
         )
 
         assert exists_xturing_config_file(
