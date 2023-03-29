@@ -7,7 +7,7 @@ import torch
 from peft import LoraConfig, TaskType, get_peft_model, prepare_model_for_int8_training
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-from xturing.config import DEFAULT_DTYPE
+from xturing.config import DEFAULT_DEVICE, DEFAULT_DTYPE
 from xturing.engines.base import BaseEngine
 from xturing.utils.loss_fns import CrossEntropyLoss
 
@@ -146,7 +146,11 @@ class CausalLoraEngine(CausalEngine):
 
         if weights_path is not None:
             model_weights_path = str(Path(weights_path).resolve() / "pytorch_model.bin")
-            self.model.load_state_dict(torch.load(model_weights_path))
+            self.model.load_state_dict(
+                torch.load(
+                    model_weights_path, map_location=torch.device(DEFAULT_DEVICE)
+                )
+            )
         else:
             self.model.print_trainable_parameters()
 
