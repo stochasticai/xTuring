@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from typing import Any, List, Optional, Union
 
@@ -28,11 +29,12 @@ class CausalEngine(BaseEngine):
                 weights_path
             ).is_dir(), "The weights path should be a existing directory"
             if load_8bit:
+                device_map = {"": int(os.environ.get("LOCAL_RANK") or 0)}
                 self.model = AutoModelForCausalLM.from_pretrained(
                     weights_path,
                     torch_dtype=DEFAULT_DTYPE,
                     load_in_8bit=True,
-                    device_map="auto",
+                    device_map=device_map,
                 )
                 self.model = prepare_model_for_int8_training(self.model)
             else:
@@ -45,20 +47,20 @@ class CausalEngine(BaseEngine):
             self.tokenizer = tokenizer
         elif model_name is not None:
             if load_8bit:
+                device_map = {"": int(os.environ.get("LOCAL_RANK") or 0)}
                 self.model = AutoModelForCausalLM.from_pretrained(
                     model_name,
                     torch_dtype=DEFAULT_DTYPE,
                     load_in_8bit=True,
-                    device_map="auto",
+                    device_map=device_map,
                 )
+                for param in self.model.parameters():
+                    param.data = param.data.contiguous()
                 self.model = prepare_model_for_int8_training(self.model)
             else:
                 self.model = AutoModelForCausalLM.from_pretrained(
                     model_name, torch_dtype=DEFAULT_DTYPE
                 )
-            self.model = AutoModelForCausalLM.from_pretrained(
-                model_name, torch_dtype=DEFAULT_DTYPE
-            )
             self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         else:
             raise ValueError(

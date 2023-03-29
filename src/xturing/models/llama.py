@@ -16,7 +16,7 @@ class Llama(CausalModel):
         super().__init__(LLamaEngine.config_name, weights_path)
 
 
-class LlamaLORA(CausalLoraModel):
+class LlamaLora(CausalLoraModel):
     config_name: str = "llama_lora"
 
     def __init__(self, weights_path: Optional[str] = None):
@@ -30,7 +30,7 @@ class LlamaInt8(CausalModel):
         super().__init__(LLamaInt8Engine.config_name, weights_path)
 
 
-class LlamaLORAInt8(CausalLoraModel):
+class LlamaLoraInt8(CausalLoraModel):
     config_name: str = "llama_lora_int8"
 
     def __init__(self, weights_path: Optional[str] = None):

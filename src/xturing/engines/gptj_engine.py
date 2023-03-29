@@ -43,7 +43,6 @@ class GPTJInt8Engine(CausalEngine):
         model = AutoModelForCausalLM.from_pretrained(
             "philschmid/gpt-j-6B-fp16-sharded", load_in_8bit=True, device_map=device_map
         )
-        # add_adapters(model)
 
         tokenizer = AutoTokenizer.from_pretrained("philschmid/gpt-j-6B-fp16-sharded")
         tokenizer.pad_token = self.tokenizer.eos_token
