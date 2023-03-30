@@ -6,7 +6,7 @@ import torch
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
-from xturing.config import DEFAULT_DEVICE
+from xturing.config import DEFAULT_DEVICE, assert_not_cpu_int8
 from xturing.config.config_data_classes import FinetuningConfig, GenerationConfig
 from xturing.config.read_config import load_config
 from xturing.datasets.instruction_dataset import InstructionDataset
@@ -86,10 +86,17 @@ class CausalModel(BaseModel):
     def evaluate(self, dataset: Union[TextDataset, InstructionDataset]):
         pass
 
-    def _generate_from_iterable(self, data_iterator: Iterable, do_tokenization=False):
+    def _generate_from_iterable(
+        self, data_iterator: Iterable, do_tokenization=False, show_tqdm_bar=True
+    ):
         outputs = []
 
-        for i, batch in enumerate(tqdm(data_iterator)):
+        if show_tqdm_bar:
+            enumeration = enumerate(tqdm(data_iterator))
+        else:
+            enumeration = enumerate(data_iterator)
+
+        for i, batch in enumeration:
             if do_tokenization:
                 inputs = self.engine.tokenizer(batch, return_tensors="pt")
                 input_ids = inputs.input_ids.to(DEFAULT_DEVICE)
@@ -97,11 +104,14 @@ class CausalModel(BaseModel):
                 input_ids = batch["input_ids"].to(DEFAULT_DEVICE)
             with torch.no_grad():
                 with torch.autocast("cuda"):
+                    len_input = input_ids.shape[1]
                     output = self.engine.model.generate(
                         input_ids=input_ids, **self.generation_args.dict()
                     )
 
-            output = self.engine.tokenizer.decode(output[0], skip_special_tokens=False)
+            output = self.engine.tokenizer.decode(
+                output[0][len_input:], skip_special_tokens=True
+            )
             outputs.append(output)
 
         return outputs
@@ -121,7 +131,9 @@ class CausalModel(BaseModel):
             flattened_texts = [texts] if isinstance(texts, str) else texts
 
             outputs.extend(
-                self._generate_from_iterable(flattened_texts, do_tokenization=True)
+                self._generate_from_iterable(
+                    flattened_texts, do_tokenization=True, show_tqdm_bar=False
+                )
             )
 
         if dataset is not None:
@@ -166,6 +178,12 @@ class CausalModel(BaseModel):
         self._save_config(path=path)
 
 
+class CausalInt8Model(CausalModel):
+    def __init__(self, engine: str, weights_path: Optional[str] = None):
+        assert_not_cpu_int8()
+        super().__init__(engine, weights_path)
+
+
 class CausalLoraModel(CausalModel):
     def __init__(self, engine: str, weights_path: Optional[str] = None):
         super().__init__(engine, weights_path)
@@ -183,3 +201,9 @@ class CausalLoraModel(CausalModel):
             True,
             True,
         )
+
+
+class CausalLoraInt8Model(CausalLoraModel):
+    def __init__(self, engine: str, weights_path: Optional[str] = None):
+        assert_not_cpu_int8()
+        super().__init__(engine, weights_path)
