@@ -1,4 +1,10 @@
 from .base import BaseEngine
+from .bloom_engine import (
+    BloomEngine,
+    BloomInt8Engine,
+    BloomLoraEngine,
+    BloomLoraInt8Engine,
+)
 from .cerebras_engine import (
     CerebrasEngine,
     CerebrasInt8Engine,
@@ -48,3 +54,7 @@ BaseEngine.add_to_registry(CerebrasEngine.config_name, CerebrasEngine)
 BaseEngine.add_to_registry(CerebrasLoraEngine.config_name, CerebrasLoraEngine)
 BaseEngine.add_to_registry(CerebrasInt8Engine.config_name, CerebrasInt8Engine)
 BaseEngine.add_to_registry(CerebrasLoraInt8Engine.config_name, CerebrasLoraInt8Engine)
+BaseEngine.add_to_registry(BloomEngine.config_name, BloomEngine)
+BaseEngine.add_to_registry(BloomLoraEngine.config_name, BloomLoraEngine)
+BaseEngine.add_to_registry(BloomInt8Engine.config_name, BloomInt8Engine)
+BaseEngine.add_to_registry(BloomLoraInt8Engine.config_name, BloomLoraInt8Engine)
