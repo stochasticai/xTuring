@@ -6,7 +6,19 @@
 
 ___
 
-`xturing` provides fast, efficient and simple fine-tuning of LLMs, such as LLaMA, GPT-J, GPT-2, OPT, Cerebras-GPT, Galactica, and more. It supports both single GPU and multi-GPU training. Leverage memory-efficient fine-tuning techniques like LoRA and INT8 to reduce your hardware costs by up to 90% and train your models in a fraction of the time.
+`xturing` provides fast, efficient and simple fine-tuning of LLMs, such as LLaMA, GPT-J, GPT-2,
+OPT, Cerebras-GPT, Galactica, and more.
+By providing an easy-to-use interface for personalizing LLMs to your own data and application,
+xTuring makes it simple to build and control LLMs.
+The entire process can be done inside your computer or in your private cloud,
+ensuring data privacy and security.
+
+With `xturing` you can,
+- Ingest data from different sources and preprocess them to a format LLMs can understand
+- Scale from single to multiple GPUs for faster fine-tuning
+- Leverage memory-efficient techniques (i.e. LoRA fine-tuning) to reduce your hardware costs by up to 90% of the time
+- Explore different fine-tuning methods and benchmark them to find the best performing model
+- Evalate fine-tuned models on well-defined metrics for in-depth analysis
 
 <br>
 
