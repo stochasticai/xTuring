@@ -9,3 +9,7 @@ IS_INTERACTIVE = is_interactive_execution()
 
 if DEFAULT_DEVICE.type == "cpu":
     print("WARNING: CUDA is not available, using CPU instead, can be very slow")
+
+
+def assert_not_cpu_int8():
+    assert DEFAULT_DEVICE.type != "cpu", "Int8 models are not supported on CPU"

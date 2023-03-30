@@ -6,7 +6,12 @@ from xturing.engines.galactica_engine import (
     GalacticaLoraEngine,
     GalacticaLoraInt8Engine,
 )
-from xturing.models.causal import CausalLoraModel, CausalModel
+from xturing.models.causal import (
+    CausalInt8Model,
+    CausalLoraInt8Model,
+    CausalLoraModel,
+    CausalModel,
+)
 
 
 class Galactica(CausalModel):
@@ -23,14 +28,14 @@ class GalacticaLora(CausalLoraModel):
         super().__init__(GalacticaLoraEngine.config_name, weights_path)
 
 
-class GalacticaInt8(CausalModel):
+class GalacticaInt8(CausalInt8Model):
     config_name: str = "galactica_int8"
 
     def __init__(self, weights_path: Optional[str] = None):
         super().__init__(GalacticaInt8Engine.config_name, weights_path)
 
 
-class GalacticaLoraInt8(CausalLoraModel):
+class GalacticaLoraInt8(CausalLoraInt8Model):
     config_name: str = "galactica_lora_int8"
 
     def __init__(self, weights_path: Optional[str] = None):
