@@ -86,10 +86,17 @@ class CausalModel(BaseModel):
     def evaluate(self, dataset: Union[TextDataset, InstructionDataset]):
         pass
 
-    def _generate_from_iterable(self, data_iterator: Iterable, do_tokenization=False):
+    def _generate_from_iterable(
+        self, data_iterator: Iterable, do_tokenization=False, show_tqdm_bar=True
+    ):
         outputs = []
 
-        for i, batch in enumerate(tqdm(data_iterator)):
+        if show_tqdm_bar:
+            enumeration = enumerate(tqdm(data_iterator))
+        else:
+            enumeration = enumerate(data_iterator)
+
+        for i, batch in enumeration:
             if do_tokenization:
                 inputs = self.engine.tokenizer(batch, return_tensors="pt")
                 input_ids = inputs.input_ids.to(DEFAULT_DEVICE)
@@ -121,7 +128,9 @@ class CausalModel(BaseModel):
             flattened_texts = [texts] if isinstance(texts, str) else texts
 
             outputs.extend(
-                self._generate_from_iterable(flattened_texts, do_tokenization=True)
+                self._generate_from_iterable(
+                    flattened_texts, do_tokenization=True, show_tqdm_bar=False
+                )
             )
 
         if dataset is not None:
