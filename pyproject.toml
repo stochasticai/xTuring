@@ -49,6 +49,7 @@ dependencies = [
     "peft",
     "sentencepiece",
     "deepspeed",
+    "gradio",
     "bitsandbytes",
     "click",
     "ipywidgets",

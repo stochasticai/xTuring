@@ -2,6 +2,7 @@ import click
 
 from xturing.__about__ import __version__
 from xturing.cli.chat import chat_command
+from xturing.cli.ui import ui_command
 
 
 @click.group(
@@ -15,3 +16,4 @@ def xturing(ctx: click.Context):
 
 
 xturing.add_command(chat_command)
+xturing.add_command(ui_command)
