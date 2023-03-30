@@ -6,7 +6,7 @@ import torch
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
-from xturing.config import DEFAULT_DEVICE
+from xturing.config import DEFAULT_DEVICE, assert_not_cpu_int8
 from xturing.config.config_data_classes import FinetuningConfig, GenerationConfig
 from xturing.config.read_config import load_config
 from xturing.datasets.instruction_dataset import InstructionDataset
@@ -178,6 +178,12 @@ class CausalModel(BaseModel):
         self._save_config(path=path)
 
 
+class CausalInt8Model(CausalModel):
+    def __init__(self, engine: str, weights_path: Optional[str] = None):
+        assert_not_cpu_int8()
+        super().__init__(engine, weights_path)
+
+
 class CausalLoraModel(CausalModel):
     def __init__(self, engine: str, weights_path: Optional[str] = None):
         super().__init__(engine, weights_path)
@@ -195,3 +201,9 @@ class CausalLoraModel(CausalModel):
             True,
             True,
         )
+
+
+class CausalLoraInt8Model(CausalLoraModel):
+    def __init__(self, engine: str, weights_path: Optional[str] = None):
+        assert_not_cpu_int8()
+        super().__init__(engine, weights_path)
