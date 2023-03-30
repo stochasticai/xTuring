@@ -93,7 +93,7 @@ class Playground:
                         value=self.model_path if self.model_path else "",
                         interactive=True,
                         placeholder="Enter the model path",
-                        label="Enter the model path",
+                        label="Model path",
                         visible=True,
                     )
 
@@ -186,7 +186,7 @@ class Playground:
 
                     def model(history):
                         # Pass user input to the model
-                        model_output = "🤖 :" + self.generate_output(history[-1][0])[0]
+                        model_output = "🤖 : " + self.generate_output(history[-1][0])[0]
                         history[-1][1] = model_output
                         return history
 
