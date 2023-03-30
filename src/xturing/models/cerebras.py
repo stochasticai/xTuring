@@ -6,7 +6,12 @@ from xturing.engines.cerebras_engine import (
     CerebrasLoraEngine,
     CerebrasLoraInt8Engine,
 )
-from xturing.models.causal import CausalLoraModel, CausalModel
+from xturing.models.causal import (
+    CausalInt8Model,
+    CausalLoraInt8Model,
+    CausalLoraModel,
+    CausalModel,
+)
 
 
 class Cerebras(CausalModel):
@@ -23,14 +28,14 @@ class CerebrasLora(CausalLoraModel):
         super().__init__(CerebrasLoraEngine.config_name, weights_path)
 
 
-class CerebrasInt8(CausalModel):
+class CerebrasInt8(CausalInt8Model):
     config_name: str = "cerebras_int8"
 
     def __init__(self, weights_path: Optional[str] = None):
         super().__init__(CerebrasInt8Engine.config_name, weights_path)
 
 
-class CerebrasLoraInt8(CausalLoraModel):
+class CerebrasLoraInt8(CausalLoraInt8Model):
     config_name: str = "cerebras_lora_int8"
 
     def __init__(self, weights_path: Optional[str] = None):

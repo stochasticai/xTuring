@@ -6,7 +6,12 @@ from xturing.engines.bloom_engine import (
     BloomLoraEngine,
     BloomLoraInt8Engine,
 )
-from xturing.models.causal import CausalLoraModel, CausalModel
+from xturing.models.causal import (
+    CausalInt8Model,
+    CausalLoraInt8Model,
+    CausalLoraModel,
+    CausalModel,
+)
 
 
 class Bloom(CausalModel):
@@ -23,14 +28,14 @@ class BloomLora(CausalLoraModel):
         super().__init__(BloomLoraEngine.config_name, weights_path)
 
 
-class BloomInt8(CausalModel):
+class BloomInt8(CausalInt8Model):
     config_name: str = "bloom_int8"
 
     def __init__(self, weights_path: Optional[str] = None):
         super().__init__(BloomInt8Engine.config_name, weights_path)
 
 
-class BloomLoraInt8(CausalLoraModel):
+class BloomLoraInt8(CausalLoraInt8Model):
     config_name: str = "bloom_lora_int8"
 
     def __init__(self, weights_path: Optional[str] = None):
