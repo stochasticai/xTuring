@@ -51,10 +51,15 @@ dependencies = [
     "deepspeed",
     "gradio",
     "bitsandbytes",
+    "click",
+    "ipywidgets",
     "openai >= 0.27.0",
     "pydantic >= 1.10.0",
     "rouge-score >= 0.1.2",
 ]
+
+[project.scripts]
+xturing = "xturing.cli:xturing"
 
 
 [project.urls]
