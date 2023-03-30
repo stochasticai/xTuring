@@ -97,11 +97,14 @@ class CausalModel(BaseModel):
                 input_ids = batch["input_ids"].to(DEFAULT_DEVICE)
             with torch.no_grad():
                 with torch.autocast("cuda"):
+                    len_input = input_ids.shape[1]
                     output = self.engine.model.generate(
                         input_ids=input_ids, **self.generation_args.dict()
                     )
 
-            output = self.engine.tokenizer.decode(output[0], skip_special_tokens=False)
+            output = self.engine.tokenizer.decode(
+                output[0][len_input:], skip_special_tokens=True
+            )
             outputs.append(output)
 
         return outputs
