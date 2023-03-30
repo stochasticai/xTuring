@@ -7,9 +7,18 @@
 ___
 
 `xturing` provides fast, efficient and simple fine-tuning of LLMs, such as LLaMA, GPT-J, GPT-2,
-and more. It supports both single GPU and multi-GPU training. Leverage memory-efficient fine-tuning
-techniques like LoRA to reduce your hardware costs by up to 90% and train your models in a fraction
-of the time.
+OPT, Cerebras-GPT, Galactica, and more.
+By providing an easy-to-use interface for personalizing LLMs to your own data and application,
+xTuring makes it simple to build and control LLMs.
+The entire process can be done inside your computer or in your private cloud,
+ensuring data privacy and security.
+
+With `xturing` you can,
+- Ingest data from different sources and preprocess them to a format LLMs can understand
+- Scale from single to multiple GPUs for faster fine-tuning
+- Leverage memory-efficient techniques (i.e. LoRA fine-tuning) to reduce your hardware costs by up to 90% of the time
+- Explore different fine-tuning methods and benchmark them to find the best performing model
+- Evalate fine-tuned models on well-defined metrics for in-depth analysis
 
 <br>
 
@@ -51,11 +60,17 @@ You can find the data folder [here](examples/llama/alpaca_data).
 
 ## 📚 Tutorials
 - [Preparing your dataset](examples/llama/preparing_your_dataset.py)
+- [Cerebras-GPT efficient fine-tuning with LoRA and INT8](examples/cerebras/cerebras_lora_int8.ipynb) &ensp; [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1eKq3oF7dnK8KuIfsTE70Gvvniwr1O9D0?usp=sharing)
+- [Cerebras-GPT efficient fine-tuning with LoRA](examples/cerebras/cerebras_lora.ipynb) &ensp; [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1VjqQhstm5pT4EjPjx4Je7b3W2X1V3vDo?usp=sharing)
 - [LLaMA efficient fine-tuning with LoRA and INT8](examples/llama/llama_lora_int8.py) &ensp; [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1SQUXq1AMZPSLD4mk3A3swUIc6Y2dclme?usp=sharing)
 - [LLaMA efficient fine-tuning with LoRA](examples/llama/llama_lora.py)
 - [LLaMA fine-tuning](examples/llama/llama.py)
 - [GPT-J efficient fine-tuning with LoRA and INT8](examples/gptj/gptj_lora_int8.py) &ensp; [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1hB_8s1V9K4IzifmlmN2AovGEJzTB1c7e?usp=sharing)
 - [GPT-J efficient fine-tuning with LoRA](examples/gptj/gptj_lora.py)
+- [Galactica efficient fine-tuning with LoRA and INT8](examples/galactica/galactica_lora_int8.py)
+- [Galactica efficient fine-tuning with LoRA](examples/galactica/galactica_lora.py)
+- [OPT efficient fine-tuning with LoRA and INT8](examples/opt/opt_lora_int8.py)
+- [OPT efficient fine-tuning with LoRA](examples/opt/opt_lora.py)
 - [GPT-2 efficient fine-tuning with LoRA](examples/gpt2/gpt2_lora.py) &ensp; [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://drive.google.com/file/d/1Sh-ocNpKn9pS7jv6oBb_Q8DitFyj1avL/view?usp=sharing)
 
 
@@ -88,9 +103,10 @@ Please submit your performance results on other GPUs.
 <br >
 
 ## 📈 Roadmap
-- [x] Support for LLaMA, GPT-J, GPT-2
-- [ ] Dataset generation using self-instruction
-- [ ] 2x more memory-efficient fine-tuning vs LoRA and unsupervised fine-tuning
+- [x] Support for LLaMA, GPT-J, GPT-2, OPT, Cerebras-GPT, Galactica and Bloom models
+- [x] Dataset generation using self-instruction
+- [x] 2x more memory-efficient fine-tuning vs LoRA and unsupervised fine-tuning
+- [x] INT8 low-precision fine-tuning support
 - [ ] Evaluation of LLM models
 - [ ] Support for Stable Diffusion
 

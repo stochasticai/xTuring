@@ -1,6 +1,6 @@
 [project]
 name = "xturing"
-version = "0.0.4"
+version = "0.0.5"
 description = "Fine-tuning, evaluation and data generation for LLMs"
 
 authors = [
@@ -43,17 +43,23 @@ keywords = [
 dependencies = [
     "torch >= 1.9.0",
     "pytorch-lightning",
-    "transformers",
+    "transformers==4.27.3",
     "datasets",
     "evaluate",
     "peft",
     "sentencepiece",
     "deepspeed",
+    "gradio",
     "bitsandbytes",
+    "click",
+    "ipywidgets",
     "openai >= 0.27.0",
     "pydantic >= 1.10.0",
     "rouge-score >= 0.1.2",
 ]
+
+[project.scripts]
+xturing = "xturing.cli:xturing"
 
 
 [project.urls]

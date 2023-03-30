@@ -11,36 +11,42 @@ llama:
   penalty_alpha: 0.6
   top_k: 4
   max_new_tokens: 256
+  do_sample: false
 
 # Contrastive search
 llama_lora:
   penalty_alpha: 0.6
   top_k: 4
   max_new_tokens: 256
+  do_sample: false
 
 # Contrastive search
 llama_lora_int8:
   penalty_alpha: 0.6
   top_k: 4
   max_new_tokens: 256
+  do_sample: false
 
 # Contrastive search
 gptj:
   penalty_alpha: 0.6
   top_k: 4
   max_new_tokens: 256
+  do_sample: false
 
 # Contrastive search
 gptj_lora:
   penalty_alpha: 0.6
   top_k: 4
   max_new_tokens: 256
+  do_sample: false
 
 # Contrastive search
 gptj_lora_int8:
   penalty_alpha: 0.6
   top_k: 4
   max_new_tokens: 256
+  do_sample: false
 
 # Top-p sampling
 gpt2:
@@ -76,3 +82,87 @@ distilgpt2_lora:
   top_k: 0
   top_p: 0.92
   max_new_tokens: 256
+
+# Contrastive search
+galactica:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 256
+  do_sample: false
+
+# Contrastive search
+galactica_lora:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 256
+  do_sample: false
+
+# Contrastive search
+galactica_lora_int8:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 256
+  do_sample: false
+
+# Contrastive search
+opt:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 256
+  do_sample: false
+
+# Contrastive search
+opt_lora:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 256
+  do_sample: false
+
+# Contrastive search
+opt_lora_int8:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 256
+  do_sample: false
+
+# Contrastive search
+cerebras:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 256
+  do_sample: false
+
+# Contrastive search
+cerebras_lora:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 256
+  do_sample: false
+
+# Contrastive search
+cerebras_lora_int8:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 256
+  do_sample: false
+
+# Contrastive search
+bloom:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 256
+  do_sample: false
+
+# Contrastive search
+bloom_lora:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 256
+  do_sample: false
+
+# Contrastive search
+bloom_lora_int8:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 256
+  do_sample: false
