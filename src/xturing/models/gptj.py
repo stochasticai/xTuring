@@ -6,7 +6,12 @@ from xturing.engines.gptj_engine import (
     GPTJLoraEngine,
     GPTJLoraInt8Engine,
 )
-from xturing.models.causal import CausalLoraModel, CausalModel
+from xturing.models.causal import (
+    CausalInt8Model,
+    CausalLoraInt8Model,
+    CausalLoraModel,
+    CausalModel,
+)
 
 
 class GPTJ(CausalModel):
@@ -23,14 +28,14 @@ class GPTJLora(CausalLoraModel):
         super().__init__(GPTJLoraEngine.config_name, weights_path)
 
 
-class GPTJInt8(CausalModel):
+class GPTJInt8(CausalInt8Model):
     config_name: str = "gptj_int8"
 
     def __init__(self, weights_path: Optional[str] = None):
         super().__init__(GPTJInt8Engine.config_name, weights_path)
 
 
-class GPTJLoraInt8(CausalLoraModel):
+class GPTJLoraInt8(CausalLoraInt8Model):
     config_name: str = "gptj_lora_int8"
 
     def __init__(self, weights_path: Optional[str] = None):
