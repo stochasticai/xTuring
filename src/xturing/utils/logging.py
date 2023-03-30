@@ -56,7 +56,7 @@ def configure_logger(name, fmt=None):
 
     # Create stdout handler for logging to the console (logs all five levels)
     stdout_handler = logging.StreamHandler()
-    stdout_handler.setLevel(logging.DEBUG)
+    stdout_handler.setLevel(logging.WARNING)
     stdout_handler.setFormatter(CustomFormatter(fmt))
 
     # Create file handler for logging to a file (logs all five levels)
