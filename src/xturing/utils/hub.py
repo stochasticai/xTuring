@@ -32,10 +32,14 @@ class Hub:
 
             zip_filename = self.cache_path / "tmp.zip"
 
-            wget.download(url, str(zip_filename))
+            try:
+                wget.download(url, str(zip_filename))
 
-            with ZipFile(zip_filename, "r") as zip_ref:
-                zip_ref.extractall(self.cache_path)
+                with ZipFile(zip_filename, "r") as zip_ref:
+                    zip_ref.extractall(self.cache_path)
+
+            finally:
+                zip_filename.unlink()
 
         return model_dir
 
@@ -48,6 +52,7 @@ def make_model_url(model_name: str):
 class ModelHub(Hub):
     static_path_map = {
         "gpt2": make_model_url("gpt2"),
+        "gpt2_distill": make_model_url("gpt2_distill"),
     }
 
     def __init__(self):
