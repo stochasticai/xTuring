@@ -108,12 +108,20 @@ Fine-tuning parameters:
 Please submit your performance results on other GPUs.
 <br >
 
+## 📊 Models
+
+| model           | Path          |
+|-----------------|---------------|
+| GPT-2           | `x/gpt2`      |
+| GPT-2 distilled | `x/gpt2_distill` |
+
 ## 📈 Roadmap
 - [x] Support for LLaMA, GPT-J, GPT-2, OPT, Cerebras-GPT, Galactica and Bloom models
 - [x] Dataset generation using self-instruction
 - [x] 2x more memory-efficient fine-tuning vs LoRA and unsupervised fine-tuning
 - [x] INT8 low-precision fine-tuning support
 - [x] Supports OpenAI, Cohere and AI21 Studio model APIs for dataset generation
+- [x] First version of Model Hub
 - [ ] Evaluation of LLM models
 - [ ] Support for Stable Diffusion
 
