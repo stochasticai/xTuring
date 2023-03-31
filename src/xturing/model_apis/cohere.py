@@ -3,7 +3,7 @@ from datetime import datetime
 
 import cohere
 
-from xturing.model_apis import TextGenerationAPI
+from xturing.model_apis.base import TextGenerationAPI
 
 
 class CohereTextGenerationAPI(TextGenerationAPI):
