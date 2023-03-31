@@ -52,6 +52,8 @@ dependencies = [
     "gradio",
     "bitsandbytes",
     "click",
+    "ai21",
+    "cohere",
     "ipywidgets",
     "openai >= 0.27.0",
     "pydantic >= 1.10.0",
