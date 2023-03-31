@@ -52,6 +52,7 @@ dependencies = [
     "gradio",
     "bitsandbytes",
     "click",
+    "wget",
     "ai21",
     "cohere",
     "ipywidgets",
