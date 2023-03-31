@@ -108,7 +108,7 @@ Fine-tuning parameters:
 Please submit your performance results on other GPUs.
 <br >
 
-## 📊 Models
+## 💾 Models
 
 | model           | Path          |
 |-----------------|---------------|
