@@ -61,3 +61,10 @@ class AI21TextGenerationAPI(TextGenerationAPI):
             "created_at": str(datetime.now()),
         }
         return [data]
+
+
+class J2Grande(AI21TextGenerationAPI):
+    config_name = "ai21_j2_grande"
+
+    def __init__(self, api_key):
+        super().__init__(engine="j2-grande", api_key=api_key)
