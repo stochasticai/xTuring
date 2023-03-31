@@ -7,7 +7,7 @@ from datasets import Dataset as HFDataset
 from datasets import load_from_disk
 
 from xturing.datasets.base import BaseDataset
-from xturing.model_apis.openai import DAVINCI
+from xturing.model_apis import TextGenerationAPI
 from xturing.self_instruct import (
     bootstrap_instructions,
     generate_instances,
@@ -122,17 +122,14 @@ class InstructionDataset(BaseDataset):
     @classmethod
     def generate_dataset(
         cls,
-        api_key: str,
         path: str,
-        organization: Optional[str] = None,
-        engine: str = DAVINCI,
+        engine: TextGenerationAPI,
         num_instructions: int = 10,
         num_instructions_for_finetuning: int = 5,
         num_prompt_instructions: int = 1,
-        request_batch_size: int = 1,
     ):
         cache_directory = create_temp_directory(
-            f"./self_instruct_{engine}_cache_{num_instructions}_{num_instructions_for_finetuning}"
+            f"./self_instruct_{engine.config_name}_cache_{num_instructions}_{num_instructions_for_finetuning}"
         )
         seed_tasks_path = Path(path)
 
@@ -152,9 +149,6 @@ class InstructionDataset(BaseDataset):
             use_clf_seed_tasks_only=False,
             engine=engine,
             num_prompt_instructions=num_prompt_instructions,
-            request_batch_size=request_batch_size,
-            api_key=api_key,
-            organization=organization,
         )
 
         identify_if_classification.identify_if_classification(
@@ -163,9 +157,6 @@ class InstructionDataset(BaseDataset):
             num_instructions=num_instructions,
             template="template_1",
             engine=engine,
-            request_batch_size=request_batch_size,
-            api_key=api_key,
-            organization=organization,
         )
 
         generate_instances.generate_instances(
@@ -177,9 +168,6 @@ class InstructionDataset(BaseDataset):
             generation_tasks_only=False,
             classification_tasks_only=False,
             engine=engine,
-            request_batch_size=request_batch_size,
-            api_key=api_key,
-            organization=organization,
         )
 
         prepare_for_finetuning.prepare_for_finetuning(
@@ -193,5 +181,5 @@ class InstructionDataset(BaseDataset):
             seed_tasks_path=seed_tasks_path,
         )
 
-        path = Path("./self_instruct_davinci_cache_10_5/sampled_generated.jsonl")
+        path = Path(f"./{cache_directory}/sampled_generated.jsonl")
         return InstructionDataset(path)
