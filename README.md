@@ -30,7 +30,7 @@ Documentation -  [https://xturing.stochastic.ai/](https://xturing.stochastic.ai/
 <img src=".github/cli-playground.gif" width="100%" style="margin: 0 1%;"/>
 
 ## UI playground
-<img src=".github/ui-playground.gif" width="100%" style="margin: 0 1%;"/>
+<img src=".github/ui-playground2.gif" width="100%" style="margin: 0 1%;"/>
 
 ## ⚙️ Installation
 ```bash
