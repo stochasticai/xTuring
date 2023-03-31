@@ -47,9 +47,25 @@ class CohereTextGenerationAPI(TextGenerationAPI):
                 backoff_time *= 1.5
             retry_cnt += 1
 
+        predicts = {
+            "choices": [
+                {
+                    "text": response.generations[0].text,
+                    "finish_reason": "eos",
+                }
+            ]
+        }
+
         data = {
             "prompt": prompts,
-            "response": response,
+            "response": predicts,
             "created_at": str(datetime.now()),
         }
         return [data]
+
+
+class Medium(CohereTextGenerationAPI):
+    config_name = "cohere_medium"
+
+    def __init__(self, api_key):
+        super().__init__("medium", api_key)

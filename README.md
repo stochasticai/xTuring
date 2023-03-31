@@ -107,6 +107,7 @@ Please submit your performance results on other GPUs.
 - [x] Dataset generation using self-instruction
 - [x] 2x more memory-efficient fine-tuning vs LoRA and unsupervised fine-tuning
 - [x] INT8 low-precision fine-tuning support
+- [x] Cohere and AI21 APIs support for dataset generation
 - [ ] Evaluation of LLM models
 - [ ] Support for Stable Diffusion
 
