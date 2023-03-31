@@ -6,7 +6,7 @@ from pathlib import Path
 
 from tqdm import tqdm
 
-from xturing.self_instruct.api import make_requests as make_gpt3_requests
+from xturing.model_apis import TextGenerationAPI
 from xturing.self_instruct.templates.instance_gen_template import (
     input_first_template_for_gen,
     output_first_template_for_clf,
@@ -23,10 +23,7 @@ def generate_instances(
     max_instances_to_generate: int,
     generation_tasks_only: bool,
     classification_tasks_only: bool,
-    engine: str,
-    request_batch_size: int,
-    api_key: str,
-    organization: str,
+    engine: TextGenerationAPI,
 ):
     # Load the machine generated instructions from the input file.
     with input_file.open() as fin:
@@ -72,8 +69,8 @@ def generate_instances(
 
     progress_bar = tqdm(total=len(tasks))
     with output_file.open("w") as fout:
-        for batch_idx in range(0, len(tasks), request_batch_size):
-            batch = tasks[batch_idx : batch_idx + request_batch_size]
+        for batch_idx in range(0, len(tasks), engine.request_batch_size):
+            batch = tasks[batch_idx : batch_idx + engine.request_batch_size]
             if all(d["instruction"] in existing_requests for d in batch):
                 for d in batch:
                     data = existing_requests[d["instruction"]]
@@ -108,8 +105,8 @@ def generate_instances(
                             + "\n"
                         )
                         prompts.append(prompt)
-                results = make_gpt3_requests(
-                    engine=engine,
+
+                results = engine.generate_text(
                     prompts=prompts,
                     # because the clf template is longer, we need to decrease the max_tokens
                     max_tokens=300
@@ -126,9 +123,8 @@ def generate_instances(
                     logprobs=1,
                     n=1,
                     best_of=1,
-                    api_key=api_key,
-                    organization=organization,
                 )
+
                 for i in range(len(batch)):
                     data = batch[i]
                     data["instance_metadata"] = results[i]
