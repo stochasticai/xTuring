@@ -21,8 +21,17 @@ With `xturing` you can,
 - Evalate fine-tuned models on well-defined metrics for in-depth analysis
 
 <br>
-
-Documentation -  [https://xturing.stochastic.ai/](https://xturing.stochastic.ai/)
+<p align="center">
+  <a href="https://pypi.org/project/xturing/">
+    <img src="https://img.shields.io/pypi/v/xturing" />
+  </a>
+  <a href="https://xturing.stochastic.ai/">
+    <img src="https://img.shields.io/badge/Documentation-blue?logo=GitBook&logoColor=white" />
+  </a>
+  <a href="https://discord.gg/TgHXuSJEk6">
+    <img src="https://img.shields.io/badge/Chat-FFFFFF?logo=discord"/>
+  </a>
+</p>
 
 <br>
 
