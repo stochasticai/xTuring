@@ -30,7 +30,7 @@ Documentation -  [https://xturing.stochastic.ai/](https://xturing.stochastic.ai/
 <img src=".github/cli-playground.gif" width="100%" style="margin: 0 1%;"/>
 
 ## UI playground
-<img src=".github/ui-playground.gif" width="100%" style="margin: 0 1%;"/>
+<img src=".github/ui-playground2.gif" width="100%" style="margin: 0 1%;"/>
 
 ## ⚙️ Installation
 ```bash
@@ -113,6 +113,7 @@ Please submit your performance results on other GPUs.
 - [x] Dataset generation using self-instruction
 - [x] 2x more memory-efficient fine-tuning vs LoRA and unsupervised fine-tuning
 - [x] INT8 low-precision fine-tuning support
+- [x] Supports OpenAI, Cohere and AI21 Studio model APIs for dataset generation
 - [ ] Evaluation of LLM models
 - [ ] Support for Stable Diffusion
 

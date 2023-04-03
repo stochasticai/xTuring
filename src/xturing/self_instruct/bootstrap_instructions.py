@@ -11,7 +11,7 @@ import numpy as np
 from rouge_score import rouge_scorer
 from tqdm import tqdm
 
-from xturing.self_instruct.api import make_requests as make_gpt3_requests
+from xturing.model_apis import TextGenerationAPI
 
 random.seed(42)
 
@@ -140,11 +140,8 @@ def bootstrap_instructions(
     output_file: Path,
     num_instructions_to_generate: int,
     use_clf_seed_tasks_only: bool,
-    engine: str,
+    engine: TextGenerationAPI,
     num_prompt_instructions: int,
-    request_batch_size: int,
-    api_key: str,
-    organization: str,
 ) -> None:
     """
     Generates machine-generated instructions using OpenAI's GPT-3 and saves them to a file.
@@ -197,7 +194,7 @@ def bootstrap_instructions(
             # Initialize batch inputs
             batch_inputs = []
 
-            for _ in range(request_batch_size):
+            for _ in range(engine.request_batch_size):
                 # Sample machine instructions from the pool
                 prompt_instructions = sample_machine_instructions(
                     machine_instructions, n=2
@@ -215,8 +212,7 @@ def bootstrap_instructions(
                 batch_inputs.append(prompt)
 
             # Use OpenAI GPT3 to generate new instructions
-            results = make_gpt3_requests(
-                engine=engine,
+            results = engine.generate_text(
                 prompts=batch_inputs,
                 max_tokens=1024,
                 temperature=0.7,
@@ -227,8 +223,6 @@ def bootstrap_instructions(
                 logprobs=1,
                 n=1,
                 best_of=1,
-                api_key=api_key,
-                organization=organization,
             )
 
             instructions = []
@@ -246,7 +240,9 @@ def bootstrap_instructions(
                         seed_instructions + machine_instructions,
                     )
                 rouge_scores = [score["rougeL"].fmeasure for score in rouge_scores]
+
                 # rouge_scores = [scorer.score(inst, e_inst)["rougeL"].fmeasure for e_inst in human_instructions + machine_instructions]
+
                 if max(rouge_scores) > 0.7:
                     continue
                 all_instructions = seed_instructions + machine_instructions
