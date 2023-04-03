@@ -108,12 +108,19 @@ Fine-tuning parameters:
 Please submit your performance results on other GPUs.
 <br >
 
-## 💾 Models
+## 📎 Fine-tuned model checkpoints
+We have already fine-tuned some models that you can use as your base or start playing with.
+Here is how you would load them:
 
-| model           | Path          |
-|-----------------|---------------|
-| GPT-2           | `x/gpt2`      |
-| GPT-2 distilled | `x/gpt2_distill` |
+```python
+from xturing.models import BaseModel
+model = BaseModel.load("x/distilgpt2_lora_finetuned_alpaca")
+```
+
+| model                | dataset | Path          |
+|----------------------|--------|---------------|
+| distilled GPT-2 LoRA | alpaca | `x/distilgpt2_lora_finetuned_alpaca` |
+| LLaMA LoRA           | alpaca | `x/llama_lora_finetuned_alpaca` |
 
 ## 📈 Roadmap
 - [x] Support for LLaMA, GPT-J, GPT-2, OPT, Cerebras-GPT, Galactica and Bloom models
@@ -121,7 +128,7 @@ Please submit your performance results on other GPUs.
 - [x] 2x more memory-efficient fine-tuning vs LoRA and unsupervised fine-tuning
 - [x] INT8 low-precision fine-tuning support
 - [x] Supports OpenAI, Cohere and AI21 Studio model APIs for dataset generation
-- [x] First version of Model Hub
+- [x] Added fine-tuned checkpoints for some models to the hub
 - [ ] Evaluation of LLM models
 - [ ] Support for Stable Diffusion
 

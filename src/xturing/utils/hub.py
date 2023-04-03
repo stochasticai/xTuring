@@ -1,3 +1,5 @@
+import shutil
+import sys
 from pathlib import Path
 from zipfile import ZipFile
 
@@ -32,12 +34,38 @@ class Hub:
 
             zip_filename = self.cache_path / "tmp.zip"
 
+            def bar_progress(current, total, width=80):
+                progress_message = "Downloading model : %d%% [%d / %d] bytes" % (
+                    current / total * 100,
+                    current,
+                    total,
+                )
+                sys.stdout.write("\r" + progress_message)
+                sys.stdout.flush()
+
             try:
-                wget.download(url, str(zip_filename))
+                wget.download(url, str(zip_filename), bar=bar_progress)
 
                 with ZipFile(zip_filename, "r") as zip_ref:
-                    zip_ref.extractall(self.cache_path)
+                    zip_ref.extractall(path=model_dir)
 
+                print(f"Downloaded model {model_name} from {url}")
+
+                # if zip has folder with model, move files to root
+
+                entries = list(model_dir.glob("*"))
+
+                if len(entries) == 1 and entries[0].is_dir():
+                    single_folder = entries[0]
+
+                    for item in single_folder.iterdir():
+                        shutil.move(str(item), str(model_dir / item.name))
+
+                    shutil.rmtree(single_folder)
+
+            except Exception as e:
+                print(f"Error downloading model {model_name} from {url}: {e}")
+                raise e
             finally:
                 zip_filename.unlink()
 
@@ -52,7 +80,14 @@ def make_model_url(model_name: str):
 class ModelHub(Hub):
     static_path_map = {
         "gpt2": make_model_url("gpt2"),
-        "gpt2_distill": make_model_url("gpt2_distill"),
+        "gpt2_lora": make_model_url("gpt2_lora"),
+        "distilgpt2": make_model_url("distilgpt2"),
+        "distilgpt2_lora": make_model_url("distilgpt2_lora"),
+        "llama_lora": make_model_url("llama_lora"),
+        "distilgpt2_lora_finetuned_alpaca": make_model_url(
+            "distilgpt2_lora_finetuned_alpaca"
+        ),
+        "llama_lora_finetuned_alpaca": make_model_url("llama_lora_finetuned_alpaca"),
     }
 
     def __init__(self):
