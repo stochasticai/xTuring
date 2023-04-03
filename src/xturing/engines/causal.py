@@ -10,6 +10,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from xturing.config import DEFAULT_DEVICE, DEFAULT_DTYPE
 from xturing.engines.base import BaseEngine
 from xturing.utils.loss_fns import CrossEntropyLoss
+from xturing.config.read_config import exists_xturing_config_file
 
 
 class CausalEngine(BaseEngine):
@@ -125,7 +126,7 @@ class CausalLoraEngine(CausalEngine):
         # That's why weights_path is None. If not model.eval() will fail later
         super().__init__(
             model_name=model_name,
-            weights_path=None,
+            weights_path=None if exists_xturing_config_file(weights_path) else weights_path,
             model=model,
             tokenizer=tokenizer,
             load_8bit=load_8bit,
@@ -144,7 +145,7 @@ class CausalLoraEngine(CausalEngine):
         )
         self.model = get_peft_model(self.base_model, peft_config)
 
-        if weights_path is not None:
+        if weights_path is not None and exists_xturing_config_file(weights_path):
             model_weights_path = str(Path(weights_path).resolve() / "pytorch_model.bin")
             self.model.load_state_dict(
                 torch.load(
