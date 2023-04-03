@@ -1,0 +1,10 @@
+{"instruction": "What is the current balance of your account?", "is_classification": " No"}
+{"instruction": "How much money do you have in your savings account?", "is_classification": " No"}
+{"instruction": "How much interest are you earning on your checking account?", "is_classification": " No"}
+{"instruction": "What does it cost to close your cd before maturity?", "is_classification": " No"}
+{"instruction": "If you had $10,000 in your account, how many cds could you buy?", "is_classification": " No"}
+{"instruction": "Would you rather earn 3% interest or 5% interest? why?", "is_classification": " No"}
+{"instruction": "Which bank offers the best deal: a high-interest rate with a low minimum deposit or a lower interest rate with a higher minimum deposit?", "is_classification": " No"}
+{"instruction": "Should you keep all your money in one place? why or why not?", "is_classification": " No"}
+{"instruction": "Are banks trustworthy? why or why not?", "is_classification": " No"}
+{"instruction": "Do you think that anyone would be able to steal your money out of an atm machine? why or why not?", "is_classification": " No"}
