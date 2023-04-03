@@ -117,10 +117,10 @@ from xturing.models import BaseModel
 model = BaseModel.load("x/distilgpt2_lora_finetuned_alpaca")
 ```
 
-| model                | dataset | Path          |
-|----------------------|--------|---------------|
-| distilled GPT-2 LoRA | alpaca | `x/distilgpt2_lora_finetuned_alpaca` |
-| LLaMA LoRA           | alpaca | `x/llama_lora_finetuned_alpaca` |
+| model               | dataset | Path          |
+|---------------------|--------|---------------|
+| DistilGPT-2 LoRA | alpaca | `x/distilgpt2_lora_finetuned_alpaca` |
+| LLaMA LoRA          | alpaca | `x/llama_lora_finetuned_alpaca` |
 
 ## 📈 Roadmap
 - [x] Support for LLaMA, GPT-J, GPT-2, OPT, Cerebras-GPT, Galactica and Bloom models
