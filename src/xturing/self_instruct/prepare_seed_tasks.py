@@ -28,22 +28,7 @@ def instruction_input_suggest(
             Document: {text}
             """
 
-        # messages=[
-        #     {"role": "user", "content": prompt},
-        # ]
-
-        outputs = engine.generate_text(
-            prompts=[prompt],
-            max_tokens=1024,
-            temperature=0.7,
-            top_p=0.5,
-            frequency_penalty=0,
-            presence_penalty=2,
-            stop_sequences=["\n\n", "\n16", "16.", "16 ."],
-            logprobs=1,
-            n=1,
-            best_of=1,
-        )
+        outputs = engine.get_completion(prompts=[prompt])
         pairs = outputs.split("\n\n")
         for pair in pairs:
             question, answer = pair.split("\n")

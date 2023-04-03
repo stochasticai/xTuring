@@ -130,7 +130,7 @@ class Davinci(OpenAITextGenerationAPI):
         )
 
 
-class ChatGpt(OpenAITextGenerationAPI):
+class ChatGPT(OpenAITextGenerationAPI):
     config_name = "openai_chat"
 
     def __init__(self, api_key, organization=None, request_batch_size=10):
@@ -141,12 +141,11 @@ class ChatGpt(OpenAITextGenerationAPI):
             request_batch_size=request_batch_size,
         )
 
-    def get_completion(self, prompts, target_length, temperature, **kwargs):
+    def get_completion(self, prompts, **kwargs):
         messages = [{"role": "user", "content": prompt} for prompt in prompts]
         completion = openai.ChatCompletion.create(
-            engine=self.engine,
+            model=self.engine,
             messages=messages,
             temperature=0,
         )
-        result = {"choices": [i["message"]["content"] for i in completion]}
-        return result
+        return completion["choices"][0]["message"]["content"]
