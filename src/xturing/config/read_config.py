@@ -31,7 +31,9 @@ def load_config(model_name: str, config_path: Union[Path, str], data_class: Base
     return config_object
 
 
-def exists_xturing_config_file(dir_path: Union[Path, str]):
+def exists_xturing_config_file(dir_path: Union[Path, str] = None):
+    if dir_path is None:
+        return False
     dir_path = Path(dir_path)
     assert dir_path.is_dir(), "The following path {} should be a directory".format(
         str(dir_path)

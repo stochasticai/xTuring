@@ -1,10 +1,11 @@
 import json
+import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional, Union
 
 from datasets import Dataset as HFDataset
-from datasets import load_from_disk
+from datasets import DatasetDict, load_from_disk
 
 from xturing.datasets.base import BaseDataset
 from xturing.model_apis import TextGenerationAPI
@@ -13,9 +14,9 @@ from xturing.self_instruct import (
     generate_instances,
     identify_if_classification,
     prepare_for_finetuning,
-    prepare_seed_tasks
+    prepare_seed_tasks,
 )
-from xturing.utils.utils import create_temp_directory
+from xturing.utils.utils import create_temp_directory, extract_text_from_directory
 
 
 class ListPromptTemplate:
@@ -50,7 +51,7 @@ class InstructionDataset(BaseDataset):
         infix_instruction: bool = False,
         promt_template: str = None,
     ):
-        if isinstance(path, HFDataset):
+        if isinstance(path, HFDataset) or isinstance(path, DatasetDict):
             self.data = path
         elif isinstance(path, dict):
             self.data = {"train": HFDataset.from_dict(path)}
@@ -120,6 +121,9 @@ class InstructionDataset(BaseDataset):
     def __getitem__(self, idx):
         return self.data["train"][idx]
 
+    def save(self, path):
+        return self.data.save_to_disk(path)
+
     @classmethod
     def generate_dataset(
         cls,
@@ -178,7 +182,7 @@ class InstructionDataset(BaseDataset):
             sampled_generated=sampled_generated,
             finetuning=finetuning,
             num_instructions=num_instructions_for_finetuning,
-            include_seed_tasks=False,
+            include_seed_tasks=True,
             seed_tasks_path=seed_tasks_path,
         )
 
@@ -186,28 +190,51 @@ class InstructionDataset(BaseDataset):
         return InstructionDataset(path)
 
     @classmethod
-    def generate_dataset_on_plaintexts(
+    def generate_dataset_on_data(
         cls,
-        api_key: str,
-        data_path: str,
-        organization: Optional[str] = None,
-        engine: str = DAVINCI,
+        path: str,
+        engine: TextGenerationAPI,
         num_instructions: int = 10,
         num_instructions_for_finetuning: int = 5,
         num_prompt_instructions: int = 1,
-        request_batch_size: int = 1,
         chunk_size=8000,
-        num_samples_per_chunk=7
+        num_samples_per_chunk=5,
+        use_self_instruct=False,
     ):
-        prepare_seed_tasks.prepare_seed_tasks(data_path, "seed_tasks.jsonl", api_key, chunk_size, num_samples_per_chunk)
-
-        InstructionDataset.generate_dataset(
-            api_key,
-            "seed_tasks.jsonl",
-            organization,
-            engine,
-            num_instructions,
-            num_instructions_for_finetuning,
-            num_prompt_instructions,
-            request_batch_size,
+        txt_dir = extract_text_from_directory(path)
+        prepare_seed_tasks.prepare_seed_tasks(
+            txt_dir,
+            "finance_seed_tasks.jsonl",
+            engine.api_key,
+            chunk_size,
+            num_samples_per_chunk,
         )
+
+        if use_self_instruct:
+            instruction_dataset = InstructionDataset.generate_dataset(
+                "finance_seed_tasks.jsonl",
+                engine,
+                num_instructions,
+                num_instructions_for_finetuning,
+                num_prompt_instructions,
+            )
+            return instruction_dataset
+        else:
+            instructions = []
+            outputs = []
+            texts = []
+            with open("finance_seed_tasks.jsonl") as f:
+                for line in f:
+                    data = json.loads(line)
+                    instructions.append(data["instruction"])
+                    outputs.append(data["instances"][0]["output"])
+                    texts.append("")
+            data_dict = {
+                "train": {"instruction": instructions, "text": texts, "target": outputs}
+            }
+
+            dataset = DatasetDict()
+            # using your `Dict` object
+            for k, v in data_dict.items():
+                dataset[k] = Dataset.from_dict(v)
+            return InstructionDataset(dataset)
