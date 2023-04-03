@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional, Union
 
+from datasets import Dataset
 from datasets import Dataset as HFDataset
 from datasets import DatasetDict, load_from_disk
 
@@ -205,7 +206,7 @@ class InstructionDataset(BaseDataset):
         prepare_seed_tasks.prepare_seed_tasks(
             txt_dir,
             "finance_seed_tasks.jsonl",
-            engine.api_key,
+            engine,
             chunk_size,
             num_samples_per_chunk,
         )
