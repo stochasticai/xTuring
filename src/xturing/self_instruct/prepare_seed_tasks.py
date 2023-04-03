@@ -24,7 +24,7 @@ def instruction_input_suggest(
     questions = []
     answers = []
     for text in texts:
-        prompt = f"""Given  a document. Suggest {num_samples_per_chunk} questions could be asked related to the document. Generate a comprehensive and informative answer (but no more than 80 words) for each question.
+        prompt = f"""Given  a document. Suggest {num_samples_per_chunk} questions that could be asked related to the document. Generate a comprehensive and informative answer (but no more than 80 words) for each question.
             Document: {text}
             """
 
