@@ -23,13 +23,13 @@ With `xturing` you can,
 <br>
 <p align="center">
   <a href="https://pypi.org/project/xturing/">
-    <img src="https://img.shields.io/pypi/v/xturing" />
+    <img src="https://img.shields.io/pypi/v/xturing?style=for-the-badge" />
   </a>
   <a href="https://xturing.stochastic.ai/">
-    <img src="https://img.shields.io/badge/Documentation-blue?logo=GitBook&logoColor=white" />
+    <img src="https://img.shields.io/badge/Documentation-blue?logo=GitBook&logoColor=white&style=for-the-badge" />
   </a>
   <a href="https://discord.gg/TgHXuSJEk6">
-    <img src="https://img.shields.io/badge/Chat-FFFFFF?logo=discord"/>
+    <img src="https://img.shields.io/badge/Chat-FFFFFF?logo=discord&style=for-the-badge"/>
   </a>
 </p>
 
