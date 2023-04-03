@@ -13,8 +13,9 @@ from xturing.self_instruct import (
     generate_instances,
     identify_if_classification,
     prepare_for_finetuning,
+    prepare_seed_tasks
 )
-from xturing.utils.utils import create_temp_directory, no_std_out
+from xturing.utils.utils import create_temp_directory
 
 
 class ListPromptTemplate:
@@ -189,9 +190,36 @@ class InstructionDataset(BaseDataset):
             sampled_generated=sampled_generated,
             finetuning=finetuning,
             num_instructions=num_instructions_for_finetuning,
-            include_seed_tasks=True,
+            include_seed_tasks=False,
             seed_tasks_path=seed_tasks_path,
         )
 
         path = Path("./self_instruct_davinci_cache_10_5/sampled_generated.jsonl")
         return InstructionDataset(path)
+
+    @classmethod
+    def generate_dataset_on_plaintexts(
+        cls,
+        api_key: str,
+        data_path: str,
+        organization: Optional[str] = None,
+        engine: str = DAVINCI,
+        num_instructions: int = 10,
+        num_instructions_for_finetuning: int = 5,
+        num_prompt_instructions: int = 1,
+        request_batch_size: int = 1,
+        chunk_size=8000,
+        num_samples_per_chunk=7
+    ):
+        prepare_seed_tasks.prepare_seed_tasks(data_path, "seed_tasks.jsonl", api_key, chunk_size, num_samples_per_chunk)
+
+        InstructionDataset.generate_dataset(
+            api_key,
+            "seed_tasks.jsonl",
+            organization,
+            engine,
+            num_instructions,
+            num_instructions_for_finetuning,
+            num_prompt_instructions,
+            request_batch_size,
+        )
