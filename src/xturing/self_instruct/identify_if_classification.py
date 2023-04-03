@@ -6,7 +6,7 @@ from pathlib import Path
 
 from tqdm import tqdm
 
-from xturing.self_instruct.api import make_requests as make_gpt3_requests
+from xturing.model_apis import TextGenerationAPI
 from xturing.self_instruct.templates.clf_task_template import template_1
 
 random.seed(42)
@@ -23,10 +23,7 @@ def identify_if_classification(
     output_file: Path,
     num_instructions: int,
     template: str,
-    engine: str,
-    request_batch_size: int,
-    api_key: str,
-    organization: str,
+    engine: TextGenerationAPI,
 ):
     # Load the machine generated instructions
     with input_file.open() as fin:
@@ -54,10 +51,10 @@ def identify_if_classification(
     # Write the output to file
     with output_file.open("w") as fout:
         # Iterate over the lines in batches
-        for batch_idx in range(0, len(lines), request_batch_size):
+        for batch_idx in range(0, len(lines), engine.request_batch_size):
             batch = [
                 json.loads(line)
-                for line in lines[batch_idx : batch_idx + request_batch_size]
+                for line in lines[batch_idx : batch_idx + engine.request_batch_size]
             ]
             if all(d["instruction"] in existing_requests for d in batch):
                 for d in batch:
@@ -77,8 +74,7 @@ def identify_if_classification(
                     + "Is it classification?"
                     for d in batch
                 ]
-                results = make_gpt3_requests(
-                    engine=engine,
+                results = engine.generate_text(
                     prompts=prompts,
                     max_tokens=3,
                     temperature=0,
@@ -89,9 +85,8 @@ def identify_if_classification(
                     logprobs=1,
                     n=1,
                     best_of=1,
-                    api_key=api_key,
-                    organization=organization,
                 )
+
                 for i in range(len(batch)):
                     data = batch[i]
                     if results[i]["response"] is not None:
@@ -108,4 +103,5 @@ def identify_if_classification(
                         (k, data[k]) for k in ["instruction", "is_classification"]
                     )
                     fout.write(json.dumps(data, ensure_ascii=False) + "\n")
+
             progress_bar.update(len(batch))

@@ -110,21 +110,13 @@ class LightningTrainer:
         if not checkpoints_dir_path.exists():
             checkpoints_dir_path.mkdir(exist_ok=True, parents=True)
 
-        training_callbacks = [
-            # callbacks.ModelCheckpoint(
-            #     dirpath=str(checkpoints_dir_path),
-            #     save_top_k=3,
-            #     monitor="loss",
-            #     mode="min",  # Best model = min loss
-            #     every_n_train_steps=200,
-            # ),
-        ]
+        training_callbacks = []
 
         if len(train_dataset) > 100:
             training_callbacks.append(callbacks.LearningRateFinder())
 
-        if not IS_INTERACTIVE:
-            training_callbacks.append(callbacks.BatchSizeFinder())
+        # if not IS_INTERACTIVE:
+        #     training_callbacks.append(callbacks.BatchSizeFinder())
 
         if max_training_time_in_secs is not None:
             training_callbacks.append(

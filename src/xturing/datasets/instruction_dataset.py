@@ -1,20 +1,23 @@
 import json
+import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional, Union
 
+from datasets import Dataset
 from datasets import Dataset as HFDataset
-from datasets import load_from_disk
+from datasets import DatasetDict, load_from_disk
 
 from xturing.datasets.base import BaseDataset
-from xturing.model_apis.openai import DAVINCI
+from xturing.model_apis import TextGenerationAPI
 from xturing.self_instruct import (
     bootstrap_instructions,
     generate_instances,
     identify_if_classification,
     prepare_for_finetuning,
+    prepare_seed_tasks,
 )
-from xturing.utils.utils import create_temp_directory, no_std_out
+from xturing.utils.utils import create_temp_directory, extract_text_from_directory
 
 
 class ListPromptTemplate:
@@ -49,7 +52,7 @@ class InstructionDataset(BaseDataset):
         infix_instruction: bool = False,
         promt_template: str = None,
     ):
-        if isinstance(path, HFDataset):
+        if isinstance(path, HFDataset) or isinstance(path, DatasetDict):
             self.data = path
         elif isinstance(path, dict):
             self.data = {"train": HFDataset.from_dict(path)}
@@ -119,20 +122,20 @@ class InstructionDataset(BaseDataset):
     def __getitem__(self, idx):
         return self.data["train"][idx]
 
+    def save(self, path):
+        return self.data.save_to_disk(path)
+
     @classmethod
     def generate_dataset(
         cls,
-        api_key: str,
         path: str,
-        organization: Optional[str] = None,
-        engine: str = DAVINCI,
+        engine: TextGenerationAPI,
         num_instructions: int = 10,
         num_instructions_for_finetuning: int = 5,
         num_prompt_instructions: int = 1,
-        request_batch_size: int = 1,
     ):
         cache_directory = create_temp_directory(
-            f"./self_instruct_{engine}_cache_{num_instructions}_{num_instructions_for_finetuning}"
+            f"./self_instruct_{engine.config_name}_cache_{num_instructions}_{num_instructions_for_finetuning}"
         )
         seed_tasks_path = Path(path)
 
@@ -152,9 +155,6 @@ class InstructionDataset(BaseDataset):
             use_clf_seed_tasks_only=False,
             engine=engine,
             num_prompt_instructions=num_prompt_instructions,
-            request_batch_size=request_batch_size,
-            api_key=api_key,
-            organization=organization,
         )
 
         identify_if_classification.identify_if_classification(
@@ -163,9 +163,6 @@ class InstructionDataset(BaseDataset):
             num_instructions=num_instructions,
             template="template_1",
             engine=engine,
-            request_batch_size=request_batch_size,
-            api_key=api_key,
-            organization=organization,
         )
 
         generate_instances.generate_instances(
@@ -177,9 +174,6 @@ class InstructionDataset(BaseDataset):
             generation_tasks_only=False,
             classification_tasks_only=False,
             engine=engine,
-            request_batch_size=request_batch_size,
-            api_key=api_key,
-            organization=organization,
         )
 
         prepare_for_finetuning.prepare_for_finetuning(
@@ -193,5 +187,55 @@ class InstructionDataset(BaseDataset):
             seed_tasks_path=seed_tasks_path,
         )
 
-        path = Path("./self_instruct_davinci_cache_10_5/sampled_generated.jsonl")
+        path = Path(f"./{cache_directory}/sampled_generated.jsonl")
         return InstructionDataset(path)
+
+    @classmethod
+    def generate_dataset_from_dir(
+        cls,
+        path: str,
+        engine: TextGenerationAPI,
+        num_instructions: int = 10,
+        num_instructions_for_finetuning: int = 5,
+        num_prompt_instructions: int = 1,
+        chunk_size=8000,
+        num_samples_per_chunk=5,
+        use_self_instruct=False,
+    ):
+        txt_dir = extract_text_from_directory(path)
+        prepare_seed_tasks.prepare_seed_tasks(
+            txt_dir,
+            "finance_seed_tasks.jsonl",
+            engine,
+            chunk_size,
+            num_samples_per_chunk,
+        )
+
+        if use_self_instruct:
+            instruction_dataset = InstructionDataset.generate_dataset(
+                "finance_seed_tasks.jsonl",
+                engine,
+                num_instructions,
+                num_instructions_for_finetuning,
+                num_prompt_instructions,
+            )
+            return instruction_dataset
+        else:
+            instructions = []
+            outputs = []
+            texts = []
+            with open("finance_seed_tasks.jsonl") as f:
+                for line in f:
+                    data = json.loads(line)
+                    instructions.append(data["instruction"])
+                    outputs.append(data["instances"][0]["output"])
+                    texts.append("")
+            data_dict = {
+                "train": {"instruction": instructions, "text": texts, "target": outputs}
+            }
+
+            dataset = DatasetDict()
+            # using your `Dict` object
+            for k, v in data_dict.items():
+                dataset[k] = Dataset.from_dict(v)
+            return InstructionDataset(dataset)

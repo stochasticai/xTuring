@@ -21,8 +21,17 @@ With `xturing` you can,
 - Evalate fine-tuned models on well-defined metrics for in-depth analysis
 
 <br>
-
-Documentation -  [https://xturing.stochastic.ai/](https://xturing.stochastic.ai/)
+<p align="center">
+  <a href="https://pypi.org/project/xturing/">
+    <img src="https://img.shields.io/pypi/v/xturing?style=for-the-badge" />
+  </a>
+  <a href="https://xturing.stochastic.ai/">
+    <img src="https://img.shields.io/badge/Documentation-blue?logo=GitBook&logoColor=white&style=for-the-badge" />
+  </a>
+  <a href="https://discord.gg/TgHXuSJEk6">
+    <img src="https://img.shields.io/badge/Chat-FFFFFF?logo=discord&style=for-the-badge"/>
+  </a>
+</p>
 
 <br>
 
@@ -30,7 +39,7 @@ Documentation -  [https://xturing.stochastic.ai/](https://xturing.stochastic.ai/
 <img src=".github/cli-playground.gif" width="100%" style="margin: 0 1%;"/>
 
 ## UI playground
-<img src=".github/ui-playground.gif" width="100%" style="margin: 0 1%;"/>
+<img src=".github/ui-playground2.gif" width="100%" style="margin: 0 1%;"/>
 
 ## ⚙️ Installation
 ```bash
@@ -108,11 +117,27 @@ Fine-tuning parameters:
 Please submit your performance results on other GPUs.
 <br >
 
+## 📎 Fine-tuned model checkpoints
+We have already fine-tuned some models that you can use as your base or start playing with.
+Here is how you would load them:
+
+```python
+from xturing.models import BaseModel
+model = BaseModel.load("x/distilgpt2_lora_finetuned_alpaca")
+```
+
+| model               | dataset | Path          |
+|---------------------|--------|---------------|
+| DistilGPT-2 LoRA | alpaca | `x/distilgpt2_lora_finetuned_alpaca` |
+| LLaMA LoRA          | alpaca | `x/llama_lora_finetuned_alpaca` |
+
 ## 📈 Roadmap
 - [x] Support for LLaMA, GPT-J, GPT-2, OPT, Cerebras-GPT, Galactica and Bloom models
 - [x] Dataset generation using self-instruction
 - [x] 2x more memory-efficient fine-tuning vs LoRA and unsupervised fine-tuning
 - [x] INT8 low-precision fine-tuning support
+- [x] Supports OpenAI, Cohere and AI21 Studio model APIs for dataset generation
+- [x] Added fine-tuned checkpoints for some models to the hub
 - [ ] Evaluation of LLM models
 - [ ] Support for Stable Diffusion
 
