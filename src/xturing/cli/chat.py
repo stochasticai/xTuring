@@ -19,7 +19,7 @@ def chat_command(model_name_or_path: str):
         try:
             model = BaseModel.create(model_name_or_path)
         except:
-            click.echo(
+            click.secho(
                 f"[-] The model_name_or_path you have provided {model_name_or_path} is not valid",
                 fg="red",
                 bold=True,
