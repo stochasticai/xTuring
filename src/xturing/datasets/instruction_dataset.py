@@ -1,10 +1,12 @@
 import json
+import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional, Union
 
+from datasets import Dataset
 from datasets import Dataset as HFDataset
-from datasets import load_from_disk
+from datasets import DatasetDict, load_from_disk
 
 from xturing.datasets.base import BaseDataset
 from xturing.model_apis import TextGenerationAPI
@@ -13,8 +15,9 @@ from xturing.self_instruct import (
     generate_instances,
     identify_if_classification,
     prepare_for_finetuning,
+    prepare_seed_tasks,
 )
-from xturing.utils.utils import create_temp_directory, no_std_out
+from xturing.utils.utils import create_temp_directory, extract_text_from_directory
 
 
 class ListPromptTemplate:
@@ -49,7 +52,7 @@ class InstructionDataset(BaseDataset):
         infix_instruction: bool = False,
         promt_template: str = None,
     ):
-        if isinstance(path, HFDataset):
+        if isinstance(path, HFDataset) or isinstance(path, DatasetDict):
             self.data = path
         elif isinstance(path, dict):
             self.data = {"train": HFDataset.from_dict(path)}
@@ -119,6 +122,9 @@ class InstructionDataset(BaseDataset):
     def __getitem__(self, idx):
         return self.data["train"][idx]
 
+    def save(self, path):
+        return self.data.save_to_disk(path)
+
     @classmethod
     def generate_dataset(
         cls,
@@ -183,3 +189,53 @@ class InstructionDataset(BaseDataset):
 
         path = Path(f"./{cache_directory}/sampled_generated.jsonl")
         return InstructionDataset(path)
+
+    @classmethod
+    def generate_dataset_from_dir(
+        cls,
+        path: str,
+        engine: TextGenerationAPI,
+        num_instructions: int = 10,
+        num_instructions_for_finetuning: int = 5,
+        num_prompt_instructions: int = 1,
+        chunk_size=8000,
+        num_samples_per_chunk=5,
+        use_self_instruct=False,
+    ):
+        txt_dir = extract_text_from_directory(path)
+        prepare_seed_tasks.prepare_seed_tasks(
+            txt_dir,
+            "finance_seed_tasks.jsonl",
+            engine,
+            chunk_size,
+            num_samples_per_chunk,
+        )
+
+        if use_self_instruct:
+            instruction_dataset = InstructionDataset.generate_dataset(
+                "finance_seed_tasks.jsonl",
+                engine,
+                num_instructions,
+                num_instructions_for_finetuning,
+                num_prompt_instructions,
+            )
+            return instruction_dataset
+        else:
+            instructions = []
+            outputs = []
+            texts = []
+            with open("finance_seed_tasks.jsonl") as f:
+                for line in f:
+                    data = json.loads(line)
+                    instructions.append(data["instruction"])
+                    outputs.append(data["instances"][0]["output"])
+                    texts.append("")
+            data_dict = {
+                "train": {"instruction": instructions, "text": texts, "target": outputs}
+            }
+
+            dataset = DatasetDict()
+            # using your `Dict` object
+            for k, v in data_dict.items():
+                dataset[k] = Dataset.from_dict(v)
+            return InstructionDataset(dataset)
