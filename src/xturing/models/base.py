@@ -5,13 +5,32 @@ from xturing.config.read_config import (
     read_xturing_config_file,
 )
 from xturing.registry import BaseParent
+from xturing.utils.hub import ModelHub
 
 
 class BaseModel(BaseParent):
     registry = {}
 
     @classmethod
-    def load(cls, weights_dir_path):
+    def load(cls, weights_dir_or_model_name):
+        path_weights_dir_or_model_name = Path(weights_dir_or_model_name)
+
+        if path_weights_dir_or_model_name.is_dir() and exists_xturing_config_file(
+            path_weights_dir_or_model_name
+        ):
+            return cls.load_from_local(weights_dir_or_model_name)
+        else:
+            print("Loading model from xTuring hub")
+            return cls.load_from_hub(weights_dir_or_model_name)
+
+    @classmethod
+    def load_from_hub(cls, model_name):
+        hub = ModelHub()
+        model_path = hub.load(model_name)
+        return cls.load_from_local(model_path)
+
+    @classmethod
+    def load_from_local(cls, weights_dir_path):
         weights_dir_path = Path(weights_dir_path)
         assert weights_dir_path.is_dir(), "The path {} should be a directory".format(
             str(weights_dir_path.resolve())
