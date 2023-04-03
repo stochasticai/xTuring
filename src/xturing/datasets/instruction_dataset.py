@@ -191,7 +191,7 @@ class InstructionDataset(BaseDataset):
         return InstructionDataset(path)
 
     @classmethod
-    def generate_dataset_on_data(
+    def generate_dataset_from_dir(
         cls,
         path: str,
         engine: TextGenerationAPI,
