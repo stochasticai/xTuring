@@ -4,10 +4,9 @@ import os
 from typing import List
 
 import openai
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from tenacity import retry, stop_after_attempt, wait_random_exponential
 
 from xturing.model_apis import TextGenerationAPI
+from xturing.utils.text_splitter import RecursiveCharacterTextSplitter
 
 
 def instruction_input_suggest(
