@@ -7,7 +7,6 @@ import sys
 import tempfile
 from pathlib import Path
 
-import textract
 import yaml
 
 
@@ -41,6 +40,16 @@ def create_temp_directory(path):
 
 
 def extract_text_from_directory(directory_path):
+    try:
+        import textract
+    except:
+        print(
+            "To use this functionality we ask you to install the following textract lib and dependencies: \
+            apt-get install python-dev libxml2-dev libxslt1-dev antiword unrtf poppler-utils pstotext tesseract-ocr flac ffmpeg lame libmad0 libsox-fmt-mp3 sox libjpeg-dev swig \
+            pip install textract"
+        )
+        return
+
     directory_path = Path(directory_path)
     # Check if the input is a directory
     assert (
