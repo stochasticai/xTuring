@@ -199,11 +199,12 @@ def bootstrap_instructions(
                 prompt_instructions = sample_machine_instructions(
                     machine_instructions, n=2
                 )
-
                 # Sample human instructions from the pool
                 prompt_instructions += random.sample(
                     seed_instructions,
-                    num_prompt_instructions - len(prompt_instructions),
+                    num_prompt_instructions - len(prompt_instructions)
+                    if num_prompt_instructions - len(prompt_instructions) > 0
+                    else 1,
                 )
                 random.shuffle(prompt_instructions)
                 prompt = encode_prompt(

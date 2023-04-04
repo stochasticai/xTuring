@@ -22,6 +22,33 @@ class OpenAITextGenerationAPI(TextGenerationAPI):
             openai.organization = organization
         self.request_batch_size = request_batch_size
 
+    def get_completion(
+        self,
+        prompts,
+        target_length,
+        temperature,
+        top_p,
+        frequency_penalty,
+        presence_penalty,
+        stop_sequences,
+        logprobs,
+        n,
+        best_of,
+    ):
+        return openai.Completion.create(
+            engine=self.engine,
+            prompt=prompts,
+            max_tokens=target_length,
+            temperature=temperature,
+            top_p=top_p,
+            frequency_penalty=frequency_penalty,
+            presence_penalty=presence_penalty,
+            stop=stop_sequences,
+            logprobs=logprobs,
+            n=n,
+            best_of=best_of,
+        )
+
     def generate_text(
         self,
         prompts,
@@ -46,15 +73,14 @@ class OpenAITextGenerationAPI(TextGenerationAPI):
         backoff_time = 30
         while retry_cnt <= retries:
             try:
-                response = openai.Completion.create(
-                    engine=self.engine,
-                    prompt=prompts,
-                    max_tokens=target_length,
+                response = self.get_completion(
+                    prompts=prompts,
+                    target_length=target_length,
                     temperature=temperature,
                     top_p=top_p,
                     frequency_penalty=frequency_penalty,
                     presence_penalty=presence_penalty,
-                    stop=stop_sequences,
+                    stop_sequences=stop_sequences,
                     logprobs=logprobs,
                     n=n,
                     best_of=best_of,
@@ -102,3 +128,24 @@ class Davinci(OpenAITextGenerationAPI):
             organization=organization,
             request_batch_size=request_batch_size,
         )
+
+
+class ChatGPT(OpenAITextGenerationAPI):
+    config_name = "openai_chat"
+
+    def __init__(self, api_key, organization=None, request_batch_size=10):
+        super().__init__(
+            "gpt-3.5-turbo",
+            api_key=api_key,
+            organization=organization,
+            request_batch_size=request_batch_size,
+        )
+
+    def get_completion(self, prompts, **kwargs):
+        messages = [{"role": "user", "content": prompt} for prompt in prompts]
+        completion = openai.ChatCompletion.create(
+            model=self.engine,
+            messages=messages,
+            temperature=0,
+        )
+        return completion["choices"][0]["message"]["content"]

@@ -218,7 +218,7 @@ class Playground:
                             value=0.6,
                             label="Penalty alpha",
                             interactive=True,
-                            info="Choose betwen 0 and 1",
+                            info="Choose between 0 and 1",
                         )
                         penalty_alpha.release(
                             lambda penalty_alpha: self.set_penalty_alpha(penalty_alpha),
@@ -230,7 +230,7 @@ class Playground:
                             value=4,
                             label="Top-k",
                             interactive=True,
-                            info="Choose betwen 1 and 40",
+                            info="Choose between 1 and 40",
                         )
                         top_k.release(lambda top_k: self.set_top_k(top_k), top_k)
                         max_new_tokens = gr.Slider(
@@ -239,7 +239,7 @@ class Playground:
                             value=self.max_new_tokens,
                             label="Max new tokens",
                             interactive=True,
-                            info="Choose betwen 1 and 512",
+                            info="Choose between 1 and 512",
                         )
                         max_new_tokens.release(
                             lambda max_new_tokens: self.set_max_new_tokens(
@@ -283,7 +283,7 @@ class Playground:
                             value=self.max_new_tokens,
                             label="Max new tokens",
                             interactive=True,
-                            info="Choose betwen 1 and 512",
+                            info="Choose between 1 and 512",
                         )
                         max_new_tokens2.release(
                             lambda max_new_tokens: self.set_max_new_tokens(

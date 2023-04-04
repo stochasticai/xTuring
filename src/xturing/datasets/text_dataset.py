@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Union
 
 from datasets import Dataset as HFDataset
-from datasets import load_from_disk
+from datasets import DatasetDict, load_from_disk
 
 from xturing.datasets.base import BaseDataset
 
@@ -17,7 +17,7 @@ class TextDataset(BaseDataset):
     config_name: str = "text_dataset"
 
     def __init__(self, path: Union[str, Path, HFDataset, dict]):
-        if isinstance(path, HFDataset):
+        if isinstance(path, HFDataset) or isinstance(path, DatasetDict):
             self.data = path
         elif isinstance(path, dict):
             self.data = {"train": HFDataset.from_dict(path)}
@@ -51,3 +51,6 @@ class TextDataset(BaseDataset):
 
     def __getitem__(self, idx):
         return self.data["train"][idx]
+
+    def save(self, path):
+        return self.data.save_to_disk(path)
