@@ -44,18 +44,19 @@ def extract_text_from_directory(directory_path):
         import textract
     except:
         print(
-            "To use this functionality we ask you to install the following textract lib and dependencies: \
-            apt-get install python-dev libxml2-dev libxslt1-dev antiword unrtf poppler-utils pstotext tesseract-ocr flac ffmpeg lame libmad0 libsox-fmt-mp3 sox libjpeg-dev swig \
-            pip install textract"
+            "To use this functionality we ask you to install the following textract lib and dependencies: \n\n\
+  apt-get install python-dev libxml2-dev libxslt1-dev antiword unrtf poppler-utils pstotext tesseract-ocr flac ffmpeg lame libmad0 libsox-fmt-mp3 sox libjpeg-dev swig \n\
+  pip install textract\n\n\
+See more details at https://xturing.stochastic.ai/datasets/generate#from-your-data\n"
         )
-        return
+        exit()
 
     directory_path = Path(directory_path)
+
     # Check if the input is a directory
-    assert (
-        directory_path.is_dir(),
-        "The path {} should be a directory".format(directory_path.resolve()),
-    )
+    if not directory_path.is_dir():
+        print("The path {} should be a directory".format(directory_path.resolve()))
+        exit()
 
     print(f"Processing directory {directory_path.resolve()}...")
 
