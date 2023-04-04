@@ -1,0 +1,52 @@
+Here’s how the second-biggest bank collapse in U.S. history happened in just 48 hours
+KEY POINTS
+The company’s downward spiral began late Wednesday, when it surprised investors with news that it needed to raise $2.25 billion to shore up its balance sheet.
+“This was a hysteria-induced bank run caused by VCs,” Ryan Falvey, a fintech investor of Restive Ventures, told CNBC.
+All told, customers withdrew a staggering $42 billion of deposits by the end of Thursday, according to a California regulatory filing.
+Now, those who remained with SVB face an uncertain timeline for retrieving their money.
+On Wednesday, Silicon Valley Bank
+ was a well-capitalized institution seeking to raise some funds.
+
+Within 48 hours, a panic induced by the very venture capital community that SVB had served and nurtured ended the bank’s 40-year-run.
+
+Regulators shuttered SVB Friday and seized its deposits in the largest U.S. banking failure since the 2008 financial crisis and the second-largest ever. The company’s downward spiral began late Wednesday, when it surprised investors with news that it needed to raise $2.25 billion to shore up its balance sheet. What followed was the rapid collapse of a highly-respected bank that had grown alongside its technology clients.
+
+Even now, as the dust begins to settle on the second bank wind-down announced this week, members of the VC community are lamenting the role that other investors played in SVB’s demise.
+
+“This was a hysteria-induced bank run caused by VCs,” Ryan Falvey, a fintech investor at Restive Ventures, told CNBC. “This is going to go down as one of the ultimate cases of an industry cutting its nose off to spite its face.”
+The episode is the latest fallout from the Federal Reserve’s actions to stem inflation with its most aggressive rate hiking campaign in four decades. The ramifications could be far-reaching, with concerns that startups may be unable to pay employees in coming days, venture investors may struggle to raise funds, and an already-battered sector could face a deeper malaise.
+The roots of SVB’s collapse stem from dislocations spurred by higher rates. As startup clients withdrew deposits to keep their companies afloat in a chilly environment for IPOs and private fundraising, SVB found itself short on capital. It had been forced to sell all of its available-for-sale bonds at a $1.8 billion loss, the bank said late Wednesday.
+
+The sudden need for fresh capital, coming on the heels of the collapse of crypto-focused Silvergate bank, sparked another wave of deposit withdrawals Thursday as VCs instructed their portfolio companies to move funds, according to people with knowledge of the matter. The concern: a bank run at SVB could pose an existential threat to startups who couldn’t tap their deposits.
+
+SVB customers said CEO Greg Becker didn’t instill confidence when he urged them to “stay calm” during a call that began Thursday afternoon. The stock’s collapse continued unabated, reaching 60% by the end of regular trading. Importantly, Becker couldn’t assure listeners that the capital raise would be the bank’s last, said a person on the call.
+
+Death blow
+All told, customers withdrew a staggering $42 billion of deposits by the end of Thursday, according to a California regulatory filing.
+
+By the close of business that day, SVB had a negative cash balance of $958 million, according to the filing, and failed to scrounge enough collateral from other sources, the regulator said.
+
+Falvey, a former SVB employee who launched his own fund in 2018, pointed to the highly interconnected nature of the tech investing community as a key reason for the bank’s sudden demise.
+
+Prominent funds including Union Square Ventures and Coatue Management blasted emails to their entire rosters of startups in recent days, instructing them to pull funds out of SVB on concerns of a bank run. Social media only heightened the panic, he noted.
+
+“When you say, `Hey, get your deposits out, this thing is gonna fail,′ that’s like yelling fire in a crowded theater,” Falvey said. “It’s a self-fulfilling prophecy.”
+
+Another venture investor, TSVC partner Spencer Greene, also criticized investors who “were wrong on the facts” about SVB’s position.
+
+“It appears to me that there was no liquidity issue until a couple of VCs called it,” Greene said. “They were irresponsible, and then it became self-fulfilling.”
+
+‘Business as usual’
+Thursday evening, some SVB customers received emails assuring them that it was “business as usual” at the bank.
+
+“I’m sure you’ve been hearing some buzz about SVB in the markets today so wanted to reach out to provide some context,” one SVB banker wrote to a client, according to a copy of the message obtained by CNBC.
+
+“It is business as usual at SVB,” the banker wrote. “Understandably there may be questions and I want to make myself available if you have any concerns.”
+
+By Friday, as shares of SVB continued to sink, the bank ditched efforts to sell shares, CNBC’s David Faber reported. Instead, it was looking for a buyer, he reported. But the flight of deposits made the sale process harder, and that effort failed too, Faber said.
+Falvey, who started his career at Wells Fargo
+ and consulted for a bank that was seized during the financial crisis, said that his analysis of SVB’s mid-quarter update from Wednesday gave him confidence. The bank was well capitalized and could make all depositors whole, he said. He even counseled his portfolio companies to keep their funds at SVB as rumors swirled.
+
+Now, thanks to the bank run that ended in SVB’s seizure, those who remained with SVB face an uncertain timeline for retrieving their money. While insured deposits are expected to be available as early as Monday, the lion’s share of deposits held by SVB were uninsured, and it’s unclear when they will be freed up.
+
+“The precipitous deposit withdrawal has caused the Bank to be incapable of paying its obligations as they come due,” the California financial regulator stated. “The bank is now insolvent.”

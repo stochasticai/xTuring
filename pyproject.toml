@@ -1,6 +1,6 @@
 [project]
 name = "xturing"
-version = "0.0.4"
+version = "0.0.7"
 description = "Fine-tuning, evaluation and data generation for LLMs"
 
 authors = [
@@ -52,6 +52,7 @@ dependencies = [
     "gradio",
     "bitsandbytes",
     "click",
+    "wget",
     "ai21",
     "cohere",
     "ipywidgets",
