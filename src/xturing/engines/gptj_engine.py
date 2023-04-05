@@ -47,7 +47,7 @@ class GPTJInt8Engine(CausalEngine):
         )
 
         tokenizer = AutoTokenizer.from_pretrained(
-            "/home/toandv/Downloads/models/gpt_j/"
+            "philschmid/gpt-j-6B-fp16-sharded"
         )
         tokenizer.pad_token = self.tokenizer.eos_token
         super().__init__(
