@@ -18,7 +18,7 @@ With `xturing` you can,
 - Scale from single to multiple GPUs for faster fine-tuning
 - Leverage memory-efficient techniques (i.e. LoRA fine-tuning) to reduce your hardware costs by up to 90% of the time
 - Explore different fine-tuning methods and benchmark them to find the best performing model
-- Evalate fine-tuned models on well-defined metrics for in-depth analysis
+- Evaluate fine-tuned models on well-defined metrics for in-depth analysis
 
 <br>
 <p align="center">
