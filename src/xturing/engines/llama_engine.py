@@ -6,7 +6,7 @@ import torch
 
 from xturing.engines.causal import CausalEngine, CausalLoraEngine
 from xturing.engines.llama_utils import LlamaConfig, LlamaForCausalLM, LlamaTokenizer
-from xturing.engines.lora_engine.lora import prepare_model_for_int8_training
+from xturing.engines.lora_engine import prepare_model_for_int8_training
 
 
 class LLamaEngine(CausalEngine):

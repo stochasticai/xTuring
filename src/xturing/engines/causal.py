@@ -9,7 +9,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from xturing.config import DEFAULT_DEVICE, DEFAULT_DTYPE
 from xturing.config.read_config import exists_xturing_config_file
 from xturing.engines.base import BaseEngine
-from xturing.engines.lora_engine.lora import (
+from xturing.engines.lora_engine import (
     LoraConfig,
     LoraModel,
     prepare_model_for_int8_training,
