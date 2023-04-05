@@ -26,6 +26,7 @@ class TuringLightningModule(pl.LightningModule):
         batch_size: int = 2,
         learning_rate: float = 5e-5,
         optimizer_name: str = "adamw",
+        saved_path: str = "saved_model",
     ):
         super().__init__()
         self.model_engine = model_engine
@@ -38,6 +39,7 @@ class TuringLightningModule(pl.LightningModule):
         self.learning_rate = learning_rate
 
         self.optimizer_name = optimizer_name
+        self.saved_path = saved_path
 
         self.losses = []
 
@@ -78,6 +80,9 @@ class TuringLightningModule(pl.LightningModule):
 
     def validation_step(self, batch, batch_idx):
         return self.model_engine.validation_step(batch)
+
+    def on_save_checkpoint(self, checkpoint):
+        self.model_engine.save(self.saved_path)
 
 
 class LightningTrainer:

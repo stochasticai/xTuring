@@ -4,13 +4,17 @@ from typing import Any, List, Optional, Union
 
 import evaluate
 import torch
-from peft import LoraConfig, TaskType, get_peft_model, prepare_model_for_int8_training
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from xturing.config import DEFAULT_DEVICE, DEFAULT_DTYPE
-from xturing.engines.base import BaseEngine
-from xturing.utils.loss_fns import CrossEntropyLoss
 from xturing.config.read_config import exists_xturing_config_file
+from xturing.engines.base import BaseEngine
+from xturing.engines.lora_engine.lora import (
+    LoraConfig,
+    LoraModel,
+    prepare_model_for_int8_training,
+)
+from xturing.utils.loss_fns import CrossEntropyLoss
 
 
 class CausalEngine(BaseEngine):
@@ -126,7 +130,9 @@ class CausalLoraEngine(CausalEngine):
         # That's why weights_path is None. If not model.eval() will fail later
         super().__init__(
             model_name=model_name,
-            weights_path=None if exists_xturing_config_file(weights_path) else weights_path,
+            weights_path=None
+            if exists_xturing_config_file(weights_path)
+            else weights_path,
             model=model,
             tokenizer=tokenizer,
             load_8bit=load_8bit,
@@ -135,21 +141,26 @@ class CausalLoraEngine(CausalEngine):
         # The model before applying LoRA
         self.base_model = self.model
 
-        peft_config = LoraConfig(
+        lora_config = LoraConfig(
             r=8,
             lora_alpha=32,
             target_modules=target_modules,
             lora_dropout=0.05,
             bias="none",
-            task_type="CAUSAL_LM",
+            inference_mode=False,
         )
-        self.model = get_peft_model(self.base_model, peft_config)
+
+        if len(target_modules) == 1:
+            lora_config.fan_in_fan_out = True
+            lora_config.enable_lora = [True, False, True]
+
+        self.model = LoraModel(lora_config, self.base_model)
 
         if weights_path is not None and exists_xturing_config_file(weights_path):
             model_weights_path = str(Path(weights_path).resolve() / "pytorch_model.bin")
             self.model.load_state_dict(
                 torch.load(
-                    model_weights_path, map_location=torch.device(DEFAULT_DEVICE)
+                    model_weights_path  # , map_location=torch.device(DEFAULT_DEVICE)
                 )
             )
         else:
