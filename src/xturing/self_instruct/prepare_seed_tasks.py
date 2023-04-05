@@ -22,7 +22,7 @@ def instruction_input_suggest(
 
     questions = []
     answers = []
-    for text in tqdm(texts):
+    for text in texts:
         prompt = f"""Given  a document. Suggest {num_samples_per_chunk} questions that could be asked related to the document. Generate a comprehensive and informative answer (but no more than 80 words) for each question.
             Document: {text}
             """
@@ -45,7 +45,7 @@ def prepare_seed_tasks(
 ):
     instructions = []
     outputs = []
-    for file in os.listdir(data_path):
+    for file in tqdm(os.listdir(data_path)):
         if file[-4:] != ".txt":
             continue
         with open(os.path.join(data_path, file)) as f:
