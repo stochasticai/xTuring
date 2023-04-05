@@ -30,9 +30,12 @@ def instruction_input_suggest(
         outputs = engine.get_completion(prompts=[prompt])
         pairs = outputs.split("\n\n")
         for pair in pairs:
-            question, answer = pair.split("\n")
-            questions.append(question[3:])
-            answers.append(answer)
+            try:
+                question, answer = pair.split("\n")
+                questions.append(question[3:])
+                answers.append(answer)
+            except:
+                continue
     assert len(questions) == len(answers)
     return questions, answers
 
