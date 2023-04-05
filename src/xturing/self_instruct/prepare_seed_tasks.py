@@ -3,7 +3,7 @@ import json
 import os
 from typing import List
 
-import openai
+from tqdm import tqdm
 
 from xturing.model_apis import TextGenerationAPI
 from xturing.utils.text_splitter import RecursiveCharacterTextSplitter
@@ -18,11 +18,11 @@ def instruction_input_suggest(
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size)
 
     texts = text_splitter.split_text(original_text)
-    print(f"Split the document into {len(texts)} parts")
+    # print(f"Split the document into {len(texts)} parts")
 
     questions = []
     answers = []
-    for text in texts:
+    for text in tqdm(texts):
         prompt = f"""Given  a document. Suggest {num_samples_per_chunk} questions that could be asked related to the document. Generate a comprehensive and informative answer (but no more than 80 words) for each question.
             Document: {text}
             """

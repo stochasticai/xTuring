@@ -205,15 +205,16 @@ class InstructionDataset(BaseDataset):
         txt_dir = extract_text_from_directory(path)
         prepare_seed_tasks.prepare_seed_tasks(
             txt_dir,
-            "finance_seed_tasks.jsonl",
+            "generated_tasks.jsonl.jsonl",
             engine,
             chunk_size,
             num_samples_per_chunk,
         )
+        print(f"The generated data is stored in generated_tasks.jsonl file")
 
         if use_self_instruct:
             instruction_dataset = InstructionDataset.generate_dataset(
-                "finance_seed_tasks.jsonl",
+                "generated_tasks.jsonl",
                 engine,
                 num_instructions,
                 num_instructions_for_finetuning,
@@ -224,7 +225,7 @@ class InstructionDataset(BaseDataset):
             instructions = []
             outputs = []
             texts = []
-            with open("finance_seed_tasks.jsonl") as f:
+            with open("generated_tasks.jsonl") as f:
                 for line in f:
                     data = json.loads(line)
                     instructions.append(data["instruction"])
