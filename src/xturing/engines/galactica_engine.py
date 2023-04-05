@@ -21,7 +21,9 @@ class GalacticaLoraEngine(CausalLoraEngine):
 
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
         super().__init__(
-            model_name="facebook/galactica-6.7b", weights_path=weights_path
+            model_name="facebook/galactica-6.7b",
+            weights_path=weights_path,
+            target_modules=["q_proj", "v_proj"],
         )
 
         self.tokenizer.eos_token_id = 2
@@ -49,6 +51,7 @@ class GalacticaLoraInt8Engine(CausalLoraEngine):
             model_name="facebook/galactica-6.7b",
             weights_path=weights_path,
             load_8bit=True,
+            target_modules=["q_proj", "v_proj"],
         )
 
         self.tokenizer.eos_token_id = 2
