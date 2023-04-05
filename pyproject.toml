@@ -1,6 +1,6 @@
 [project]
 name = "xturing"
-version = "0.0.8"
+version = "0.0.9"
 description = "Fine-tuning, evaluation and data generation for LLMs"
 
 authors = [
