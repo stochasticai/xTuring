@@ -46,7 +46,7 @@ dependencies = [
     "transformers==4.27.3",
     "datasets",
     "evaluate",
-    "peft",
+    "bitsandbytes",
     "sentencepiece",
     "deepspeed",
     "gradio",
