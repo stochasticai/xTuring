@@ -21,7 +21,9 @@ class CerebrasLoraEngine(CausalLoraEngine):
 
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
         super().__init__(
-            model_name="cerebras/Cerebras-GPT-1.3B", weights_path=weights_path
+            model_name="cerebras/Cerebras-GPT-1.3B",
+            weights_path=weights_path,
+            target_modules=["c_attn"],
         )
 
         self.tokenizer.pad_token = self.tokenizer.eos_token
@@ -49,6 +51,7 @@ class CerebrasLoraInt8Engine(CausalLoraEngine):
             model_name="cerebras/Cerebras-GPT-1.3B",
             weights_path=weights_path,
             load_8bit=True,
+            target_modules=["c_attn"],
         )
 
         self.tokenizer.pad_token = self.tokenizer.eos_token
