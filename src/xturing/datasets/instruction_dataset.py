@@ -205,7 +205,7 @@ class InstructionDataset(BaseDataset):
         txt_dir = extract_text_from_directory(path)
         prepare_seed_tasks.prepare_seed_tasks(
             txt_dir,
-            "generated_tasks.jsonl.jsonl",
+            "generated_tasks.jsonl",
             engine,
             chunk_size,
             num_samples_per_chunk,
