@@ -3,7 +3,7 @@
 The recent progress in large language model such as ChatGPT, GPT-4 has intrigued unprecedented interest in
 large language models. Centralized solution such as `OpenAI API` has made building around an existing model easy. But, for developers who want a model that is trained on their own data and tailored to their own vertical domain of applications, there is still a great entry barrier to overcome. Even with the help of parameter efficient fine-tuning methods such as LoRA and INT8-based training library, such as the `bitsandbyptes`, it is only realistic to fine-tune any LLM with 7B+ parameter on a latest GPU with the topnotch specifics, such as a Nvidia RTX4090, as demonstrated by `alpaca-lora`. As a result, it is still a norm in LLM community, that you have to pay a premium price for your hardware before even thinking of building your own model with your own data.
 
-However, with recent advances in extreme compression methods, such as GPTQ, fine-tuning your own model with common place consumer GPU has become a reality. With our implementation, which combines the power of GPTQ and LoRA, the memory requirement for fine-tuning (fine-tuning a llama-like 7B parameter model on a dataset with input sequence length of 512) has been reduced to lower than 6GB, which means 8 out of the top10 most popular GPU on [steam hardware survey](https://store.steampowered.com/hwsurvey/videocard/) (which accounts for nearly 50% of all steam users with GPU) already have sufficient memory for fine-tuning. We believe this method could open the door of LLM fine-tuning to a much wider community and further democratize the power of LLM by drastically lowering the hardware requirement.
+However, with recent advances in extreme compression methods, such as GPTQ, fine-tuning your own model with common place consumer GPU has become a reality. With our implementation, which combines the power of GPTQ and LoRA, the memory requirement for fine-tuning (fine-tuning a llama-like 7B parameter model on a dataset with input sequence length of 512) has been reduced to lower than 6GB, which means 8 out of the top 10 most popular GPU on [steam hardware survey](https://store.steampowered.com/hwsurvey/videocard/) (which accounts for nearly 50% of all steam users with GPU) already have sufficient memory for fine-tuning. We believe this method could open the door of LLM fine-tuning to a much wider community and further democratize the power of LLM by drastically lowering the hardware requirement.
 
 In the following sections, we will discuss its runtime performance (such as memory consumption and training time) and a tutorial on how to apply this method with `xturing`.
 
@@ -13,8 +13,8 @@ In the following sections, we will discuss its runtime performance (such as memo
 
 With INT4 fine-tuning, xTuring offers several benefits:
 
-1. Reduced memory footprint: The INT4 precision reduces the memory requirements to just ~5GB of VRAM, allowing you to fine-tune LLMs on hardware with lower memory capacities.
-2. Cheaper fine-tuning: The reduced memory requirements and INT4 precision enable to use smaller number of resources.
+1. Reduced memory footprint: The INT4 precision reduces the memory requirements to just ~6GB of VRAM, allowing you to fine-tune LLMs on hardware with lower memory capacities.
+2. Cheaper fine-tuning: The reduced memory requirements and INT4 precision enable cheaper fine-tuning of LLMs by using less powerful resources.
 3. LoRA support: This update includes support for the LLaMA LoRA model, a powerful architecture that enables efficient fine-tuning and high-quality results.
 4. Data privacy and security: The entire fine-tuning process can be carried out on your local computer or private cloud, ensuring the confidentiality and security of your data.
 5. WandB integration: Easily monitor the fine-tuning process with integrated WandB logging, allowing you to track progress.
