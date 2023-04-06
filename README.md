@@ -135,7 +135,7 @@ model = BaseModel.load("x/distilgpt2_lora_finetuned_alpaca")
 
 We are excited to announce the latest enhancement to our xTuring library: INT4 fine-tuning demo. With this update, users can now fine-tune large language models (LLMs) like LLaMA with LoRA architecture in INT4 precision. This breakthrough significantly reduces memory requirements and accelerates the fine-tuning process, allowing you to achieve state-of-the-art performance with less computational resources.
 
-More information about INT4 fine-tuning and benchmarking can be found in [IT4 README](examples/int4_finetuning/README.md).
+More information about INT4 fine-tuning and benchmarking can be found in the [INT4 README](examples/int4_finetuning/README.md).
 
 You can check out the [LLaMA INT4 fine-tuning example](examples/int4_finetuning/LLaMA_lora_int4.ipynb) to see how it works.
 
