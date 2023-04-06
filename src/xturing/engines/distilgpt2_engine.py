@@ -17,6 +17,10 @@ class DistilGPT2LoraEngine(CausalLoraEngine):
     config_name: str = "distilgpt2_lora_engine"
 
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
-        super().__init__(model_name="distilgpt2", weights_path=weights_path)
+        super().__init__(
+            model_name="distilgpt2",
+            weights_path=weights_path,
+            target_modules=["c_attn"],
+        )
 
         self.tokenizer.pad_token = self.tokenizer.eos_token
