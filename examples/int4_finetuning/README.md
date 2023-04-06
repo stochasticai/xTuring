@@ -13,13 +13,13 @@ In the following sections, we will discuss its runtime performance (such as memo
 
 With INT4 fine-tuning, xTuring offers several benefits:
 
-1. Reduced Memory Footprint: The INT4 precision reduces the memory requirements to just ~5GB of VRAM, allowing you to fine-tune LLMs on hardware with lower memory capacities.
-2. Faster Fine-tuning: The reduced memory requirements and INT4 precision enable cheaper fine-tuning of LLMs, reducing the efforts needed to achieve optimal results.
-3. LoRA Model Support: This update includes support for the LLaMA LoRA model, a powerful architecture that enables efficient fine-tuning and high-quality results.
-4. Data Privacy and Security: The entire fine-tuning process can be carried out on your local computer or private cloud, ensuring the confidentiality and security of your data.
-5. WandB Integration: Easily monitor the fine-tuning process with integrated WandB logging, allowing you to track progress.
+1. Reduced memory footprint: The INT4 precision reduces the memory requirements to just ~5GB of VRAM, allowing you to fine-tune LLMs on hardware with lower memory capacities.
+2. Cheaper fine-tuning: The reduced memory requirements and INT4 precision enable to use smaller number of resources.
+3. LoRA support: This update includes support for the LLaMA LoRA model, a powerful architecture that enables efficient fine-tuning and high-quality results.
+4. Data privacy and security: The entire fine-tuning process can be carried out on your local computer or private cloud, ensuring the confidentiality and security of your data.
+5. WandB integration: Easily monitor the fine-tuning process with integrated WandB logging, allowing you to track progress.
 
-It is a great step on the way to democratize large language models and make them accessible to everyone.
+It is a great step on the way to democratize large language models and making them accessible to everyone.
 
 
 ## 📊 Performance
