@@ -16,7 +16,7 @@ ensuring data privacy and security.
 With `xturing` you can,
 - Ingest data from different sources and preprocess them to a format LLMs can understand
 - Scale from single to multiple GPUs for faster fine-tuning
-- Leverage memory-efficient techniques (i.e. LoRA fine-tuning) to reduce your hardware costs by up to 90% of the time
+- Leverage memory-efficient techniques (i.e. INT4, LoRA fine-tuning) to reduce your hardware costs by up to 90% of the time
 - Explore different fine-tuning methods and benchmark them to find the best performing model
 - Evaluate fine-tuned models on well-defined metrics for in-depth analysis
 
@@ -75,19 +75,29 @@ You can find the data folder [here](examples/llama/alpaca_data).
 
 ## 📚 Tutorials
 - [Preparing your dataset](examples/llama/preparing_your_dataset.py)
-- [Cerebras-GPT efficient fine-tuning with LoRA and INT8](examples/cerebras/cerebras_lora_int8.ipynb) &ensp; [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1eKq3oF7dnK8KuIfsTE70Gvvniwr1O9D0?usp=sharing)
-- [Cerebras-GPT efficient fine-tuning with LoRA](examples/cerebras/cerebras_lora.ipynb) &ensp; [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1VjqQhstm5pT4EjPjx4Je7b3W2X1V3vDo?usp=sharing)
-- [LLaMA efficient fine-tuning with LoRA and INT8](examples/llama/llama_lora_int8.py) &ensp; [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1SQUXq1AMZPSLD4mk3A3swUIc6Y2dclme?usp=sharing)
-- [LLaMA efficient fine-tuning with LoRA](examples/llama/llama_lora.py)
-- [LLaMA fine-tuning](examples/llama/llama.py)
-- [GPT-J efficient fine-tuning with LoRA and INT8](examples/gptj/gptj_lora_int8.py) &ensp; [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1hB_8s1V9K4IzifmlmN2AovGEJzTB1c7e?usp=sharing)
-- [GPT-J efficient fine-tuning with LoRA](examples/gptj/gptj_lora.py)
-- [Galactica efficient fine-tuning with LoRA and INT8](examples/galactica/galactica_lora_int8.py)
-- [Galactica efficient fine-tuning with LoRA](examples/galactica/galactica_lora.py)
-- [OPT efficient fine-tuning with LoRA and INT8](examples/opt/opt_lora_int8.py)
-- [OPT efficient fine-tuning with LoRA](examples/opt/opt_lora.py)
-- [GPT-2 efficient fine-tuning with LoRA](examples/gpt2/gpt2_lora.py) &ensp; [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://drive.google.com/file/d/1Sh-ocNpKn9pS7jv6oBb_Q8DitFyj1avL/view?usp=sharing)
+- [Cerebras-GPT fine-tuning with LoRA and INT8](examples/cerebras/cerebras_lora_int8.ipynb) &ensp; [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1eKq3oF7dnK8KuIfsTE70Gvvniwr1O9D0?usp=sharing)
+- [Cerebras-GPT fine-tuning with LoRA](examples/cerebras/cerebras_lora.ipynb) &ensp; [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1VjqQhstm5pT4EjPjx4Je7b3W2X1V3vDo?usp=sharing)
+- [LLaMA with LoRA and INT8](examples/llama/llama_lora_int8.py) &ensp; [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1SQUXq1AMZPSLD4mk3A3swUIc6Y2dclme?usp=sharing)
+- [LLaMA with LoRA](examples/llama/llama_lora.py)
+- [LLaMA easy fine-tuning](examples/llama/llama.py)
+- [GPT-J efficient fine-tuning with LoRA and INT8](examples/gptj/gptj_lora_int8.py) &ensp; [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1hB_8s1V9K4IzifmlmN2AovGEJzTB1c7e?usp=sharing)
+- [GPT-J fine-tuning with LoRA](examples/gptj/gptj_lora.py)
+- [Galactica fine-tuning with LoRA and INT8](examples/galactica/galactica_lora_int8.py)
+- [Galactica fine-tuning with LoRA](examples/galactica/galactica_lora.py)
+- [OPT fine-tuning with LoRA and INT8](examples/opt/opt_lora_int8.py)
+- [OPT fine-tuning with LoRA](examples/opt/opt_lora.py)
+- [GPT-2 fine-tuning with LoRA](examples/gpt2/gpt2_lora.py) &ensp; [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://drive.google.com/file/d/1Sh-ocNpKn9pS7jv6oBb_Q8DitFyj1avL/view?usp=sharing)
 
+
+<br>
+
+## 📦 INT4 LLaMA LoRA
+
+We are excited to announce the latest enhancement to our `xTuring` library: INT4 fine-tuning demo. With this update, you can fine-tune LLMs like LLaMA with LoRA architecture in INT4 precision with less than `6GB` of VRAM. This breakthrough significantly reduces memory requirements and accelerates the fine-tuning process, allowing you to achieve state-of-the-art performance with less computational resources.
+
+More information about INT4 fine-tuning and benchmarks can be found in the [INT4 README](examples/int4_finetuning/README.md).
+
+You can check out the [LLaMA INT4 fine-tuning example](examples/int4_finetuning/LLaMA_lora_int4.ipynb) to see how it works.
 
 <br>
 
@@ -115,6 +125,7 @@ Fine-tuning parameters:
 | Time per epoch | 21 hours  | 20 mins | 20 mins |
 
 Please submit your performance results on other GPUs.
+
 <br >
 
 ## 📎 Fine-tuned model checkpoints
@@ -131,15 +142,7 @@ model = BaseModel.load("x/distilgpt2_lora_finetuned_alpaca")
 | DistilGPT-2 LoRA | alpaca | `x/distilgpt2_lora_finetuned_alpaca` |
 | LLaMA LoRA          | alpaca | `x/llama_lora_finetuned_alpaca` |
 
-## 📦 INT4 fine-tuning with LLaMA LoRA
-
-We are excited to announce the latest enhancement to our xTuring library: INT4 fine-tuning demo. With this update, users can now fine-tune large language models (LLMs) like LLaMA with LoRA architecture in INT4 precision with less than 6GB of VRAM. This breakthrough significantly reduces memory requirements and accelerates the fine-tuning process, allowing you to achieve state-of-the-art performance with less computational resources.
-
-More information about INT4 fine-tuning and benchmarking can be found in the [INT4 README](examples/int4_finetuning/README.md).
-
-You can check out the [LLaMA INT4 fine-tuning example](examples/int4_finetuning/LLaMA_lora_int4.ipynb) to see how it works.
-
-Please make sure you have acquired the appropriate license to use the LLaMA weights.
+<br>
 
 ## 📈 Roadmap
 - [x] Support for LLaMA, GPT-J, GPT-2, OPT, Cerebras-GPT, Galactica and Bloom models
