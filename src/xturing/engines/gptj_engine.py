@@ -4,11 +4,11 @@ from typing import Optional, Union
 
 import torch
 import transformers
-from peft import prepare_model_for_int8_training
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from xturing.engines.causal import CausalEngine, CausalLoraEngine
 from xturing.engines.gptj_utils.gptj import GPTJAttention
+from xturing.engines.lora_engine import prepare_model_for_int8_training
 
 
 class GPTJEngine(CausalEngine):
@@ -27,7 +27,9 @@ class GPTJLoraEngine(CausalLoraEngine):
 
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
         super().__init__(
-            model_name="philschmid/gpt-j-6B-fp16-sharded", weights_path=weights_path
+            model_name="philschmid/gpt-j-6B-fp16-sharded",
+            weights_path=weights_path,
+            target_modules=["q_proj", "v_proj"],
         )
 
         self.tokenizer.pad_token = self.tokenizer.eos_token
@@ -44,7 +46,9 @@ class GPTJInt8Engine(CausalEngine):
             "philschmid/gpt-j-6B-fp16-sharded", load_in_8bit=True, device_map=device_map
         )
 
-        tokenizer = AutoTokenizer.from_pretrained("philschmid/gpt-j-6B-fp16-sharded")
+        tokenizer = AutoTokenizer.from_pretrained(
+            "philschmid/gpt-j-6B-fp16-sharded"
+        )
         tokenizer.pad_token = self.tokenizer.eos_token
         super().__init__(
             weights_path=weights_path, model=model, tokenizer=tokenizer, load_8bit=True
