@@ -2,6 +2,11 @@ import os
 import subprocess
 
 
+def pull_docker_image(image):
+    cmd = ["docker", "pull", image]
+    subprocess.run(cmd, check=True)
+
+
 def run_docker_container(image, port_mapping, env_vars=None, gpus=None):
     cmd = ["docker", "container", "run"]
 
