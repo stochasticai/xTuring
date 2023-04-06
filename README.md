@@ -131,6 +131,24 @@ model = BaseModel.load("x/distilgpt2_lora_finetuned_alpaca")
 | DistilGPT-2 LoRA | alpaca | `x/distilgpt2_lora_finetuned_alpaca` |
 | LLaMA LoRA          | alpaca | `x/llama_lora_finetuned_alpaca` |
 
+## 📦 INT4 fine-tuning with LLaMA LoRA
+
+We are excited to announce the latest enhancement to our xTuring library: INT4 fine-tuning demo. With this update, users can now fine-tune large language models (LLMs) like LLaMA with LoRA architecture in INT4 precision. This breakthrough significantly reduces memory requirements and accelerates the fine-tuning process, allowing you to achieve state-of-the-art performance with less computational resources.
+
+You can check out the [LLaMA INT4 fine-tuning example](examples/int4_finetuning/LLaMA_lora_int4.ipynb) to see how it works.
+
+### Advantages
+
+With INT4 fine-tuning, xTuring offers several benefits:
+
+1. Reduced Memory Footprint: The INT4 precision reduces the memory requirements to just ~5GB of VRAM, allowing you to fine-tune LLMs on hardware with lower memory capacities.
+2. Faster Fine-tuning: The reduced memory requirements and INT4 precision enable cheaper fine-tuning of LLMs, reducing the efforts needed to achieve optimal results.
+3. LoRA Model Support: This update includes support for the LLaMA LoRA model, a powerful architecture that enables efficient fine-tuning and high-quality results.
+4. Data Privacy and Security: The entire fine-tuning process can be carried out on your local computer or private cloud, ensuring the confidentiality and security of your data.
+5. WandB Integration: Easily monitor the fine-tuning process with integrated WandB logging, allowing you to track progress.
+
+It is a great step on the way to democratize large language models and make them accessible to everyone.
+
 ## 📈 Roadmap
 - [x] Support for LLaMA, GPT-J, GPT-2, OPT, Cerebras-GPT, Galactica and Bloom models
 - [x] Dataset generation using self-instruction
@@ -138,6 +156,7 @@ model = BaseModel.load("x/distilgpt2_lora_finetuned_alpaca")
 - [x] INT8 low-precision fine-tuning support
 - [x] Supports OpenAI, Cohere and AI21 Studio model APIs for dataset generation
 - [x] Added fine-tuned checkpoints for some models to the hub
+- [x] INT4 LLaMA LoRA fine-tuning demo
 - [ ] Evaluation of LLM models
 - [ ] Support for Stable Diffusion
 
