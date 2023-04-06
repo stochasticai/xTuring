@@ -35,6 +35,18 @@ With `xturing` you can,
 
 <br>
 
+## 🌟 _New Feature_ INT4 fine-tuning with LLaMA LoRA
+
+We are excited to announce the latest enhancement to our xTuring library: INT4 fine-tuning demo. With this update, users can now fine-tune large language models (LLMs) like LLaMA with LoRA architecture in INT4 precision with less than 6GB of VRAM. This breakthrough significantly reduces memory requirements and accelerates the fine-tuning process, allowing you to achieve state-of-the-art performance with less computational resources.
+
+More information about INT4 fine-tuning and benchmarking can be found in the [INT4 README](examples/int4_finetuning/README.md).
+
+You can check out the [LLaMA INT4 fine-tuning example](examples/int4_finetuning/LLaMA_lora_int4.ipynb) to see how it works.
+
+Please make sure you have acquired the appropriate license to use the LLaMA weights.
+
+<br>
+
 ## CLI playground
 <img src=".github/cli-playground.gif" width="100%" style="margin: 0 1%;"/>
 
@@ -126,7 +138,7 @@ Fine-tuning parameters:
 
 Please submit your performance results on other GPUs.
 
-<br >
+<br>
 
 ## 📎 Fine-tuned model checkpoints
 We have already fine-tuned some models that you can use as your base or start playing with.
