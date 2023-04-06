@@ -8,7 +8,7 @@ In the following sections, we will discuss its runtime performance (such as memo
 
 <br>
 
-## Advantages
+## 💡 Advantages
 
 With INT4 fine-tuning, xTuring offers several benefits:
 
@@ -20,6 +20,7 @@ With INT4 fine-tuning, xTuring offers several benefits:
 
 It is a step on the way to democratize large language models and making them accessible to everyone.
 
+<br>
 
 ## 📊 Performance
 
@@ -65,7 +66,7 @@ You are encouraged to submit your performance results on other GPUs/configs/mode
 
 ## 📚 Tutorial
 
-All instructions are inside the example [notebook](LLaMA_lora_int4.ipynb)
+All instructions are inside the example [notebook](LLaMA_lora_int4.ipynb). **_Special Note:_** Using this demo requires you to have appropriate access to LLaMA weights. To apply access to it through this [link](https://docs.google.com/forms/d/e/1FAIpQLSfqNECQnMkycAp2jP4Z9TFX0cGR4uf7b_fBxjY_OjhJILlKGA/viewform).
 
 <br>
 
