@@ -9,7 +9,7 @@ In the following sections, we will discuss its runtime performance (such as memo
 
 <br>
 
-## Advantages
+## 💡 Advantages
 
 With INT4 fine-tuning, xTuring offers several benefits:
 
@@ -21,6 +21,7 @@ With INT4 fine-tuning, xTuring offers several benefits:
 
 It is a great step on the way to democratize large language models and making them accessible to everyone.
 
+<br>
 
 ## 📊 Performance
 
