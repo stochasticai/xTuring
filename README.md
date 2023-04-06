@@ -139,6 +139,8 @@ More information about INT4 fine-tuning and benchmarking can be found in the [IN
 
 You can check out the [LLaMA INT4 fine-tuning example](examples/int4_finetuning/LLaMA_lora_int4.ipynb) to see how it works.
 
+Please ensure you have obtained the correct license to use the LLaMA weights.
+
 ## 📈 Roadmap
 - [x] Support for LLaMA, GPT-J, GPT-2, OPT, Cerebras-GPT, Galactica and Bloom models
 - [x] Dataset generation using self-instruction
