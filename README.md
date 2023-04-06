@@ -35,7 +35,7 @@ With `xturing` you can,
 
 <br>
 
-## 🌟 _New Feature_ INT4 fine-tuning with LLaMA LoRA
+## 🌟 _New feature_ - INT4 fine-tuning with LLaMA LoRA
 
 We are excited to announce the latest enhancement to our `xTuring` library: INT4 fine-tuning demo. With this update, you can fine-tune LLMs like LLaMA with LoRA architecture in INT4 precision with less than `6GB` of VRAM. This breakthrough significantly reduces memory requirements and accelerates the fine-tuning process, allowing you to achieve state-of-the-art performance with less computational resources.
 
