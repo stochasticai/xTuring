@@ -64,7 +64,7 @@ More benchmark results and performance analysis on different hardware and batch 
 
 ## 📚 Tutorial
 
-All instructions are inside the example [notebook](LLaMA_lora_int4.ipynb)
+All instructions are inside the example [notebook](LLaMA_lora_int4.ipynb). **_Special Note:_** Using this demo requires you to have appropriate access to LLaMA weights. To apply access to it through this [link](https://docs.google.com/forms/d/e/1FAIpQLSfqNECQnMkycAp2jP4Z9TFX0cGR4uf7b_fBxjY_OjhJILlKGA/viewform).
 
 ## 🤝 Acknowledgement
 Our implementation is inspired by:
