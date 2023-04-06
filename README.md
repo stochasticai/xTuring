@@ -35,15 +35,13 @@ With `xturing` you can,
 
 <br>
 
-## 🌟 _New Feature_ INT4 fine-tuning with LLaMA LoRA
+## 🌟 _New feature_ - INT4 fine-tuning with LLaMA LoRA
 
-We are excited to announce the latest enhancement to our xTuring library: INT4 fine-tuning demo. With this update, users can now fine-tune large language models (LLMs) like LLaMA with LoRA architecture in INT4 precision with less than 6GB of VRAM. This breakthrough significantly reduces memory requirements and accelerates the fine-tuning process, allowing you to achieve state-of-the-art performance with less computational resources.
+We are excited to announce the latest enhancement to our `xTuring` library: INT4 fine-tuning demo. With this update, you can fine-tune LLMs like LLaMA with LoRA architecture in INT4 precision with less than `6GB` of VRAM. This breakthrough significantly reduces memory requirements and accelerates the fine-tuning process, allowing you to achieve state-of-the-art performance with less computational resources.
 
-More information about INT4 fine-tuning and benchmarking can be found in the [INT4 README](examples/int4_finetuning/README.md).
+More information about INT4 fine-tuning and benchmarks can be found in the [INT4 README](examples/int4_finetuning/README.md).
 
 You can check out the [LLaMA INT4 fine-tuning example](examples/int4_finetuning/LLaMA_lora_int4.ipynb) to see how it works.
-
-Please make sure you have acquired the appropriate license to use the LLaMA weights.
 
 <br>
 
@@ -100,16 +98,6 @@ You can find the data folder [here](examples/llama/alpaca_data).
 - [OPT fine-tuning with LoRA](examples/opt/opt_lora.py)
 - [GPT-2 fine-tuning with LoRA](examples/gpt2/gpt2_lora.py) &ensp; [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://drive.google.com/file/d/1Sh-ocNpKn9pS7jv6oBb_Q8DitFyj1avL/view?usp=sharing)
 
-
-<br>
-
-## 📦 INT4 LLaMA LoRA
-
-We are excited to announce the latest enhancement to our `xTuring` library: INT4 fine-tuning demo. With this update, you can fine-tune LLMs like LLaMA with LoRA architecture in INT4 precision with less than `6GB` of VRAM. This breakthrough significantly reduces memory requirements and accelerates the fine-tuning process, allowing you to achieve state-of-the-art performance with less computational resources.
-
-More information about INT4 fine-tuning and benchmarks can be found in the [INT4 README](examples/int4_finetuning/README.md).
-
-You can check out the [LLaMA INT4 fine-tuning example](examples/int4_finetuning/LLaMA_lora_int4.ipynb) to see how it works.
 
 <br>
 
