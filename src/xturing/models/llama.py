@@ -5,6 +5,7 @@ from xturing.engines.llama_engine import (
     LLamaInt8Engine,
     LlamaLoraEngine,
     LlamaLoraInt8Engine,
+    LlamaLoraInt4Engine,
 )
 from xturing.models.causal import (
     CausalInt8Model,
@@ -40,3 +41,10 @@ class LlamaLoraInt8(CausalLoraInt8Model):
 
     def __init__(self, weights_path: Optional[str] = None):
         super().__init__(LlamaLoraInt8Engine.config_name, weights_path)
+
+
+class LlamaLoraInt4(CausalLoraInt8Model):
+    config_name: str = "llama_lora_int4"
+
+    def __init__(self, weights_path: Optional[str] = None):
+        super().__init__(LlamaLoraInt4Engine.config_name, weights_path)

@@ -12,7 +12,6 @@ from typing import (
     Collection,
     Iterable,
     List,
-    Literal,
     Optional,
     Union,
 )
@@ -118,8 +117,8 @@ class TextSplitter(ABC):
     def from_tiktoken_encoder(
         cls,
         encoding_name: str = "gpt2",
-        allowed_special: Union[Literal["all"], AbstractSet[str]] = set(),
-        disallowed_special: Union[Literal["all"], Collection[str]] = "all",
+        allowed_special = set(),
+        disallowed_special = set(),
         **kwargs: Any,
     ) -> TextSplitter:
         """Text splitter that uses tiktoken encoder to count length."""
