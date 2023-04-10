@@ -28,6 +28,13 @@ llama_lora_int8:
   do_sample: false
 
 # Contrastive search
+llama_lora_int4:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 256
+  do_sample: false
+
+# Contrastive search
 gptj:
   penalty_alpha: 0.6
   top_k: 4

@@ -129,6 +129,8 @@ class LightningTrainer:
                     duration=datetime.timedelta(seconds=max_training_time_in_secs)
                 )
             )
+        model_engine.model.train()
+        model_engine.model.print_trainable_parameters()
 
         if DEFAULT_DEVICE.type == "cpu":
             self.trainer = Trainer(

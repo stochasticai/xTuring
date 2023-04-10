@@ -5,7 +5,7 @@ from .distilgpt2 import DistilGPT2, DistilGPT2Lora
 from .galactica import Galactica, GalacticaInt8, GalacticaLora, GalacticaLoraInt8
 from .gpt2 import GPT2, GPT2Int8, GPT2Lora, GPT2LoraInt8
 from .gptj import GPTJ, GPTJInt8, GPTJLora, GPTJLoraInt8
-from .llama import Llama, LlamaInt8, LlamaLora, LlamaLoraInt8
+from .llama import Llama, LlamaInt8, LlamaLora, LlamaLoraInt8, LlamaLoraInt4
 from .opt import OPT, OPTInt8, OPTLora, OPTLoraInt8
 from .stable_diffusion import StableDiffusion
 
@@ -23,6 +23,7 @@ BaseModel.add_to_registry(Llama.config_name, Llama)
 BaseModel.add_to_registry(LlamaLora.config_name, LlamaLora)
 BaseModel.add_to_registry(LlamaInt8.config_name, LlamaInt8)
 BaseModel.add_to_registry(LlamaLoraInt8.config_name, LlamaLoraInt8)
+BaseModel.add_to_registry(LlamaLoraInt4.config_name, LlamaLoraInt4)
 BaseModel.add_to_registry(Galactica.config_name, Galactica)
 BaseModel.add_to_registry(GalacticaLora.config_name, GalacticaLora)
 BaseModel.add_to_registry(GalacticaInt8.config_name, GalacticaInt8)
