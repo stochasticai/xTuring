@@ -1,0 +1,3 @@
+[submodule "src/xturing/Xturing_evals"]
+	path = src/xturing/evals
+	url = https://github.com/TarekAloui/Xturing_evals.git
