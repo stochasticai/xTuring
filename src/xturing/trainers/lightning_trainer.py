@@ -100,6 +100,7 @@ class LightningTrainer:
         use_lora: bool = False,
         use_deepspeed: bool = False,
         max_training_time_in_secs: Optional[int] = None,
+        lora_type: int = 16,
     ):
         self.lightning_model = TuringLightningModule(
             model_engine=model_engine,
@@ -169,7 +170,7 @@ class LightningTrainer:
                 num_nodes=1,
                 accelerator="gpu",
                 strategy=strategy,
-                precision=16,
+                precision=lora_type,
                 max_epochs=max_epochs,
                 callbacks=training_callbacks,
                 enable_checkpointing=True,
