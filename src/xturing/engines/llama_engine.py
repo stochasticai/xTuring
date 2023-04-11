@@ -116,7 +116,20 @@ class LlamaLoraInt4Engine(CausalLoraEngine):
 
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
         model_name = "decapoda-research/llama-7b-hf" 
+
         config = LlamaConfig.from_pretrained(model_name)
+
+        saved_kaiming_uniform_ = torch.nn.init.kaiming_uniform_
+        saved_uniform_ = torch.nn.init.uniform_
+        saved_normal_ = torch.nn.init.normal_
+
+        def noop(*args, **kwargs):
+            pass
+        
+        torch.nn.init.kaiming_uniform_ = noop 
+        torch.nn.init.uniform_ = noop 
+        torch.nn.init.normal_ = noop 
+
         torch.set_default_dtype(torch.half)
         transformers.modeling_utils._init_weights = False
         torch.set_default_dtype(torch.half)
@@ -161,6 +174,10 @@ class LlamaLoraInt4Engine(CausalLoraEngine):
                 "v_proj",
             ]
         )
+
+        torch.nn.init.kaiming_uniform_ = saved_kaiming_uniform_
+        torch.nn.init.uniform_ = saved_uniform_
+        torch.nn.init.normal_ = saved_normal_
 
     def save(self, saving_path: Union[str, Path]):
         self.model.save_pretrained(saving_path)

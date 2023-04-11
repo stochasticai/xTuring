@@ -143,7 +143,7 @@ class CausalLoraEngine(CausalEngine):
 
         lora_config = LoraConfig(
             r=8,
-            lora_alpha=32,
+            lora_alpha=16,
             target_modules=target_modules,
             lora_dropout=0.05,
             bias="none",
