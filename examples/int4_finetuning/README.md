@@ -108,4 +108,4 @@ You can also join our [Discord server](https://discord.gg/TgHXuSJEk6) and start 
 <br>
 
 ## 🌎 Contributing
-As an open source project in a rapidly evolving field, we welcome contributions of all kinds, including new features and better documentation. Please read our [contributing guide](CONTRIBUTING.md) to learn how you can get involved.
+As an open source project in a rapidly evolving field, we welcome contributions of all kinds, including new features and better documentation. Please read our [contribution guide](../../CONTRIBUTING.md) to learn how you can get involved.
