@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import importlib
+import json
 import math
+import os
 import re
 import warnings
 from dataclasses import asdict, dataclass, field
@@ -24,6 +26,11 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from transformers.pytorch_utils import Conv1D
+
+from xturing.engines.lora_engine.save_and_load import (
+    get_peft_model_state_dict,
+    set_peft_model_state_dict,
+)
 
 
 def is_bnb_available():
@@ -36,6 +43,10 @@ if is_bnb_available():
 
 def transpose(weight, fan_in_fan_out):
     return weight.T if fan_in_fan_out else weight
+
+
+WEIGHTS_NAME = "adapter_model.bin"
+CONFIG_NAME = "adapter_config.json"
 
 
 @dataclass
@@ -99,6 +110,92 @@ class LoraConfig:
     inference_mode: bool = field(
         default=False, metadata={"help": "Whether to use inference mode"}
     )
+
+    base_model_name_or_path: str = field(
+        default=None, metadata={"help": "The name of the base model to use."}
+    )
+
+    @property
+    def __dict__(self):
+        return asdict(self)
+
+    def to_dict(self):
+        return self.__dict__
+
+    def save_pretrained(self, save_directory, **kwargs):
+        r"""
+        This method saves the configuration of your adapter model in a directory.
+
+        Args:
+            save_directory (`str`):
+                The directory where the configuration will be saved.
+            kwargs (additional keyword arguments, *optional*):
+                Additional keyword arguments passed along to the [`~transformers.utils.PushToHubMixin.push_to_hub`]
+                method.
+        """
+        if os.path.isfile(save_directory):
+            raise AssertionError(
+                f"Provided path ({save_directory}) should be a directory, not a file"
+            )
+
+        os.makedirs(save_directory, exist_ok=True)
+
+        output_dict = self.__dict__
+        output_path = os.path.join(save_directory, CONFIG_NAME)
+
+        # save it
+        with open(output_path, "w") as writer:
+            writer.write(json.dumps(output_dict, indent=2, sort_keys=True))
+
+    @classmethod
+    def from_pretrained(cls, pretrained_model_name_or_path, subfolder=None, **kwargs):
+        r"""
+        This method loads the configuration of your adapter model from a directory.
+
+        Args:
+            pretrained_model_name_or_path (`str`):
+                The directory or the Hub repository id where the configuration is saved.
+            kwargs (additional keyword arguments, *optional*):
+                Additional keyword arguments passed along to the child class initialization.
+        """
+        path = (
+            os.path.join(pretrained_model_name_or_path, subfolder)
+            if subfolder is not None
+            else pretrained_model_name_or_path
+        )
+        if os.path.isfile(os.path.join(path, CONFIG_NAME)):
+            config_file = os.path.join(path, CONFIG_NAME)
+        else:
+            # try:
+            #     config_file = hf_hub_download(pretrained_model_name_or_path, CONFIG_NAME, subfolder=subfolder)
+            # except Exception:
+            raise ValueError(
+                f"Can't find '{CONFIG_NAME}' at '{pretrained_model_name_or_path}'"
+            )
+
+        loaded_attributes = cls.from_json_file(config_file)
+
+        config = cls(**kwargs)
+
+        for key, value in loaded_attributes.items():
+            if hasattr(config, key):
+                setattr(config, key, value)
+
+        return config
+
+    @classmethod
+    def from_json_file(cls, path_json_file, **kwargs):
+        r"""
+        Loads a configuration file from a json file.
+
+        Args:
+            path_json_file (`str`):
+                The path to the json file.
+        """
+        with open(path_json_file, "r") as file:
+            json_object = json.load(file)
+
+        return json_object
 
 
 class LoraModel(torch.nn.Module):
@@ -341,6 +438,54 @@ class LoraModel(torch.nn.Module):
         print(
             f"trainable params: {trainable_params} || all params: {all_param} || trainable%: {100 * trainable_params / all_param}"
         )
+
+    def save_pretrained(self, save_directory, **kwargs):
+        if os.path.isfile(save_directory):
+            raise ValueError(
+                f"Provided path ({save_directory}) should be a directory, not a file"
+            )
+        os.makedirs(save_directory, exist_ok=True)
+
+        # for adapter_name, peft_config in self.peft_config.items():
+        # save only the trainable weights
+        output_state_dict = get_peft_model_state_dict(
+            self, kwargs.get("state_dict", None)
+        )
+        output_dir = save_directory
+        os.makedirs(output_dir, exist_ok=True)
+        torch.save(output_state_dict, os.path.join(output_dir, WEIGHTS_NAME))
+
+        # save the config and change the inference mode to `True`
+        if self.peft_config.base_model_name_or_path is None:
+            self.peft_config.base_model_name_or_path = self.model.__dict__.get(
+                "name_or_path", None
+            )
+
+        inference_mode = self.peft_config.inference_mode
+        self.peft_config.inference_mode = True
+        self.peft_config.save_pretrained(output_dir)
+        self.peft_config.inference_mode = inference_mode
+
+    @classmethod
+    def from_pretrained(cls, model, saved_dir):
+        config = LoraConfig.from_pretrained(saved_dir)
+        model = cls(config, model)
+
+        if os.path.exists(os.path.join(saved_dir, WEIGHTS_NAME)):
+            filename = os.path.join(saved_dir, WEIGHTS_NAME)
+        else:
+            raise ValueError(
+                f"Please check that the file {WEIGHTS_NAME} is present at {saved_dir}."
+            )
+
+        adapters_weights = torch.load(
+            filename,
+            map_location=torch.device("cuda" if torch.cuda.is_available() else "cpu"),
+        )
+        # load the weights into the model
+        set_peft_model_state_dict(model, adapters_weights)
+        model.eval()
+        return model
 
 
 # Below code is based on https://github.com/microsoft/LoRA/blob/main/loralib/layers.py
