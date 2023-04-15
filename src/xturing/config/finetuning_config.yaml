@@ -18,6 +18,7 @@ llama:
   learning_rate: 5e-5
   weight_decay: 0.01
   num_train_epochs: 3
+  optimizer_name: cpu_adam
 
 llama_lora:
   learning_rate: 1e-4
@@ -36,6 +37,7 @@ gptj:
   learning_rate: 5e-5
   weight_decay: 0.01
   num_train_epochs: 3
+  optimizer_name: cpu_adam
 
 gptj_lora:
   learning_rate: 1e-4
@@ -84,6 +86,7 @@ galactica:
   learning_rate: 5e-5
   weight_decay: 0.01
   num_train_epochs: 3
+  optimizer_name: cpu_adam
 
 galactica_lora:
   learning_rate: 1e-4
