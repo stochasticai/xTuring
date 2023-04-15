@@ -46,10 +46,8 @@ class GPTJInt8Engine(CausalEngine):
             "philschmid/gpt-j-6B-fp16-sharded", load_in_8bit=True, device_map=device_map
         )
 
-        tokenizer = AutoTokenizer.from_pretrained(
-            "philschmid/gpt-j-6B-fp16-sharded"
-        )
-        tokenizer.pad_token = self.tokenizer.eos_token
+        tokenizer = AutoTokenizer.from_pretrained("philschmid/gpt-j-6B-fp16-sharded")
+        tokenizer.pad_token = tokenizer.eos_token
         super().__init__(
             weights_path=weights_path, model=model, tokenizer=tokenizer, load_8bit=True
         )
