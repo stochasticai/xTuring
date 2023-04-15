@@ -1,7 +1,7 @@
 from xturing.datasets.instruction_dataset import InstructionDataset
 from xturing.models import BaseModel
 
-instruction_dataset = InstructionDataset("../llama/alpaca_data2")
+instruction_dataset = InstructionDataset("../llama/alpaca_data")
 # Initializes the model
 model = BaseModel.create("gptj_lora_int8")
 # Finetuned the model
