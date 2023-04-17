@@ -44,6 +44,19 @@ def exists_xturing_config_file(dir_path: Union[Path, str] = None):
     return xturing_config_file_path.is_file()
 
 
+def exists_lora_config_file(dir_path: Union[Path, str] = None):
+    if dir_path is None:
+        return False
+    dir_path = Path(dir_path)
+    assert dir_path.is_dir(), "The following path {} should be a directory".format(
+        str(dir_path)
+    )
+
+    lora_config_file_path = dir_path / "adapter_config.json"
+
+    return lora_config_file_path.is_file()
+
+
 def read_xturing_config_file(dir_path: Union[Path, str]):
     dir_path = Path(dir_path)
     assert dir_path.is_dir(), "The following path {} should be a directory".format(
