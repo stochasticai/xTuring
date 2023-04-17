@@ -88,6 +88,7 @@ class ModelHub(Hub):
             "distilgpt2_lora_finetuned_alpaca"
         ),
         "llama_lora_finetuned_alpaca": make_model_url("llama_lora_finetuned_alpaca"),
+        "llama_lora_int4_finetuned_alpaca": make_model_url("llama_lora_int4_finetuned_alpaca"),
     }
 
     def __init__(self):
