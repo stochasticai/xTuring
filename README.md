@@ -146,7 +146,7 @@ model = BaseModel.load("x/distilgpt2_lora_finetuned_alpaca")
 - [x] OpenAI, Cohere and AI21 Studio model APIs for dataset generation
 - [x] Added fine-tuned checkpoints for some models to the hub
 - [x] INT4 LLaMA LoRA fine-tuning demo
-- [x] INT4 LLaMA LoRA fine-tuning and generation full integration
+- [x] INT4 LLaMA LoRA fine-tuning with INT4 generation 
 - [ ] Evaluation of LLM models
 - [ ] Support for Stable Diffusion
 
