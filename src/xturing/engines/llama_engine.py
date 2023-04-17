@@ -154,7 +154,7 @@ class LlamaLoraInt4Engine(CausalLoraEngine):
         make_quant(model, layers, wbits, groupsize)
         
 
-        model.load_state_dict(torch.load(weights_path), strict=False)
+        model.load_state_dict(torch.load(weights_path / Path("pytorch_model.bin")), strict=False)
 
         if warmup_autotune:
             autotune_warmup(model)
