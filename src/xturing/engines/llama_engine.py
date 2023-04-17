@@ -10,6 +10,7 @@ from xturing.engines.causal import CausalEngine, CausalLoraEngine
 from xturing.engines.llama_utils import LlamaConfig, LlamaForCausalLM, LlamaTokenizer
 from xturing.engines.lora_engine import prepare_model_for_int8_training
 from xturing.engines.quant_utils import make_quant, autotune_warmup
+from xturing.utils.hub import ModelHub
 
 class LLamaEngine(CausalEngine):
     config_name: str = "llama_engine"
@@ -117,6 +118,9 @@ class LlamaLoraInt4Engine(CausalLoraEngine):
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
         model_name = "decapoda-research/llama-7b-hf" 
 
+        if weights_path is None:
+            weights_path = ModelHub().load("x/llama_lora_int4")            
+
         config = LlamaConfig.from_pretrained(model_name)
 
         saved_kaiming_uniform_ = torch.nn.init.kaiming_uniform_
@@ -178,7 +182,3 @@ class LlamaLoraInt4Engine(CausalLoraEngine):
         torch.nn.init.kaiming_uniform_ = saved_kaiming_uniform_
         torch.nn.init.uniform_ = saved_uniform_
         torch.nn.init.normal_ = saved_normal_
-
-    def save(self, saving_path: Union[str, Path]):
-        self.model.save_pretrained(saving_path)
-        self.tokenizer.save_pretrained(saving_path)
