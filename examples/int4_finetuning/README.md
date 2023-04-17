@@ -36,7 +36,9 @@ Here is a comparison for the performance of different fine-tuning techniques on 
 ```
 ### Hardware
 
-Here are our benchmark results collected from common customer grade GPU and server grade GPU. Explanations for abbreviations: _`OOM`_ stands for Out-Of-Memory, which means the hardware does not have enough memory to support running a certain training configuration and _`BS`_ stands for the micro batch size, which indicates how many training examples are pushed onto device for every training step.
+Here are our benchmark results collected from common customer grade GPU and server grade GPU. Explanations for abbreviations: _`OOM`_ stands for Out-Of-Memory, which means the hardware does not have enough memory to support running a certain training configuration and _`BS`_ stands for the micro batch size, which indicates how many training examples are pushed onto device for every training step. We use gradient checkpointing in all of our experiments.
+
+It is worth noting that we mostly benchmarked BS=1, which is the most memory efficient setting. However, we also benchmarked BS=24 and BS=48, which provide a good trade-off between memory efficiency and training speed. The best performance is achieved with the maximum batch size that fits into the GPU memory, but we did not benchmark extensively with different batch sizes. Furthermore, our triton kernels are optimized for A100 GPUs, so the time per epoch for other GPUs might not be representative of an optimal configuration.
 
 **- 1x RTX3070 8GB Laptop GPU**
 
@@ -44,6 +46,17 @@ Here are our benchmark results collected from common customer grade GPU and serv
 | --- | --- | --- | --- |
 | GPU Memory (GB) @ _`BS`_=1 | _`OOM`_ | _`OOM`_ |  **4.93** |
 | Time per Epoch (min) @ _`BS`_=1 | _`OOM`_ | _`OOM`_ | **427*** |
+
+**- 1x T4 16GB GPU**
+|      LLaMA 7B      | FP16 + LoRA | INT8 + LoRA  | INT4 + LoRA (Ours) |
+| --- | --- | --- | --- |
+| GPU Memory (GB) @ _`BS`_=1 | _`OOM`_ | 8.43 |  **5.6** |
+| Time per Epoch (min) @ _`BS`_=1 | _`OOM`_ | 1640*| **840*** |
+
+|      LLaMA 13B      | FP16 + LoRA | INT8 + LoRA  | INT4 + LoRA (Ours) |
+| --- | --- | --- | --- |
+| GPU Memory (GB) @ _`BS`_=1 | _`OOM`_ | 14.85 |  **9.15** |
+| Time per Epoch (min) @ _`BS`_=1 | _`OOM`_ | 2860* | **4440*** |
 
 **- 1x A100 40GB GPU**
 
@@ -55,6 +68,18 @@ Here are our benchmark results collected from common customer grade GPU and serv
 | Time per Epoch (min) @ _`BS`_=24 | 79.1 | 168*  | **240*** |
 | GPU Memory (GB) @ _`BS`_=48 | _`OOM`_ |  32.78 |  **27.32** |
 | Time per Epoch (min) @ _`BS`_=48 | _`OOM`_ |   110.6 |   **81.8** |
+
+|      LLaMA 13B      | FP16 + LoRA | INT8 + LoRA  | INT4 + LoRA (Ours) |
+| --- | --- | --- | --- |
+| GPU Memory (GB) @ _`BS`_=1 | - | 15.2 |  **9.57** |
+| Time per Epoch (min) @ _`BS`_=1 | - | 960* | **560*** |
+
+|      LLaMA 30B      | FP16 + LoRA | INT8 + LoRA  | INT4 + LoRA (Ours) |
+| --- | --- | --- | --- |
+| GPU Memory (GB) @ _`BS`_=1 | _`OOM`_ | 35.1 |  **20.15** |
+| Time per Epoch (min) @ _`BS`_=1 | _`OOM`_ | 1760* | **1220*** |
+
+
 
 *: extrapolated estimates, we stopped the training early due to time constraints.
 
@@ -83,4 +108,4 @@ You can also join our [Discord server](https://discord.gg/TgHXuSJEk6) and start 
 <br>
 
 ## 🌎 Contributing
-As an open source project in a rapidly evolving field, we welcome contributions of all kinds, including new features and better documentation. Please read our [contributing guide](CONTRIBUTING.md) to learn how you can get involved.
+As an open source project in a rapidly evolving field, we welcome contributions of all kinds, including new features and better documentation. Please read our [contribution guide](../../CONTRIBUTING.md) to learn how you can get involved.

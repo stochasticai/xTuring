@@ -1,6 +1,6 @@
 [project]
 name = "xturing"
-version = "0.0.9"
+version = "0.0.10"
 description = "Fine-tuning, evaluation and data generation for LLMs"
 
 authors = [
@@ -46,11 +46,10 @@ dependencies = [
     "transformers==4.27.3",
     "datasets",
     "evaluate",
-    "bitsandbytes",
+    "bitsandbytes==0.37.2",
     "sentencepiece",
     "deepspeed",
     "gradio",
-    "bitsandbytes",
     "click",
     "wget",
     "ai21",
@@ -59,6 +58,7 @@ dependencies = [
     "openai >= 0.27.0",
     "pydantic >= 1.10.0",
     "rouge-score >= 0.1.2",
+    "accelerate",
 ]
 
 [project.scripts]

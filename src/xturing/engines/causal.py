@@ -7,7 +7,10 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from xturing.config import DEFAULT_DEVICE, DEFAULT_DTYPE
-from xturing.config.read_config import exists_xturing_config_file
+from xturing.config.read_config import (
+    exists_lora_config_file,
+    exists_xturing_config_file,
+)
 from xturing.engines.base import BaseEngine
 from xturing.engines.lora_engine import (
     LoraConfig,
@@ -148,15 +151,18 @@ class CausalLoraEngine(CausalEngine):
             lora_dropout=0.05,
             bias="none",
             inference_mode=False,
+            base_model_name_or_path=self.base_model.__dict__.get("name_or_path", None),
         )
 
         if len(target_modules) == 1:
             lora_config.fan_in_fan_out = True
             lora_config.enable_lora = [True, False, True]
+        # self.model = LoraModel(lora_config, self.model)
 
-        self.model = LoraModel(lora_config, self.base_model)
-
-        if weights_path is not None and exists_xturing_config_file(weights_path):
+        if weights_path is not None and exists_lora_config_file(weights_path):
+            self.model = LoraModel.from_pretrained(self.base_model, weights_path)
+        elif weights_path is not None and exists_xturing_config_file(weights_path):
+            self.model = LoraModel(lora_config, self.model)
             model_weights_path = str(Path(weights_path).resolve() / "pytorch_model.bin")
             self.model.load_state_dict(
                 torch.load(
@@ -164,15 +170,20 @@ class CausalLoraEngine(CausalEngine):
                 )
             )
         else:
+            self.model = LoraModel(lora_config, self.model)
             self.model.print_trainable_parameters()
 
         self.loss_fct = CrossEntropyLoss()
 
     def save(self, saving_path: Union[str, Path]):
         # Save HF config file
-        self.base_model.config.save_pretrained(str(saving_path))
+        self.model.config.save_pretrained(str(saving_path))
         # Save model weights
         model_weights = str(Path(saving_path).resolve() / "pytorch_model.bin")
+
         torch.save(self.model.state_dict(), model_weights)
+        # save adapter
+        self.model.save_pretrained(saving_path)
+
         # Save tokenizer
         self.tokenizer.save_pretrained(saving_path)
