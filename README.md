@@ -33,9 +33,9 @@ With `xturing` you can,
 
 <br>
 
-## 🌟 INT4 fine-tuning with LLaMA LoRA
+## 🌟 INT4 fine-tuning and generation with LLaMA LoRA
 
-We are excited to announce the latest enhancement to our `xTuring` library: INT4 fine-tuning demo. With this update, you can fine-tune LLMs like LLaMA with LoRA architecture in INT4 precision with less than `6 GB` of VRAM. This breakthrough significantly reduces memory requirements and accelerates the fine-tuning process, allowing you to achieve state-of-the-art performance with less computational resources.
+We are excited to announce the latest enhancement to our `xTuring` library: INT4 fine-tuning and generation integration. With this update, you can fine-tune LLMs like LLaMA with LoRA architecture in INT4 precision with less than `6 GB` of VRAM. This breakthrough significantly reduces memory requirements and accelerates the fine-tuning process, allowing you to achieve state-of-the-art performance with less computational resources.
 
 More information about INT4 fine-tuning and benchmarks can be found in the [INT4 README](examples/int4_finetuning/README.md).
 
@@ -146,6 +146,7 @@ model = BaseModel.load("x/distilgpt2_lora_finetuned_alpaca")
 - [x] OpenAI, Cohere and AI21 Studio model APIs for dataset generation
 - [x] Added fine-tuned checkpoints for some models to the hub
 - [x] INT4 LLaMA LoRA fine-tuning demo
+- [x] INT4 LLaMA LoRA fine-tuning with INT4 generation 
 - [ ] Evaluation of LLM models
 - [ ] Support for Stable Diffusion
 
