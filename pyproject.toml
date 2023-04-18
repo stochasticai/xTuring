@@ -1,6 +1,6 @@
 [project]
 name = "xturing"
-version = "0.0.10"
+version = "0.1.0"
 description = "Fine-tuning, evaluation and data generation for LLMs"
 
 authors = [
@@ -64,6 +64,10 @@ dependencies = [
 [project.scripts]
 xturing = "xturing.cli:xturing"
 
+[project.optional-dependencies]
+int4 = [
+    "torch >= 2.0"
+]
 
 [project.urls]
 homepage = "https://xturing.stochastic.ai/"
