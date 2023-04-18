@@ -30,7 +30,7 @@ classifiers = [
 
 license = { file = "LICENSE" }
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.7"
 keywords = [
     "nlp",
     "llm",
