@@ -64,6 +64,10 @@ dependencies = [
 [project.scripts]
 xturing = "xturing.cli:xturing"
 
+[project.optional-dependencies]
+int4 = [
+    "torch >= 2.0"
+]
 
 [project.urls]
 homepage = "https://xturing.stochastic.ai/"
