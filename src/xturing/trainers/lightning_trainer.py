@@ -131,7 +131,11 @@ class LightningTrainer:
                 )
             )
         model_engine.model.train()
-        model_engine.model.print_trainable_parameters()
+
+        try:
+            model_engine.model.print_trainable_parameters()
+        except AttributeError:
+            pass
 
         if DEFAULT_DEVICE.type == "cpu":
             self.trainer = Trainer(
