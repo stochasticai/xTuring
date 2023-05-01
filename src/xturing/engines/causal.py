@@ -166,7 +166,7 @@ class CausalLoraEngine(CausalEngine):
             model_weights_path = str(Path(weights_path).resolve() / "pytorch_model.bin")
             self.model.load_state_dict(
                 torch.load(
-                    model_weights_path  # , map_location=torch.device(DEFAULT_DEVICE)
+                    model_weights_path, map_location=torch.device(DEFAULT_DEVICE)
                 )
             )
         else:
