@@ -59,6 +59,7 @@ dependencies = [
     "pydantic >= 1.10.0",
     "rouge-score >= 0.1.2",
     "accelerate",
+    "wandb",
 ]
 
 [project.scripts]

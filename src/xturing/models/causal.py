@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from typing import Iterable, List, Optional, Union
+from typing import Iterable, List, Optional, Union, Type
 
 import torch
 from torch.utils.data import DataLoader
@@ -18,6 +18,7 @@ from xturing.preprocessors.base import BasePreprocessor
 from xturing.trainers.base import BaseTrainer
 from xturing.trainers.lightning_trainer import LightningTrainer
 from xturing.utils.logging import configure_logger
+from pytorch_lightning.loggers import Logger
 
 logger = configure_logger(__name__)
 
@@ -63,7 +64,8 @@ class CausalModel(BaseModel):
             dataset.meta,
         )
 
-    def _make_trainer(self, dataset: Union[TextDataset, InstructionDataset]):
+    def _make_trainer(self, dataset: Union[TextDataset, InstructionDataset], 
+                      logger: Union[Logger, Iterable[Logger], bool] = True):
         return BaseTrainer.create(
             LightningTrainer.config_name,
             self.engine,
@@ -73,14 +75,16 @@ class CausalModel(BaseModel):
             int(self.finetuning_args.batch_size),
             float(self.finetuning_args.learning_rate),
             self.finetuning_args.optimizer_name,
+            logger=logger,
         )
 
-    def finetune(self, dataset: Union[TextDataset, InstructionDataset]):
+    def finetune(self, dataset: Union[TextDataset, InstructionDataset], 
+                 logger: Union[Logger, Iterable[Logger], bool] = True):
         assert dataset.config_name in [
             "text_dataset",
             "instruction_dataset",
         ], "Please make sure the dataset_type is text_dataset or instruction_dataset"
-        trainer = self._make_trainer(dataset)
+        trainer = self._make_trainer(dataset, logger)
         trainer.fit()
 
     def evaluate(self, dataset: Union[TextDataset, InstructionDataset]):
@@ -188,7 +192,8 @@ class CausalLoraModel(CausalModel):
     def __init__(self, engine: str, weights_path: Optional[str] = None):
         super().__init__(engine, weights_path)
 
-    def _make_trainer(self, dataset: Union[TextDataset, InstructionDataset]):
+    def _make_trainer(self, dataset: Union[TextDataset, InstructionDataset], 
+                      logger: Union[Logger, Iterable[Logger], bool] = True):
         return BaseTrainer.create(
             LightningTrainer.config_name,
             self.engine,
@@ -200,6 +205,7 @@ class CausalLoraModel(CausalModel):
             self.finetuning_args.optimizer_name,
             True,
             True,
+            logger=logger,
         )
 
 
