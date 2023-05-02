@@ -19,12 +19,12 @@
 
 ___
 
-`xturing` provides fast, efficient and simple fine-tuning of LLMs, such as LLaMA, GPT-J, Galactica, and more.
+`xTuring` provides fast, efficient and simple fine-tuning of LLMs, such as LLaMA, GPT-J, Galactica, and more.
 By providing an easy-to-use interface for fine-tuning LLMs to your own data and application, xTuring makes it
 simple to build, customize and control LLMs. The entire process can be done inside your computer or in your
 private cloud, ensuring data privacy and security.
 
-With `xturing` you can,
+With `xTuring` you can,
 - Ingest data from different sources and preprocess them to a format LLMs can understand
 - Scale from single to multiple GPUs for faster fine-tuning
 - Leverage memory-efficient methods (i.e. INT4, LoRA fine-tuning) to reduce hardware costs by up to 90%
@@ -146,7 +146,7 @@ model = BaseModel.load("x/distilgpt2_lora_finetuned_alpaca")
 - [x] OpenAI, Cohere and AI21 Studio model APIs for dataset generation
 - [x] Added fine-tuned checkpoints for some models to the hub
 - [x] INT4 LLaMA LoRA fine-tuning demo
-- [x] INT4 LLaMA LoRA fine-tuning with INT4 generation 
+- [x] INT4 LLaMA LoRA fine-tuning with INT4 generation
 - [ ] Evaluation of LLM models
 - [ ] Support for Stable Diffusion
 
