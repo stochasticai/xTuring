@@ -1,4 +1,5 @@
-from typing import List, Optional, Union
+from typing import Iterable, List, Optional, Union
+from pytorch_lightning.loggers import Logger
 
 from xturing.engines.llama_engine import (
     LLamaEngine,
@@ -50,7 +51,8 @@ class LlamaLoraInt8(CausalLoraInt8Model):
 class LlamaLoraInt4(CausalLoraInt8Model):
     config_name: str = "llama_lora_int4"
 
-    def _make_trainer(self, dataset: Union[TextDataset, InstructionDataset]):
+    def _make_trainer(self, dataset: Union[TextDataset, InstructionDataset], 
+                      logger: Union[Logger, Iterable[Logger], bool] = True):
         return BaseTrainer.create(
             LightningTrainer.config_name,
             self.engine,
@@ -63,6 +65,7 @@ class LlamaLoraInt4(CausalLoraInt8Model):
             True,
             True,
             lora_type=32,
+            logger=logger,
         )
 
     def __init__(self, weights_path: Optional[str] = None):
