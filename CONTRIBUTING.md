@@ -1,6 +1,6 @@
-# Contributing to xturing
+# Contributing to xTuring
 
-We welcome and appreciate contributions to xturing! Whether it's a bug fix, a new feature, or simply a typo, every little bit helps.
+We welcome and appreciate contributions to xTuring! Whether it's a bug fix, a new feature, or simply a typo, every little bit helps.
 
 ## Getting Started
 
