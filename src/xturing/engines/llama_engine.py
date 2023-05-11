@@ -161,10 +161,6 @@ class LlamaLoraInt4Engine(CausalLoraEngine):
         state_dict = torch.load(
             weights_path / Path("pytorch_model.bin"), map_location="cpu"
         )
-        new_state_dict = {}
-        for key, value in state_dict.items():
-            new_state_dict[key[6:]] = value
-        model.load_state_dict(new_state_dict, strict=False)
 
         if warmup_autotune:
             autotune_warmup(model)
@@ -192,3 +188,5 @@ class LlamaLoraInt4Engine(CausalLoraEngine):
         torch.nn.init.kaiming_uniform_ = saved_kaiming_uniform_
         torch.nn.init.uniform_ = saved_uniform_
         torch.nn.init.normal_ = saved_normal_
+
+        self.set_from_state_dict(state_dict)
