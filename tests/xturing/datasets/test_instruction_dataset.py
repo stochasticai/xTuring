@@ -42,3 +42,4 @@ def test_features_dataset():
         "target": "second text",
         "instruction": "second instruction",
     }
+    dataset.save(".")

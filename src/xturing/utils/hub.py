@@ -44,7 +44,7 @@ class Hub:
                 sys.stdout.flush()
 
             try:
-                wget.download(url, str(zip_filename), bar=bar_progress)
+                wget.download(url, str(zip_filename))
 
                 with ZipFile(zip_filename, "r") as zip_ref:
                     zip_ref.extractall(path=model_dir)
