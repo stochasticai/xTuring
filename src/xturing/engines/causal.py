@@ -175,6 +175,9 @@ class CausalLoraEngine(CausalEngine):
 
         self.loss_fct = CrossEntropyLoss()
 
+    def set_from_state_dict(self, state_dict, strict=False):
+        self.model.load_state_dict(state_dict, strict=strict)
+
     def save(self, saving_path: Union[str, Path]):
         # Save HF config file
         self.model.config.save_pretrained(str(saving_path))
