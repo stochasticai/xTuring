@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from typing import Union
+from typing import Optional, Union
 
 import yaml
 from pydantic import BaseModel
@@ -31,7 +31,7 @@ def load_config(model_name: str, config_path: Union[Path, str], data_class: Base
     return config_object
 
 
-def exists_xturing_config_file(dir_path: Union[Path, str] = None):
+def exists_xturing_config_file(dir_path: Optional[Union[Path, str]] = None):
     if dir_path is None:
         return False
     dir_path = Path(dir_path)
@@ -44,7 +44,7 @@ def exists_xturing_config_file(dir_path: Union[Path, str] = None):
     return xturing_config_file_path.is_file()
 
 
-def exists_lora_config_file(dir_path: Union[Path, str] = None):
+def exists_lora_config_file(dir_path: Optional[Union[Path, str]] = None):
     if dir_path is None:
         return False
     dir_path = Path(dir_path)
