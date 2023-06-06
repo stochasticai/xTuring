@@ -16,14 +16,19 @@ from xturing.utils.hub import ModelHub
 class LLamaEngine(CausalEngine):
     config_name: str = "llama_engine"
 
-    def __init__(self, weights_path: Optional[Union[str, Path]] = None):
-        model_name = "aleksickx/llama-7b-hf"
-        model = LlamaForCausalLM.from_pretrained(model_name, torch_dtype=torch.float16)
+    def __init__(self,
+            model_name: Optional[str] = "aleksickx/llama-7b-hf",
+            weights_path: Optional[Union[str, Path]] = None):
+        
         tokenizer = LlamaTokenizer.from_pretrained(model_name, add_bos_token=False)
         tokenizer.pad_token = tokenizer.eos_token
         tokenizer.pad_token_id = tokenizer.eos_token_id
-
-        super().__init__(weights_path=weights_path, model=model, tokenizer=tokenizer)
+        
+        super().__init__(
+            model_name=model_name, 
+            weights_path=weights_path,
+            tokenizer=tokenizer
+        )
 
     def save(self, saving_path: Union[str, Path]):
         self.model.save_pretrained(saving_path)
@@ -33,19 +38,16 @@ class LLamaEngine(CausalEngine):
 class LlamaLoraEngine(CausalLoraEngine):
     config_name: str = "llama_lora_engine"
 
-    def __init__(self, weights_path: Optional[Union[str, Path]] = None):
-        model_name = "aleksickx/llama-7b-hf"
-        model = LlamaForCausalLM.from_pretrained(
-            model_name,
-            torch_dtype=torch.float16,
-        )
+    def __init__(self,
+            model_name: Optional[str] = "aleksickx/llama-7b-hf",
+            weights_path: Optional[Union[str, Path]] = None):
         tokenizer = LlamaTokenizer.from_pretrained(model_name, add_bos_token=False)
         tokenizer.pad_token = tokenizer.eos_token
         tokenizer.pad_token_id = tokenizer.eos_token_id
 
         super().__init__(
+            model_name=model_name, 
             weights_path=weights_path,
-            model=model,
             tokenizer=tokenizer,
             target_modules=["q_proj", "v_proj"],
         )

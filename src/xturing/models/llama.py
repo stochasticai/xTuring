@@ -23,15 +23,15 @@ from xturing.trainers.lightning_trainer import LightningTrainer
 class Llama(CausalModel):
     config_name: str = "llama"
 
-    def __init__(self, weights_path: Optional[str] = None):
-        super().__init__(LLamaEngine.config_name, weights_path)
+    def __init__(self, model_name: Optional[str] = None, weights_path: Optional[str] = None):
+        super().__init__(LLamaEngine.config_name, model_name, weights_path)
 
 
 class LlamaLora(CausalLoraModel):
     config_name: str = "llama_lora"
 
-    def __init__(self, weights_path: Optional[str] = None):
-        super().__init__(LlamaLoraEngine.config_name, weights_path)
+    def __init__(self, model_name: Optional[str] = None, weights_path: Optional[str] = None):
+        super().__init__(LlamaLoraEngine.config_name, model_name, weights_path)
 
 
 class LlamaInt8(CausalInt8Model):

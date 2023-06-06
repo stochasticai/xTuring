@@ -24,8 +24,12 @@ logger = configure_logger(__name__)
 
 
 class CausalModel(BaseModel):
-    def __init__(self, engine: str, weights_path: Optional[str] = None):
-        self.engine = BaseEngine.create(engine, weights_path)
+    def __init__(self, engine: str, model_name: Optional[str] = None, weights_path: Optional[str] = None):
+        if model_name is not None:
+            self.engine = BaseEngine.create(engine,model_name, weights_path)
+        else:
+            self.engine = BaseEngine.create(engine, weights_path)
+
 
         self.model_name = engine.replace("_engine", "")
 
@@ -189,8 +193,8 @@ class CausalInt8Model(CausalModel):
 
 
 class CausalLoraModel(CausalModel):
-    def __init__(self, engine: str, weights_path: Optional[str] = None):
-        super().__init__(engine, weights_path)
+    def __init__(self, engine: str, model_name: Optional[str] = None, weights_path: Optional[str] = None):
+        super().__init__(engine,model_name, weights_path)
 
     def _make_trainer(self, dataset: Union[TextDataset, InstructionDataset], 
                       logger: Union[Logger, Iterable[Logger], bool] = True):

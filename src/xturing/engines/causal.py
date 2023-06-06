@@ -5,6 +5,7 @@ from typing import Any, List, Optional, Union
 import evaluate
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
+from xturing.engines.llama_utils import LlamaConfig, LlamaForCausalLM, LlamaTokenizer
 
 from xturing.config import DEFAULT_DEVICE, DEFAULT_DTYPE
 from xturing.config.read_config import (
@@ -31,6 +32,10 @@ class CausalEngine(BaseEngine):
         load_8bit: Optional[bool] = False,
     ):
         self.model_name = model_name
+        if "llama" in self.model_name.lower():
+            model_cls = LlamaForCausalLM
+        else:
+            model_cls = AutoModelForCausalLM
 
         if weights_path is not None:
             assert Path(
@@ -38,7 +43,7 @@ class CausalEngine(BaseEngine):
             ).is_dir(), "The weights path should be a existing directory"
             if load_8bit:
                 device_map = {"": int(os.environ.get("LOCAL_RANK") or 0)}
-                self.model = AutoModelForCausalLM.from_pretrained(
+                self.model = model_cls.from_pretrained(
                     weights_path,
                     torch_dtype=DEFAULT_DTYPE,
                     load_in_8bit=True,
@@ -46,7 +51,7 @@ class CausalEngine(BaseEngine):
                 )
                 self.model = prepare_model_for_int8_training(self.model)
             else:
-                self.model = AutoModelForCausalLM.from_pretrained(
+                self.model = model_cls.from_pretrained(
                     weights_path, torch_dtype=DEFAULT_DTYPE
                 )
             self.tokenizer = AutoTokenizer.from_pretrained(weights_path)
@@ -56,7 +61,7 @@ class CausalEngine(BaseEngine):
         elif model_name is not None:
             if load_8bit:
                 device_map = {"": int(os.environ.get("LOCAL_RANK") or 0)}
-                self.model = AutoModelForCausalLM.from_pretrained(
+                self.model = model_cls.from_pretrained(
                     model_name,
                     torch_dtype=DEFAULT_DTYPE,
                     load_in_8bit=True,
@@ -66,10 +71,13 @@ class CausalEngine(BaseEngine):
                     param.data = param.data.contiguous()
                 self.model = prepare_model_for_int8_training(self.model)
             else:
-                self.model = AutoModelForCausalLM.from_pretrained(
+                self.model = model_cls.from_pretrained(
                     model_name, torch_dtype=DEFAULT_DTYPE
                 )
-            self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+            if tokenizer is not None:
+                self.tokenizer = tokenizer
+            else:
+                self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         else:
             raise ValueError(
                 "Please provide a model_name, the weights path or model and tokenizer."
