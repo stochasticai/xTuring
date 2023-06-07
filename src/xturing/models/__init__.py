@@ -2,10 +2,11 @@ from .base import BaseModel
 from .bloom import Bloom, BloomInt8, BloomLora, BloomLoraInt8
 from .cerebras import Cerebras, CerebrasInt8, CerebrasLora, CerebrasLoraInt8
 from .distilgpt2 import DistilGPT2, DistilGPT2Lora
+from .falcon import Falcon, FalconInt8, FalconLora, FalconLoraInt8
 from .galactica import Galactica, GalacticaInt8, GalacticaLora, GalacticaLoraInt8
 from .gpt2 import GPT2, GPT2Int8, GPT2Lora, GPT2LoraInt8
 from .gptj import GPTJ, GPTJInt8, GPTJLora, GPTJLoraInt8
-from .llama import Llama, LlamaInt8, LlamaLora, LlamaLoraInt8, LlamaLoraInt4
+from .llama import Llama, LlamaInt8, LlamaLora, LlamaLoraInt4, LlamaLoraInt8
 from .opt import OPT, OPTInt8, OPTLora, OPTLoraInt8
 from .stable_diffusion import StableDiffusion
 
@@ -41,3 +42,7 @@ BaseModel.add_to_registry(BloomLora.config_name, BloomLora)
 BaseModel.add_to_registry(BloomInt8.config_name, BloomInt8)
 BaseModel.add_to_registry(BloomLoraInt8.config_name, BloomLoraInt8)
 BaseModel.add_to_registry(StableDiffusion.config_name, StableDiffusion)
+BaseModel.add_to_registry(Falcon.config_name, Falcon)
+BaseModel.add_to_registry(FalconLora.config_name, FalconLora)
+BaseModel.add_to_registry(FalconInt8.config_name, FalconInt8)
+BaseModel.add_to_registry(FalconLoraInt8.config_name, FalconLoraInt8)
