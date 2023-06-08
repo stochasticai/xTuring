@@ -161,3 +161,21 @@ bloom_lora_int8:
   num_train_epochs: 3
   batch_size: 8
   max_length: 256
+
+falcon:
+  learning_rate: 5e-5
+  weight_decay: 0.01
+  num_train_epochs: 3
+
+falcon_lora:
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 1
+
+falcon_lora_int8:
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 8
+  max_length: 256
