@@ -164,19 +164,15 @@ bloom_lora_int8:
 
 # Contrastive search
 falcon:
-  penalty_alpha: 0.6
-  top_k: 10
   max_new_tokens: 256
-  do_sample: true
+  do_sample: false
 
 # Contrastive search
 falcon_lora:
-  penalty_alpha: 0.6
-  top_k: 10
   max_new_tokens: 256
-  do_sample: true
+  do_sample: false
 
 # Greedy search
 falcon_lora_int8:
   max_new_tokens: 256
-  do_sample: true
+  do_sample: false
