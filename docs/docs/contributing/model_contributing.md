@@ -61,7 +61,7 @@ Before you start, make sure you are familiar with the xTuring codebase, particul
 
 6. **Update the documentation**: Update the documentation to include your new model and engine. Add a new Markdown file in the docs folder with a tutorial on how to use your model.
 
-7. **Submit a pull request**: Once you have completed the above steps, submit a pull request to the dev branch. Provide a clear description of your changes and why they are needed. We will review your changes as soon as possible and provide feedback. Once your changes have been approved, they will be merged into the dev branch.
+7. **Submit a pull request**: Once you have completed the above steps, submit a pull request to the `dev` branch. Provide a clear description of your changes and why they are needed. We will review your changes as soon as possible and provide feedback. Once your changes have been approved, they will be merged into the `dev` branch.
 
 ## Steps to add a LoRA model
 
@@ -96,3 +96,5 @@ Before you start, make sure you are familiar with the xTuring codebase, particul
     Next, follow steps 3 through 7 as mentioned in the above steps
 
 Thank you for your contribution to xTuring!
+
+> Note: For ease of review, make sure to run your model locally with a sample prompt and paste your output(s) along with the sample prompt in the description space of your pull request.
