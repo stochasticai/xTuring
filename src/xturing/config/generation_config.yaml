@@ -166,3 +166,18 @@ bloom_lora_int8:
 generic:
   max_new_tokens: 256
   do_sample: false
+
+# Greedy search
+generic_int8:
+  max_new_tokens: 256
+  do_sample: false
+
+# Greedy search
+generic_lora:
+  max_new_tokens: 256
+  do_sample: false
+
+# Greedy search
+generic_lora_int8:
+  max_new_tokens: 256
+  do_sample: false

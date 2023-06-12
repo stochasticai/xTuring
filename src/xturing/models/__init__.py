@@ -3,7 +3,12 @@ from .bloom import Bloom, BloomInt8, BloomLora, BloomLoraInt8
 from .cerebras import Cerebras, CerebrasInt8, CerebrasLora, CerebrasLoraInt8
 from .distilgpt2 import DistilGPT2, DistilGPT2Lora
 from .galactica import Galactica, GalacticaInt8, GalacticaLora, GalacticaLoraInt8
-from .generic import GenericModel
+from .generic import (
+    GenericInt8Model,
+    GenericLoraInt8Model,
+    GenericLoraModel,
+    GenericModel,
+)
 from .gpt2 import GPT2, GPT2Int8, GPT2Lora, GPT2LoraInt8
 from .gptj import GPTJ, GPTJInt8, GPTJLora, GPTJLoraInt8
 from .llama import Llama, LlamaInt8, LlamaLora, LlamaLoraInt4, LlamaLoraInt8
@@ -43,3 +48,6 @@ BaseModel.add_to_registry(BloomInt8.config_name, BloomInt8)
 BaseModel.add_to_registry(BloomLoraInt8.config_name, BloomLoraInt8)
 BaseModel.add_to_registry(StableDiffusion.config_name, StableDiffusion)
 BaseModel.add_to_registry(GenericModel.config_name, GenericModel)
+BaseModel.add_to_registry(GenericLoraModel.config_name, GenericLoraModel)
+BaseModel.add_to_registry(GenericInt8Model.config_name, GenericInt8Model)
+BaseModel.add_to_registry(GenericLoraInt8Model.config_name, GenericLoraInt8Model)
