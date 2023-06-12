@@ -18,7 +18,12 @@ from .galactica_engine import (
     GalacticaLoraEngine,
     GalacticaLoraInt8Engine,
 )
-from .generic_engine import GenericEngine
+from .generic_engine import (
+    GenericEngine,
+    GenericInt8Engine,
+    GenericLoraEngine,
+    GenericLoraInt8Engine,
+)
 from .gpt2_engine import GPT2Engine, GPT2Int8Engine, GPT2LoraEngine, GPT2LoraInt8Engine
 from .gptj_engine import GPTJEngine, GPTJInt8Engine, GPTJLoraEngine, GPTJLoraInt8Engine
 from .llama_engine import (
@@ -62,3 +67,6 @@ BaseEngine.add_to_registry(BloomLoraEngine.config_name, BloomLoraEngine)
 BaseEngine.add_to_registry(BloomInt8Engine.config_name, BloomInt8Engine)
 BaseEngine.add_to_registry(BloomLoraInt8Engine.config_name, BloomLoraInt8Engine)
 BaseEngine.add_to_registry(GenericEngine.config_name, GenericEngine)
+BaseEngine.add_to_registry(GenericInt8Engine.config_name, GenericInt8Engine)
+BaseEngine.add_to_registry(GenericLoraEngine.config_name, GenericLoraEngine)
+BaseEngine.add_to_registry(GenericLoraInt8Engine.config_name, GenericLoraInt8Engine)
