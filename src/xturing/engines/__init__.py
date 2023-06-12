@@ -18,14 +18,15 @@ from .galactica_engine import (
     GalacticaLoraEngine,
     GalacticaLoraInt8Engine,
 )
+from .generic_engine import GenericEngine
 from .gpt2_engine import GPT2Engine, GPT2Int8Engine, GPT2LoraEngine, GPT2LoraInt8Engine
 from .gptj_engine import GPTJEngine, GPTJInt8Engine, GPTJLoraEngine, GPTJLoraInt8Engine
 from .llama_engine import (
     LLamaEngine,
     LLamaInt8Engine,
     LlamaLoraEngine,
-    LlamaLoraInt8Engine,
     LlamaLoraInt4Engine,
+    LlamaLoraInt8Engine,
 )
 from .opt_engine import OPTEngine, OPTInt8Engine, OPTLoraEngine, OPTLoraInt8Engine
 
@@ -60,3 +61,4 @@ BaseEngine.add_to_registry(BloomEngine.config_name, BloomEngine)
 BaseEngine.add_to_registry(BloomLoraEngine.config_name, BloomLoraEngine)
 BaseEngine.add_to_registry(BloomInt8Engine.config_name, BloomInt8Engine)
 BaseEngine.add_to_registry(BloomLoraInt8Engine.config_name, BloomLoraInt8Engine)
+BaseEngine.add_to_registry(GenericEngine.config_name, GenericEngine)
