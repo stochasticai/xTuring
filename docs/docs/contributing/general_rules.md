@@ -26,9 +26,10 @@ To contribute to xTuring, follow these steps:
 git clone https://github.com/<YOUR_USERNAME>/xturing.git
 ```
 
-3. Create a new branch for your changes
+3. Create a new branch for your changes emerging from the `dev` branch.
 
 ```bash
+git checkout dev
 git checkout -b <BRANCH_NAME>
 ```
 
