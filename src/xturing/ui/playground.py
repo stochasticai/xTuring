@@ -1,3 +1,5 @@
+from typing import Optional
+
 import gradio as gr
 
 from xturing.models.base import BaseModel
@@ -8,7 +10,7 @@ model_to_class_map = {"GPT-2": "gpt2", "GPT-J": "gptj", "Llama": "llama"}
 class Playground:
     def __init__(
         self,
-        model_path: str = None,
+        model_path: Optional[str] = None,
     ):
         self.penalty_alpha = None
         self.top_k = None

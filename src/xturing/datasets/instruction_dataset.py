@@ -50,7 +50,7 @@ class InstructionDataset(BaseDataset):
         self,
         path: Union[str, Path, HFDataset, dict],
         infix_instruction: bool = False,
-        promt_template: str = None,
+        promt_template: Optional[str] = None,
     ):
         if isinstance(path, HFDataset) or isinstance(path, DatasetDict):
             self.data = path
