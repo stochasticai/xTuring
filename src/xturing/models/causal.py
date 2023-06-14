@@ -40,7 +40,7 @@ class CausalModel(BaseModel):
 
         self.engine = BaseEngine.create(
             engine,
-            **self._filter_args(arguments),
+            **_filter_args(arguments),
         )
 
         self.model_name = engine.replace("_engine", "")
