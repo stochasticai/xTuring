@@ -19,6 +19,7 @@ from xturing.preprocessors.base import BasePreprocessor
 from xturing.trainers.base import BaseTrainer
 from xturing.trainers.lightning_trainer import LightningTrainer
 from xturing.utils.logging import configure_logger
+from xturing.utils.utils import _filter_args
 
 logger = configure_logger(__name__)
 
@@ -31,11 +32,15 @@ class CausalModel(BaseModel):
         model_name: Optional[str] = None,
         target_modules: Optional[List[str]] = None,
     ):
-        self.engine = BaseEngine.create(
-            engine,
+        arguments = dict(
             weights_path=weights_path,
             model_name=model_name,
             target_modules=target_modules,
+        )
+
+        self.engine = BaseEngine.create(
+            engine,
+            **_filter_args(arguments),
         )
 
         self.model_name = engine.replace("_engine", "")
