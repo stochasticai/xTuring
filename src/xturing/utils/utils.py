@@ -126,7 +126,7 @@ See more details at https://xturing.stochastic.ai/datasets/generate#from-your-da
     return temp_dir
 
 
-def _filter_args(self, arguments: dict):
+def _filter_args(arguments: dict):
     to_delete = []
     for key, value in arguments.items():
         if value is None:
