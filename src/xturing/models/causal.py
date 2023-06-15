@@ -1,8 +1,9 @@
 import json
 from pathlib import Path
-from typing import Iterable, List, Optional, Union, Type
+from typing import Iterable, List, Optional, Type, Union
 
 import torch
+from pytorch_lightning.loggers import Logger
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
@@ -18,7 +19,6 @@ from xturing.preprocessors.base import BasePreprocessor
 from xturing.trainers.base import BaseTrainer
 from xturing.trainers.lightning_trainer import LightningTrainer
 from xturing.utils.logging import configure_logger
-from pytorch_lightning.loggers import Logger
 
 logger = configure_logger(__name__)
 
@@ -64,8 +64,11 @@ class CausalModel(BaseModel):
             dataset.meta,
         )
 
-    def _make_trainer(self, dataset: Union[TextDataset, InstructionDataset], 
-                      logger: Union[Logger, Iterable[Logger], bool] = True):
+    def _make_trainer(
+        self,
+        dataset: Union[TextDataset, InstructionDataset],
+        logger: Union[Logger, Iterable[Logger], bool] = True,
+    ):
         return BaseTrainer.create(
             LightningTrainer.config_name,
             self.engine,
@@ -78,8 +81,11 @@ class CausalModel(BaseModel):
             logger=logger,
         )
 
-    def finetune(self, dataset: Union[TextDataset, InstructionDataset], 
-                 logger: Union[Logger, Iterable[Logger], bool] = True):
+    def finetune(
+        self,
+        dataset: Union[TextDataset, InstructionDataset],
+        logger: Union[Logger, Iterable[Logger], bool] = True,
+    ):
         assert dataset.config_name in [
             "text_dataset",
             "instruction_dataset",
@@ -192,8 +198,11 @@ class CausalLoraModel(CausalModel):
     def __init__(self, engine: str, weights_path: Optional[str] = None):
         super().__init__(engine, weights_path)
 
-    def _make_trainer(self, dataset: Union[TextDataset, InstructionDataset], 
-                      logger: Union[Logger, Iterable[Logger], bool] = True):
+    def _make_trainer(
+        self,
+        dataset: Union[TextDataset, InstructionDataset],
+        logger: Union[Logger, Iterable[Logger], bool] = True,
+    ):
         return BaseTrainer.create(
             LightningTrainer.config_name,
             self.engine,
@@ -210,6 +219,12 @@ class CausalLoraModel(CausalModel):
 
 
 class CausalLoraInt8Model(CausalLoraModel):
+    def __init__(self, engine: str, weights_path: Optional[str] = None):
+        assert_not_cpu_int8()
+        super().__init__(engine, weights_path)
+
+
+class CausalLoraKbitModel(CausalLoraModel):
     def __init__(self, engine: str, weights_path: Optional[str] = None):
         assert_not_cpu_int8()
         super().__init__(engine, weights_path)

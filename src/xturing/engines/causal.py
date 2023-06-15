@@ -4,6 +4,8 @@ from typing import Any, List, Optional, Union
 
 import evaluate
 import torch
+from peft import LoraConfig as peftLoraConfig
+from peft import get_peft_model, prepare_model_for_kbit_training
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from xturing.config import DEFAULT_DEVICE, DEFAULT_DTYPE
@@ -197,3 +199,79 @@ class CausalLoraEngine(CausalEngine):
 
         # Save tokenizer
         self.tokenizer.save_pretrained(saving_path)
+
+
+class CausalLoraKbitEngine(CausalEngine):
+    def __init__(
+        self,
+        *,
+        model_name: Optional[str] = None,
+        weights_path: Optional[Union[str, Path]] = None,
+        model: Optional[Any] = None,
+        tokenizer: Optional[Any] = None,
+        load_4bit: Optional[bool] = False,
+        target_modules: Optional[Union[List[str], str]] = None,
+        trust_remote_code: Optional[bool] = False,
+    ):
+        if model is None:
+            model = AutoModelForCausalLM.from_pretrained(
+                model_name,
+                torch_dtype=DEFAULT_DTYPE,
+                load_in_4bit=True,
+                trust_remote_code=trust_remote_code,
+            )
+
+            model = prepare_model_for_kbit_training(model)
+
+        super().__init__(
+            model_name=model_name,
+            weights_path=None,
+            model=model,
+            tokenizer=tokenizer,
+        )
+
+        # The model before applying LoRA
+        self.base_model = self.model
+
+        lora_config = peftLoraConfig(
+            r=16,
+            lora_alpha=32,
+            target_modules=target_modules,
+            lora_dropout=0.05,
+            bias="none",
+        )
+
+        self.model = get_peft_model(model, lora_config)
+        self.print_trainable_parameters()
+
+        self.loss_fct = CrossEntropyLoss()
+
+    def set_from_state_dict(self, state_dict, strict=False):
+        self.model.load_state_dict(state_dict, strict=strict)
+
+    def save(self, saving_path: Union[str, Path]):
+        # Save HF config file
+        self.model.config.save_pretrained(str(saving_path))
+        # Save model weights
+        model_weights = str(Path(saving_path).resolve() / "pytorch_model.bin")
+
+        torch.save(self.model.state_dict(), model_weights)
+        # save adapter
+        self.model.save_pretrained(saving_path)
+
+        # Save tokenizer
+        self.tokenizer.save_pretrained(saving_path)
+
+    def print_trainable_parameters(self):
+        """
+        Prints the number of trainable parameters in the model.
+        """
+        trainable_params = 0
+        all_param = 0
+        for _, param in self.model.named_parameters():
+            all_param += param.numel()
+            if param.requires_grad:
+                trainable_params += param.numel()
+        print(
+            f"trainable params: {trainable_params} || all params: {all_param} || trainable%: {100 * trainable_params / all_param}"
+        )
