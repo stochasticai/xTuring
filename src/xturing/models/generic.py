@@ -36,14 +36,6 @@ class GenericModel(CausalModel):
         with open(str(xturing_config_path), "w", encoding="utf-8") as f:
             json.dump(xturing_config, f, ensure_ascii=False, indent=4)
 
-    def save(self, path: Union[str, Path]):
-        path = Path(path)
-        if not path.exists():
-            path.mkdir(parents=True, exist_ok=True)
-
-        self.engine.save(path)
-        self._save_config(path=path)
-
 
 class GenericLoraModel(CausalLoraModel):
     config_name: str = "generic_lora"
