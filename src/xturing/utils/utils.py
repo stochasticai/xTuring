@@ -124,3 +124,13 @@ See more details at https://xturing.stochastic.ai/datasets/generate#from-your-da
     print(f"Finished processing directory, the text files are stored in {temp_dir}.")
 
     return temp_dir
+
+
+def _filter_args(arguments: dict):
+    to_delete = []
+    for key, value in arguments.items():
+        if value is None:
+            to_delete.append(key)
+    for key in to_delete:
+        del arguments[key]
+    return arguments

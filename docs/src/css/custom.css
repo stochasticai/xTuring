@@ -1,0 +1,112 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
+:root {
+  --ifm-font-family-base: 'Inter';
+}
+
+:root {
+  --ifm-color-primary: #3578e5;
+  --ifm-color-primary-dark: #29784c;
+  --ifm-color-primary-darker: #277148;
+  --ifm-color-primary-darkest: #205d3b;
+  --ifm-color-primary-light: #33925d;
+  --ifm-color-primary-lighter: #359962;
+  --ifm-color-primary-lightest: #3cad6e;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+  --ifm-color-primary: #3578e5;
+  --ifm-color-primary-dark: #21af90;
+  --ifm-color-primary-darker: #1fa588;
+  --ifm-color-primary-darkest: #1a8870;
+  --ifm-color-primary-light: #29d5b0;
+  --ifm-color-primary-lighter: #32d8b4;
+  --ifm-color-primary-lightest: #4fddbf;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+.menu__link {
+  transition-property: none;
+  line-height: 1.5;
+  border-radius: 0px 0px 0px 0px;
+  padding-left: 20px;
+  border-radius: 3px;
+}
+
+.navbar__title {
+  font-size: 125%;
+}
+
+code {
+  color: #EB5757;
+  border-width: 0px;
+  padding: 3px 8px;
+  font-size: 0.8em;
+  font-weight: 600;
+}
+
+.theme-doc-sidebar-menu.menu__list {
+  margin-top: 20px;
+}
+
+.menu__link--active {
+  font-weight: 600;
+}
+
+[data-theme='light'] .menu__link--active {
+  color: #000;
+  background-color: #f0f0f0;
+}
+[data-theme='dark'] .menu__link--active {
+  color: #fff;
+  background-color: #111;
+}
+
+@media screen and (max-width: 996px) {
+  :root {
+    --ifm-font-size-base: 18px;
+  }
+  h1 {
+    font-size: 1.5rem !important;
+    font-weight: 600;
+  }
+  .hero .hero__title {
+    font-size: 2.5rem;
+  }
+}
+
+@media screen and (min-width: 997px) {
+  :root {
+    --ifm-font-size-base: 17px;
+  }
+  h1 {
+    font-size: 2rem !important;
+  }
+  h2 {
+    font-size: 1.5rem !important;
+  }
+  h3 {
+    font-size: 1rem !important;
+  }
+  article {
+    /* max-width: 700px; */
+    margin-left: auto;
+    margin-right: auto;
+    padding-top:20px;
+  }
+
+}
+
+/* .theme-doc-sidebar-item-link-level-2 {
+  padding-left: 10px;
+} */
