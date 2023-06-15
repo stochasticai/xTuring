@@ -19,13 +19,29 @@ from xturing.preprocessors.base import BasePreprocessor
 from xturing.trainers.base import BaseTrainer
 from xturing.trainers.lightning_trainer import LightningTrainer
 from xturing.utils.logging import configure_logger
+from xturing.utils.utils import _filter_args
 
 logger = configure_logger(__name__)
 
 
 class CausalModel(BaseModel):
-    def __init__(self, engine: str, weights_path: Optional[str] = None):
-        self.engine = BaseEngine.create(engine, weights_path)
+    def __init__(
+        self,
+        engine: str,
+        weights_path: Optional[str] = None,
+        model_name: Optional[str] = None,
+        target_modules: Optional[List[str]] = None,
+    ):
+        arguments = dict(
+            weights_path=weights_path,
+            model_name=model_name,
+            target_modules=target_modules,
+        )
+
+        self.engine = BaseEngine.create(
+            engine,
+            **_filter_args(arguments),
+        )
 
         self.model_name = engine.replace("_engine", "")
 
@@ -39,6 +55,7 @@ class CausalModel(BaseModel):
         )
 
         # Generation config
+
         self.generation_args = load_config(
             model_name=engine.replace("_engine", ""),
             config_path=Path(__file__).parent.parent
@@ -189,14 +206,30 @@ class CausalModel(BaseModel):
 
 
 class CausalInt8Model(CausalModel):
-    def __init__(self, engine: str, weights_path: Optional[str] = None):
+    def __init__(
+        self,
+        engine: str,
+        weights_path: Optional[str] = None,
+        model_name: Optional[str] = None,
+    ):
         assert_not_cpu_int8()
-        super().__init__(engine, weights_path)
+        super().__init__(engine, weights_path=weights_path, model_name=model_name)
 
 
 class CausalLoraModel(CausalModel):
-    def __init__(self, engine: str, weights_path: Optional[str] = None):
-        super().__init__(engine, weights_path)
+    def __init__(
+        self,
+        engine: str,
+        weights_path: Optional[str] = None,
+        model_name: Optional[str] = None,
+        target_modules: Optional[List[str]] = None,
+    ):
+        super().__init__(
+            engine,
+            weights_path=weights_path,
+            model_name=model_name,
+            target_modules=target_modules,
+        )
 
     def _make_trainer(
         self,
@@ -219,10 +252,21 @@ class CausalLoraModel(CausalModel):
 
 
 class CausalLoraInt8Model(CausalLoraModel):
-    def __init__(self, engine: str, weights_path: Optional[str] = None):
+    def __init__(
+        self,
+        engine: str,
+        weights_path: Optional[str] = None,
+        model_name: Optional[str] = None,
+        target_modules: Optional[List[str]] = None,
+    ):
         assert_not_cpu_int8()
-        super().__init__(engine, weights_path)
-
+        super().__init__(
+            engine,
+            weights_path=weights_path,
+            model_name=model_name,
+            target_modules=target_modules,
+        )
+        
 
 class CausalLoraKbitModel(CausalLoraModel):
     def __init__(self, engine: str, weights_path: Optional[str] = None):
