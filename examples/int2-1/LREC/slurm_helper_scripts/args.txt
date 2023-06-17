@@ -1,0 +1,2 @@
+--intq_checkpoint llama7b-4bit-128g.pt --wbits 4 --ce_weight 10 --lora_target_modules q_proj v_proj k_proj o_proj up_proj gate_proj --n_samples 10000 --batch_size 7 --lr 1e-5 --num_epochs 10 --save_freq 1 --cache --intra_save_freq 200 --groupsize -1
+--intq_checkpoint llama7b-2bit-128g.pt --wbits 2 --ce_weight 120 --lora_target_modules q_proj v_proj k_proj o_proj up_proj gate_proj --n_samples 10000 --batch_size 7 --lr 3e-5 --num_epochs 10 --save_freq 1 --cache --intra_save_freq 200 --groupsize -1
