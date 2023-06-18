@@ -13,7 +13,7 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 from transformers import AutoModelForCausalLM, LlamaTokenizer
 
-from xturing.engines.lora_engine.lora import LoraConfig, load_quant
+from xturing.engines.lora_engine.lora import LoraConfig, LoraModel, load_quant
 from xturing.engines.quant_utils.qerdataloading import get_c4
 
 
@@ -132,6 +132,10 @@ def parse_args():
     return parser.parse_args()
 
 
+def get_lora_model(model, config):
+    return LoraModel(config, model)
+
+
 def prepare_models(args):
     if not args.cache:
         fp_model = AutoModelForCausalLM.from_pretrained(
@@ -153,7 +157,8 @@ def prepare_models(args):
         bias="none",
         peft_type="CAUSAL_LM",
     )
-    model = get_peft_model(model, config)
+    model = get_lora_model(model, config)
+    # model = get_peft_model(model, config)
     return model, fp_model if not args.cache else model
 
 
