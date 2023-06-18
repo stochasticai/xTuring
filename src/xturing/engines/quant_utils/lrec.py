@@ -7,13 +7,14 @@ import torch
 import torch.nn.functional as F
 import wandb
 from datasets import load_dataset
-from peft import LoraConfig, get_peft_model, prepare_model_for_intq_training
-from qerdataloading import get_c4
 from torch.nn import KLDivLoss
 from torch.utils.checkpoint import checkpoint
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 from transformers import AutoModelForCausalLM, LlamaTokenizer
+
+from xturing.engines.lora_engine.lora import LoraConfig, load_quant
+from xturing.engines.quant_utils.qerdataloading import get_c4
 
 
 def parse_args():
@@ -136,7 +137,7 @@ def prepare_models(args):
         fp_model = AutoModelForCausalLM.from_pretrained(
             args.base_model, torch_dtype=torch.float16
         ).to("cuda")
-    model = prepare_model_for_intq_training(
+    model = load_quant(
         args.base_model,
         args.intq_checkpoint,
         args.wbits,
@@ -150,7 +151,7 @@ def prepare_models(args):
         target_modules=args.lora_target_modules,
         lora_dropout=args.lora_dropout,
         bias="none",
-        task_type="CAUSAL_LM",
+        peft_type="CAUSAL_LM",
     )
     model = get_peft_model(model, config)
     return model, fp_model if not args.cache else model

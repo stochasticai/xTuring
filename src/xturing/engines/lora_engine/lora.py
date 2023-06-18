@@ -12,6 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import enum
 import importlib
 import json
 import math
@@ -21,7 +22,6 @@ import warnings
 from dataclasses import asdict, dataclass, field
 from enum import Enum
 from typing import List, Optional, Union
-import enum
 
 import torch
 import torch.nn as nn
@@ -32,6 +32,7 @@ from xturing.engines.lora_engine.save_and_load import (
     get_peft_model_state_dict,
     set_peft_model_state_dict,
 )
+from xturing.engines.quant_utils import QuantLinear, autotune_warmup
 
 
 def is_bnb_available():
@@ -45,17 +46,21 @@ if is_bnb_available():
 def transpose(weight, fan_in_fan_out):
     return weight.T if fan_in_fan_out else weight
 
+
 def is_gptq_available():
     return importlib.util.find_spec("xturing.engines.quant_utils") is not None
 
+
 if is_gptq_available():
     from ..quant_utils import QuantLinear
+
 
 class PeftType(str, enum.Enum):
     PROMPT_TUNING = "PROMPT_TUNING"
     P_TUNING = "P_TUNING"
     PREFIX_TUNING = "PREFIX_TUNING"
     LORA = "LORA"
+
 
 WEIGHTS_NAME = "adapter_model.bin"
 CONFIG_NAME = "adapter_config.json"
@@ -90,14 +95,22 @@ class LoraConfig:
     lora_alpha: int = field(default=None, metadata={"help": "Lora alpha"})
     lora_dropout: float = field(default=None, metadata={"help": "Lora dropout"})
     merge_weights: bool = field(
-        default=False, metadata={"help": "Merge weights of the original model and the Lora model"}
+        default=False,
+        metadata={"help": "Merge weights of the original model and the Lora model"},
     )
     fan_in_fan_out: bool = field(
         default=False,
-        metadata={"help": "Set this to True if the layer to replace stores weight like (fan_in, fan_out)"},
+        metadata={
+            "help": "Set this to True if the layer to replace stores weight like (fan_in, fan_out)"
+        },
     )
-    enable_lora: Optional[List[bool]] = field(default=None, metadata={"help": "Used with `lora.MergedLinear`."})
-    bias: str = field(default="none", metadata={"help": "Bias type for Lora. Can be 'none', 'all' or 'lora_only'"})
+    enable_lora: Optional[List[bool]] = field(
+        default=None, metadata={"help": "Used with `lora.MergedLinear`."}
+    )
+    bias: str = field(
+        default="none",
+        metadata={"help": "Bias type for Lora. Can be 'none', 'all' or 'lora_only'"},
+    )
     modules_to_save: Optional[List[str]] = field(
         default=None,
         metadata={
@@ -231,7 +244,9 @@ class LoraModel(torch.nn.Module):
 
     def _find_and_replace(self):
         loaded_in_8bit = getattr(self.model, "is_loaded_in_8bit", False)
-        is_gtq_quantized = getattr(self.model, "gptq", False)  # Step 1: Check if the model is GTQ quantized
+        is_gtq_quantized = getattr(
+            self.model, "gptq", False
+        )  # Step 1: Check if the model is GTQ quantized
 
         if loaded_in_8bit and not is_bnb_available():
             raise ImportError(
@@ -245,7 +260,9 @@ class LoraModel(torch.nn.Module):
             "lora_alpha": self.peft_config.lora_alpha,
             "lora_dropout": self.peft_config.lora_dropout,
             "fan_in_fan_out": self.peft_config.fan_in_fan_out,
-            "merge_weights": (self.peft_config.merge_weights or self.peft_config.inference_mode)
+            "merge_weights": (
+                self.peft_config.merge_weights or self.peft_config.inference_mode
+            )
             and not is_hf_device_map_available,
         }
         key_list = [key for key, _ in self.model.named_modules()]
@@ -253,7 +270,10 @@ class LoraModel(torch.nn.Module):
             if isinstance(self.peft_config.target_modules, str):
                 target_module_found = re.fullmatch(self.peft_config.target_modules, key)
             else:
-                target_module_found = any(key.endswith(target_key) for target_key in self.peft_config.target_modules)
+                target_module_found = any(
+                    key.endswith(target_key)
+                    for target_key in self.peft_config.target_modules
+                )
             if target_module_found:
                 if not is_target_modules_in_base_model:
                     is_target_modules_in_base_model = True
@@ -269,10 +289,14 @@ class LoraModel(torch.nn.Module):
                         }
                     )
                     if self.peft_config.enable_lora is None:
-                        new_module = Linear8bitLt(target.in_features, target.out_features, bias=bias, **kwargs)
+                        new_module = Linear8bitLt(
+                            target.in_features, target.out_features, bias=bias, **kwargs
+                        )
                     else:
                         kwargs.update({"enable_lora": self.peft_config.enable_lora})
-                        new_module = MergedLinear8bitLt(target.in_features, target.out_features, bias=bias, **kwargs)
+                        new_module = MergedLinear8bitLt(
+                            target.in_features, target.out_features, bias=bias, **kwargs
+                        )
                 elif is_gptq_available() and isinstance(target, QuantLinear):
                     kwargs.update(
                         {
@@ -281,7 +305,9 @@ class LoraModel(torch.nn.Module):
                         }
                     )
                     if self.peft_config.enable_lora is None:
-                        new_module = LinearqbitLt(target.infeatures, target.outfeatures, bias=bias, **kwargs)
+                        new_module = LinearqbitLt(
+                            target.infeatures, target.outfeatures, bias=bias, **kwargs
+                        )
                         new_module.scales = target.scales
                         new_module.qzeros = target.qzeros
                         new_module.g_idx = target.g_idx
@@ -289,29 +315,45 @@ class LoraModel(torch.nn.Module):
                             new_module.bias = target.bias
                     else:
                         kwargs.update({"enable_lora": self.peft_config.enable_lora})
-                        new_module = MergedLinearqbitLt(target.infeatures, target.outfeatures, bias=bias, **kwargs)
+                        new_module = MergedLinearqbitLt(
+                            target.infeatures, target.outfeatures, bias=bias, **kwargs
+                        )
                         new_module.scales = target.scales
                         new_module.qzeros = target.qzeros
                         new_module.g_idx = target.g_idx
                         if target.bias:
                             new_module.bias = target.bias
-                elif isinstance(target, torch.nn.Linear) and self.peft_config.enable_lora is None:
-                    new_module = Linear(target.in_features, target.out_features, bias=bias, **kwargs)
+                elif (
+                    isinstance(target, torch.nn.Linear)
+                    and self.peft_config.enable_lora is None
+                ):
+                    new_module = Linear(
+                        target.in_features, target.out_features, bias=bias, **kwargs
+                    )
                 elif self.peft_config.enable_lora is not None:
                     kwargs.update({"enable_lora": self.peft_config.enable_lora})
                     if isinstance(target, Conv1D):
                         in_features, out_features = (
-                            target.weight.ds_shape if hasattr(target.weight, "ds_shape") else target.weight.shape
+                            target.weight.ds_shape
+                            if hasattr(target.weight, "ds_shape")
+                            else target.weight.shape
                         )
                     else:
-                        in_features, out_features = target.in_features, target.out_features
+                        in_features, out_features = (
+                            target.in_features,
+                            target.out_features,
+                        )
                         if kwargs["fan_in_fan_out"]:
                             warnings.warn(
                                 "fan_in_fan_out is set to True but the target module is not a Conv1D. "
                                 "Setting fan_in_fan_out to False."
                             )
-                            kwargs["fan_in_fan_out"] = self.peft_config.fan_in_fan_out = False
-                    new_module = MergedLinear(in_features, out_features, bias=bias, **kwargs)
+                            kwargs[
+                                "fan_in_fan_out"
+                            ] = self.peft_config.fan_in_fan_out = False
+                    new_module = MergedLinear(
+                        in_features, out_features, bias=bias, **kwargs
+                    )
                 self._replace_module(parent, target_name, new_module, target)
         if not is_target_modules_in_base_model:
             raise ValueError(
@@ -364,7 +406,10 @@ class LoraModel(torch.nn.Module):
         return None
 
     def get_peft_config_as_dict(self, inference: bool = False):
-        config = {k: v.value if isinstance(v, Enum) else v for k, v in asdict(self.peft_config).items()}
+        config = {
+            k: v.value if isinstance(v, Enum) else v
+            for k, v in asdict(self.peft_config).items()
+        }
         if inference:
             config["inference_mode"] = True
         return config
@@ -512,7 +557,13 @@ class Linear(nn.Linear, LoraLayer):
         **kwargs,
     ):
         nn.Linear.__init__(self, in_features, out_features, **kwargs)
-        LoraLayer.__init__(self, r=r, lora_alpha=lora_alpha, lora_dropout=lora_dropout, merge_weights=merge_weights)
+        LoraLayer.__init__(
+            self,
+            r=r,
+            lora_alpha=lora_alpha,
+            lora_dropout=lora_dropout,
+            merge_weights=merge_weights,
+        )
 
         self.fan_in_fan_out = fan_in_fan_out
         # Actual trainable parameters
@@ -541,14 +592,20 @@ class Linear(nn.Linear, LoraLayer):
             # Merge the weights and mark it
             if self.r > 0:
                 self.weight.data += (
-                    transpose(self.lora_B.weight @ self.lora_A.weight, self.fan_in_fan_out) * self.scaling
+                    transpose(
+                        self.lora_B.weight @ self.lora_A.weight, self.fan_in_fan_out
+                    )
+                    * self.scaling
                 )
             self.merged = True
         elif self.merge_weights and self.merged:
             # Make sure that the weights are not merged
             if self.r > 0:
                 self.weight.data -= (
-                    transpose(self.lora_B.weight @ self.lora_A.weight, self.fan_in_fan_out) * self.scaling
+                    transpose(
+                        self.lora_B.weight @ self.lora_A.weight, self.fan_in_fan_out
+                    )
+                    * self.scaling
                 )
             self.merged = False
 
@@ -561,19 +618,30 @@ class Linear(nn.Linear, LoraLayer):
         if self.disable_adapters:
             if self.r > 0 and self.merged:
                 self.weight.data -= (
-                    transpose(self.lora_B.weight @ self.lora_A.weight, self.fan_in_fan_out) * self.scaling
+                    transpose(
+                        self.lora_B.weight @ self.lora_A.weight, self.fan_in_fan_out
+                    )
+                    * self.scaling
                 )
                 self.merged = False
 
-            return F.linear(x, transpose(self.weight, self.fan_in_fan_out), bias=self.bias)
+            return F.linear(
+                x, transpose(self.weight, self.fan_in_fan_out), bias=self.bias
+            )
         elif self.r > 0 and not self.merged:
-            result = F.linear(x, transpose(self.weight, self.fan_in_fan_out), bias=self.bias)
+            result = F.linear(
+                x, transpose(self.weight, self.fan_in_fan_out), bias=self.bias
+            )
             if self.r > 0:
-                loraoutput = self.lora_B(self.lora_A(self.lora_dropout(x))) * self.scaling
+                loraoutput = (
+                    self.lora_B(self.lora_A(self.lora_dropout(x))) * self.scaling
+                )
                 result = result + loraoutput
             return result
         else:
-            return F.linear(x, transpose(self.weight, self.fan_in_fan_out), bias=self.bias)
+            return F.linear(
+                x, transpose(self.weight, self.fan_in_fan_out), bias=self.bias
+            )
 
 
 class MergedLinear(nn.Linear, LoraLayer):
@@ -591,7 +659,13 @@ class MergedLinear(nn.Linear, LoraLayer):
         **kwargs,
     ):
         nn.Linear.__init__(self, in_features, out_features, **kwargs)
-        LoraLayer.__init__(self, r=r, lora_alpha=lora_alpha, lora_dropout=lora_dropout, merge_weights=merge_weights)
+        LoraLayer.__init__(
+            self,
+            r=r,
+            lora_alpha=lora_alpha,
+            lora_dropout=lora_dropout,
+            merge_weights=merge_weights,
+        )
         if out_features % len(enable_lora) != 0:
             raise ValueError("The length of enable_lora must divide out_features")
         self.enable_lora = enable_lora
@@ -610,7 +684,9 @@ class MergedLinear(nn.Linear, LoraLayer):
             # Freezing the pre-trained weight matrix
             self.weight.requires_grad = False
             # Compute the indices
-            self.lora_ind = self.weight.new_zeros((out_features,), dtype=torch.bool).view(len(enable_lora), -1)
+            self.lora_ind = self.weight.new_zeros(
+                (out_features,), dtype=torch.bool
+            ).view(len(enable_lora), -1)
             self.lora_ind[enable_lora, :] = True
             self.lora_ind = self.lora_ind.view(-1)
         self.reset_parameters()
@@ -627,7 +703,9 @@ class MergedLinear(nn.Linear, LoraLayer):
     def zero_pad(self, x):
         result = x.new_zeros((*x.shape[:-1], self.out_features))
         result = result.view(-1, self.out_features)
-        result[:, self.lora_ind] = x.reshape(-1, self.out_features // len(self.enable_lora) * sum(self.enable_lora))
+        result[:, self.lora_ind] = x.reshape(
+            -1, self.out_features // len(self.enable_lora) * sum(self.enable_lora)
+        )
         return result.view((*x.shape[:-1], self.out_features))
 
     def train(self, mode: bool = True):
@@ -646,7 +724,9 @@ class MergedLinear(nn.Linear, LoraLayer):
                     .squeeze(0)
                     .transpose(-2, -1)
                 )
-                self.weight.data += transpose(self.zero_pad(delta_w * self.scaling), not self.fan_in_fan_out)
+                self.weight.data += transpose(
+                    self.zero_pad(delta_w * self.scaling), not self.fan_in_fan_out
+                )
             self.merged = True
         elif self.merge_weights and self.merged:
             # Make sure that the weights are not merged
@@ -660,7 +740,9 @@ class MergedLinear(nn.Linear, LoraLayer):
                     .squeeze(0)
                     .transpose(-2, -1)
                 )
-                self.weight.data -= transpose(self.zero_pad(delta_w * self.scaling), not self.fan_in_fan_out)
+                self.weight.data -= transpose(
+                    self.zero_pad(delta_w * self.scaling), not self.fan_in_fan_out
+                )
             self.merged = False
 
     def eval(self):
@@ -680,13 +762,21 @@ class MergedLinear(nn.Linear, LoraLayer):
                     .squeeze(0)
                     .transpose(-2, -1)
                 )
-                self.weight.data -= transpose(self.zero_pad(delta_w * self.scaling), not self.fan_in_fan_out)
+                self.weight.data -= transpose(
+                    self.zero_pad(delta_w * self.scaling), not self.fan_in_fan_out
+                )
                 self.merged = False
-            return F.linear(x, transpose(self.weight, self.fan_in_fan_out), bias=self.bias)
+            return F.linear(
+                x, transpose(self.weight, self.fan_in_fan_out), bias=self.bias
+            )
         elif self.merged:
-            return F.linear(x, transpose(self.weight, self.fan_in_fan_out), bias=self.bias)
+            return F.linear(
+                x, transpose(self.weight, self.fan_in_fan_out), bias=self.bias
+            )
         else:
-            result = F.linear(x, transpose(self.weight, self.fan_in_fan_out), bias=self.bias)
+            result = F.linear(
+                x, transpose(self.weight, self.fan_in_fan_out), bias=self.bias
+            )
             if self.r > 0:
                 after_A = self.lora_A(self.lora_dropout(x))
                 after_B = self.lora_B(after_A.transpose(-2, -1)).transpose(-2, -1)
@@ -713,11 +803,19 @@ if is_bnb_available():
                 out_features,
                 bias=kwargs.get("bias", True),
                 has_fp16_weights=kwargs.get("has_fp16_weights", True),
-                memory_efficient_backward=kwargs.get("memory_efficient_backward", False),
+                memory_efficient_backward=kwargs.get(
+                    "memory_efficient_backward", False
+                ),
                 threshold=kwargs.get("threshold", 0.0),
                 index=kwargs.get("index", None),
             )
-            LoraLayer.__init__(self, r=r, lora_alpha=lora_alpha, lora_dropout=lora_dropout, merge_weights=False)
+            LoraLayer.__init__(
+                self,
+                r=r,
+                lora_alpha=lora_alpha,
+                lora_dropout=lora_dropout,
+                merge_weights=False,
+            )
             # Actual trainable parameters
             if r > 0:
                 self.lora_A = nn.Linear(in_features, r, bias=False)
@@ -744,10 +842,17 @@ if is_bnb_available():
 
                     if x.dtype != torch.float32:
                         x = x.float()
-                    output = self.lora_B(self.lora_A(self.lora_dropout(x))).to(expected_dtype) * self.scaling
+                    output = (
+                        self.lora_B(self.lora_A(self.lora_dropout(x))).to(
+                            expected_dtype
+                        )
+                        * self.scaling
+                    )
                     result += output
                 else:
-                    output = self.lora_B(self.lora_A(self.lora_dropout(x))) * self.scaling
+                    output = (
+                        self.lora_B(self.lora_A(self.lora_dropout(x))) * self.scaling
+                    )
                     result += output
             return result
 
@@ -769,11 +874,19 @@ if is_bnb_available():
                 out_features,
                 bias=kwargs.get("bias", True),
                 has_fp16_weights=kwargs.get("has_fp16_weights", True),
-                memory_efficient_backward=kwargs.get("memory_efficient_backward", False),
+                memory_efficient_backward=kwargs.get(
+                    "memory_efficient_backward", False
+                ),
                 threshold=kwargs.get("threshold", 0.0),
                 index=kwargs.get("index", None),
             )
-            LoraLayer.__init__(self, r=r, lora_alpha=lora_alpha, lora_dropout=lora_dropout, merge_weights=False)
+            LoraLayer.__init__(
+                self,
+                r=r,
+                lora_alpha=lora_alpha,
+                lora_dropout=lora_dropout,
+                merge_weights=False,
+            )
             if out_features % len(enable_lora) != 0:
                 raise ValueError("The length of enable_lora must divide out_features")
             self.enable_lora = enable_lora
@@ -791,7 +904,9 @@ if is_bnb_available():
                 # Freezing the pre-trained weight matrix
                 self.weight.requires_grad = False
                 # Compute the indices
-                self.lora_ind = self.weight.new_zeros((out_features,), dtype=torch.bool).view(len(enable_lora), -1)
+                self.lora_ind = self.weight.new_zeros(
+                    (out_features,), dtype=torch.bool
+                ).view(len(enable_lora), -1)
                 self.lora_ind[enable_lora, :] = True
                 self.lora_ind = self.lora_ind.view(-1)
             self.reset_parameters()
@@ -830,7 +945,9 @@ if is_bnb_available():
                     result += output
             return result
 
+
 if is_gptq_available():
+
     class LinearqbitLt(QuantLinear, LoraLayer):
         # Lora implemented in a dense layer
         def __init__(
@@ -842,17 +959,22 @@ if is_gptq_available():
             lora_dropout: float = 0.0,
             **kwargs,
         ):
-            
             QuantLinear.__init__(
                 self,
-                kwargs.get('bits', 4),
-                kwargs.get('groupsize', 128),
+                kwargs.get("bits", 4),
+                kwargs.get("groupsize", 128),
                 in_features,
                 out_features,
-                kwargs.get('bias', False),
+                kwargs.get("bias", False),
             )
 
-            LoraLayer.__init__(self, r=r, lora_alpha=lora_alpha, lora_dropout=lora_dropout, merge_weights=False)
+            LoraLayer.__init__(
+                self,
+                r=r,
+                lora_alpha=lora_alpha,
+                lora_dropout=lora_dropout,
+                merge_weights=False,
+            )
             # Actual trainable parameters
             if r > 0:
                 self.lora_A = nn.Linear(in_features, r, bias=False)
@@ -868,16 +990,20 @@ if is_gptq_available():
             if hasattr(self, "lora_A"):
                 # initialize A the same way as the default for nn.Linear and B to zero
                 # nn.init.kaiming_uniform_(self.lora_A.weight, a=math.sqrt(5))
-                self.lora_A.weight = torch.nn.Parameter(torch.nn.init.kaiming_uniform(self.lora_A.weight, a=math.sqrt(5)))
+                self.lora_A.weight = torch.nn.Parameter(
+                    torch.nn.init.kaiming_uniform(self.lora_A.weight, a=math.sqrt(5))
+                )
                 nn.init.zeros_(self.lora_B.weight)
 
         def forward(self, x: torch.Tensor):
             # x = x.detach()
             custom_layer_output = super().forward(x)
-            
+
             dtype = custom_layer_output.dtype
             x = x.float()
-            lora_output = self.lora_B(self.lora_A(self.lora_dropout(x))).to(dtype) * self.scaling
+            lora_output = (
+                self.lora_B(self.lora_A(self.lora_dropout(x))).to(dtype) * self.scaling
+            )
             result = custom_layer_output + lora_output
             return result
 
@@ -895,12 +1021,18 @@ if is_gptq_available():
         ):
             QuantLinear.__init__(
                 self,
-                kwargs.get('bits', 4),
-                kwargs.get('groupsize', 128),
+                kwargs.get("bits", 4),
+                kwargs.get("groupsize", 128),
                 in_features,
                 out_features,
             )
-            LoraLayer.__init__(self, r=r, lora_alpha=lora_alpha, lora_dropout=lora_dropout, merge_weights=False)
+            LoraLayer.__init__(
+                self,
+                r=r,
+                lora_alpha=lora_alpha,
+                lora_dropout=lora_dropout,
+                merge_weights=False,
+            )
             if out_features % len(enable_lora) != 0:
                 raise ValueError("The length of enable_lora must divide out_features")
             self.enable_lora = enable_lora
@@ -918,7 +1050,9 @@ if is_gptq_available():
                 # Freezing the pre-trained weight matrix
                 self.qweight.requires_grad = False
                 # Compute the indices
-                self.lora_ind = self.weight.new_zeros((out_features,), dtype=torch.bool).view(len(enable_lora), -1)
+                self.lora_ind = self.weight.new_zeros(
+                    (out_features,), dtype=torch.bool
+                ).view(len(enable_lora), -1)
                 self.lora_ind[enable_lora, :] = True
                 self.lora_ind = self.lora_ind.view(-1)
             self.reset_parameters()
@@ -938,7 +1072,7 @@ if is_gptq_available():
             return result.view((*x.shape[:-1], self.out_features))
 
         def forward(self, x: torch.Tensor):
-            result = super().forward(x)#.detach()
+            result = super().forward(x)  # .detach()
             if self.disable_adapters:
                 return result
             elif self.r > 0:
@@ -1018,4 +1152,84 @@ def prepare_model_for_int8_training(
             CastOutputToFloat(output_embedding_layer),
         )
 
+    return model
+
+
+def make_quant(module, names, bits, groupsize, name=""):
+    if isinstance(module, QuantLinear):
+        return
+    for attr in dir(module):
+        tmp = getattr(module, attr)
+        name1 = name + "." + attr if name != "" else attr
+        if name1 in names:
+            delattr(module, attr)
+            setattr(
+                module,
+                attr,
+                QuantLinear(
+                    bits,
+                    groupsize,
+                    tmp.in_features,
+                    tmp.out_features,
+                    tmp.bias is not None,
+                ),
+            )
+    for name1, child in module.named_children():
+        make_quant(
+            child, names, bits, groupsize, name + "." + name1 if name != "" else name1
+        )
+
+
+def find_layers(module, layers=[nn.Conv2d, nn.Linear], name=""):
+    if type(module) in layers:
+        return {name: module}
+    res = {}
+    for name1, child in module.named_children():
+        res.update(
+            find_layers(
+                child, layers=layers, name=name + "." + name1 if name != "" else name1
+            )
+        )
+    return res
+
+
+def load_quant(
+    model, checkpoint, wbits, groupsize=128, warmup_autotune=True, model_seqlen=2048
+):
+    from transformers import LlamaConfig, LlamaForCausalLM
+
+    config = LlamaConfig.from_pretrained(model)
+
+    def noop(*args, **kwargs):
+        pass
+
+    torch.nn.init.kaiming_uniform_ = noop
+    torch.nn.init.uniform_ = noop
+    torch.nn.init.normal_ = noop
+
+    torch.set_default_dtype(torch.half)
+    transformers.modeling_utils._init_weights = False
+    torch.set_default_dtype(torch.half)
+    model = LlamaForCausalLM(config)
+    torch.set_default_dtype(torch.float)
+    model = model.eval()
+    layers = find_layers(model)
+    for name in ["lm_head"]:
+        if name in layers:
+            del layers[name]
+    make_quant(model, layers, wbits, groupsize)
+
+    del layers
+
+    print("Loading model ...")
+    if checkpoint.endswith(".safetensors"):
+        from safetensors.torch import load_file as safe_load
+
+        model.load_state_dict(safe_load(checkpoint), strict=False)
+    else:
+        model.load_state_dict(torch.load(checkpoint), strict=False)
+    if warmup_autotune:
+        autotune_warmup(model)
+    model.seqlen = model_seqlen
+    print("Done.")
     return model

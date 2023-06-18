@@ -689,6 +689,46 @@ def transpose_matmul248(input, qweight, scales, qzeros, g_idx, bits, maxq):
     return output
 
 
+def autotune_warmup(model, transpose=False):
+    """
+    Pre-tunes the quantized kernel
+    """
+    from tqdm import tqdm
+
+    n_values = {}
+
+    for _, m in model.named_modules():
+        if not isinstance(m, QuantLinear):
+            continue
+
+        k = m.infeatures
+        n = m.outfeatures
+
+        if n not in n_values:
+            n_values[n] = (
+                k,
+                m.qweight.cuda(),
+                m.scales.cuda(),
+                m.qzeros.cuda(),
+                m.g_idx.cuda(),
+                m.bits,
+                m.maxq,
+            )
+
+    print(f"Found {len(n_values)} unique N values.")
+
+    print("Warming up autotune cache ...")
+    for m in tqdm(range(0, 12)):
+        m = 2**m  # [1, 2048]
+        for n, (k, qweight, scales, qzeros, g_idx, bits, maxq) in n_values.items():
+            a = torch.randn(m, k, dtype=torch.float16, device="cuda")
+            matmul248(a, qweight, scales, qzeros, g_idx, bits, maxq)
+            if transpose:
+                a = torch.randn(m, n, dtype=torch.float16, device="cuda")
+                transpose_matmul248(a, qweight, scales, qzeros, g_idx, bits, maxq)
+    del n_values
+
+
 class QuantLinearFunction(torch.autograd.Function):
     @staticmethod
     @custom_fwd(cast_inputs=torch.float16)
