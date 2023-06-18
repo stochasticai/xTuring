@@ -1196,6 +1196,7 @@ def find_layers(module, layers=[nn.Conv2d, nn.Linear], name=""):
 def load_quant(
     model, checkpoint, wbits, groupsize=128, warmup_autotune=True, model_seqlen=2048
 ):
+    import transformers
     from transformers import LlamaConfig, LlamaForCausalLM
 
     config = LlamaConfig.from_pretrained(model)
