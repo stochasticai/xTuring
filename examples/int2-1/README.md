@@ -1,6 +1,6 @@
 # INT2.1 Efficient Large Language Model Framework
 
-This repository is the official implementation of "INT2.1: Towards Fine-Tunable Quantized Large Language Models with Error Correction through Low-Rank Adaptation". We provide the code for regenerating our results and using our INT2.1 framework. 
+This part repository is the official implementation of "INT2.1: Towards Fine-Tunable Quantized Large Language Models with Error Correction through Low-Rank Adaptation". We provide the code for regenerating our results and using our INT2.1 framework. 
 
 <br>
 
