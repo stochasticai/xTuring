@@ -202,3 +202,7 @@ falcon_int8:
 falcon_lora_int8:
   max_new_tokens: 256
   do_sample: false
+
+llama_lora_kbit:
+  max_new_tokens: 256
+  do_sample: false

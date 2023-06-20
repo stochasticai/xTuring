@@ -8,8 +8,8 @@ from xturing.engines.llama_engine import (
     LLamaEngine,
     LLamaInt8Engine,
     LlamaLoraEngine,
-    LlamaLoraInt4Engine,
     LlamaLoraInt8Engine,
+    LlamaLoraKbitEngine,
 )
 from xturing.models.causal import (
     CausalInt8Model,
@@ -50,8 +50,8 @@ class LlamaLoraInt8(CausalLoraInt8Model):
         super().__init__(LlamaLoraInt8Engine.config_name, weights_path)
 
 
-class LlamaLoraInt4(CausalLoraKbitModel):
-    config_name: str = "llama_lora_int4"
+class LlamaLoraKbit(CausalLoraKbitModel):
+    config_name: str = "llama_lora_kbit"
 
     def _make_trainer(
         self,
@@ -74,4 +74,4 @@ class LlamaLoraInt4(CausalLoraKbitModel):
         )
 
     def __init__(self, weights_path: Optional[str] = None):
-        super().__init__(LlamaLoraInt4Engine.config_name, weights_path)
+        super().__init__(LlamaLoraKbitEngine.config_name, weights_path)
