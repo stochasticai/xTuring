@@ -209,7 +209,6 @@ class CausalLoraKbitEngine(CausalEngine):
         weights_path: Optional[Union[str, Path]] = None,
         model: Optional[Any] = None,
         tokenizer: Optional[Any] = None,
-        load_4bit: Optional[bool] = False,
         target_modules: Optional[Union[List[str], str]] = None,
         trust_remote_code: Optional[bool] = False,
     ):
@@ -230,18 +229,6 @@ class CausalLoraKbitEngine(CausalEngine):
             tokenizer=tokenizer,
         )
 
-        # The model before applying LoRA
-        self.base_model = self.model
-
-        lora_config = peftLoraConfig(
-            r=16,
-            lora_alpha=32,
-            target_modules=target_modules,
-            lora_dropout=0.05,
-            bias="none",
-        )
-
-        self.model = get_peft_model(model, lora_config)
         self.print_trainable_parameters()
 
         self.loss_fct = CrossEntropyLoss()

@@ -36,8 +36,8 @@ from .llama_engine import (
     LLamaEngine,
     LLamaInt8Engine,
     LlamaLoraEngine,
-    LlamaLoraInt4Engine,
     LlamaLoraInt8Engine,
+    LlamaLoraKbitEngine,
 )
 from .opt_engine import OPTEngine, OPTInt8Engine, OPTLoraEngine, OPTLoraInt8Engine
 
@@ -55,7 +55,7 @@ BaseEngine.add_to_registry(LLamaEngine.config_name, LLamaEngine)
 BaseEngine.add_to_registry(LlamaLoraEngine.config_name, LlamaLoraEngine)
 BaseEngine.add_to_registry(LLamaInt8Engine.config_name, LLamaInt8Engine)
 BaseEngine.add_to_registry(LlamaLoraInt8Engine.config_name, LlamaLoraInt8Engine)
-BaseEngine.add_to_registry(LlamaLoraInt4Engine.config_name, LlamaLoraInt4Engine)
+BaseEngine.add_to_registry(LlamaLoraKbitEngine.config_name, LlamaLoraKbitEngine)
 BaseEngine.add_to_registry(GalacticaEngine.config_name, GalacticaEngine)
 BaseEngine.add_to_registry(GalacticaInt8Engine.config_name, GalacticaInt8Engine)
 BaseEngine.add_to_registry(GalacticaLoraEngine.config_name, GalacticaLoraEngine)

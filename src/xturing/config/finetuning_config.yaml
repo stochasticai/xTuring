@@ -33,12 +33,26 @@ llama_lora_int8:
   batch_size: 8
   max_length: 256
 
-llama_lora_int4:
-  learning_rate: 1e-4
-  weight_decay: 0.01
+llama_lora_kbit:
+  learning_rate: 3e-4
   num_train_epochs: 3
-  batch_size: 8
+  batch_size: 1
   max_length: 256
+  lora_r: 32
+  lora_alpha: 128
+  lora_groupsize: 128
+  lora_dropout: 0.05
+  seed: 0
+  cache: False
+  seqlen: 2048
+  kl_weight: 1.0
+  ce_weight: 200.0
+  save_freq: 1
+  trainable_kl_weight: False
+  trainable_ce_weight: False
+  weight_decay: 1e-5
+  intra_save_freq: 200
+  groupsize: 128
 
 gptj:
   learning_rate: 5e-5
@@ -189,7 +203,7 @@ generic_lora:
   num_train_epochs: 3
   batch_size: 8
   max_length: 256
-  
+
 falcon:
   learning_rate: 5e-5
   weight_decay: 0.01

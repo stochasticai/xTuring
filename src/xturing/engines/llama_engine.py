@@ -1,3 +1,4 @@
+import argparse
 import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
@@ -6,10 +7,13 @@ import torch
 import transformers
 from torch import nn
 
+from xturing.config.config_data_classes import FinetuningConfig, GenerationConfig
+from xturing.config.read_config import load_config, read_yaml
 from xturing.engines.causal import CausalEngine, CausalLoraEngine, CausalLoraKbitEngine
 from xturing.engines.llama_utils import LlamaConfig, LlamaForCausalLM, LlamaTokenizer
 from xturing.engines.lora_engine import prepare_model_for_int8_training
 from xturing.engines.quant_utils import autotune_warmup, make_quant
+from xturing.engines.quant_utils.lrec import get_c4, prepare_models, train_model
 from xturing.utils.hub import ModelHub
 
 
@@ -117,12 +121,42 @@ def find_layers(module, layers=[nn.Conv2d, nn.Linear], name=""):
     return res
 
 
-class LlamaLoraInt4Engine(CausalLoraKbitEngine):
-    config_name: str = "llama_lora_int4_engine"
+class LlamaLoraKbitEngine(CausalLoraKbitEngine):
+    config_name: str = "llama_lora_kbit_engine"
 
-    def __init__(self, weights_path: Optional[Union[str, Path]] = None):
-        # model_name = "aleksickx/llama-7b-hf"
+    def __init__(self, weights_path: Optional[Union[str, Path]] = None, wbits: int = 2):
         model_name = "decapoda-research/llama-7b-hf"
+        lrec_config = {
+            "base_model": model_name,
+            "intq_checkpoint": "llama7b-2bit-128g.pt",  ## how to do this
+            "wbits": wbits,
+            "lora_target_modules": [
+                "q_proj",
+                "v_proj",
+                "k_proj",
+                "o_proj",
+                "up_proj",
+                "down_proj",
+                "gate_proj",
+            ],
+            # "n_samples": 100,
+            # "train_cache_dir": "./train_cache/",
+            # "val_cache_dir": "./val_cache/",
+            # "ckpt_dir": "./ckpts/",
+            # "save_dir": "./save/",
+        }
+
+        # Finetuning config
+        yml_content = read_yaml(
+            Path(__file__).parent.parent / "config" / "finetuning_config.yaml",
+        )
+        lrec_config.update(yml_content["defaults"])
+        lrec_config.update(yml_content[self.config_name.replace("_engine", "")])
+
+        model, fp_model = prepare_models(argparse.Namespace(**lrec_config))
+
+        # The model before applying LoRA
+        self.base_model = fp_model
 
         tokenizer = LlamaTokenizer.from_pretrained(model_name, add_bos_token=False)
         tokenizer.pad_token = tokenizer.eos_token
@@ -130,8 +164,8 @@ class LlamaLoraInt4Engine(CausalLoraKbitEngine):
 
         super().__init__(
             model_name=model_name,
+            model=model,
             weights_path=None,
             tokenizer=tokenizer,
-            load_4bit=True,
-            target_modules=["q_proj", "v_proj"],
+            target_modules=lrec_config["lora_target_modules"],
         )
