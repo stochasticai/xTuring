@@ -128,7 +128,9 @@ class LlamaLoraKbitEngine(CausalLoraKbitEngine):
         model_name = "decapoda-research/llama-7b-hf"
         lrec_config = {
             "base_model": model_name,
-            "intq_checkpoint": "llama7b-2bit-128g.pt",  ## how to do this
+            "intq_checkpoint": str(
+                Path(__file__).parent / "llama7b-2bit-128g.pt"
+            ),  ## how to do this
             "wbits": wbits,
             "lora_target_modules": [
                 "q_proj",
