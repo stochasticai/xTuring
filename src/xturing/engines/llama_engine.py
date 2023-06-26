@@ -124,41 +124,41 @@ def find_layers(module, layers=[nn.Conv2d, nn.Linear], name=""):
 class LlamaLoraKbitEngine(CausalLoraKbitEngine):
     config_name: str = "llama_lora_kbit_engine"
 
-    def __init__(self, weights_path: Optional[Union[str, Path]] = None, wbits: int = 2):
+    def __init__(self, weights_path: Optional[Union[str, Path]] = None):
         model_name = "decapoda-research/llama-7b-hf"
-        lrec_config = {
-            "base_model": model_name,
-            "intq_checkpoint": str(
-                Path(__file__).parent / "llama7b-2bit-128g.pt"
-            ),  ## how to do this
-            "wbits": wbits,
-            "lora_target_modules": [
-                "q_proj",
-                "v_proj",
-                "k_proj",
-                "o_proj",
-                "up_proj",
-                "down_proj",
-                "gate_proj",
-            ],
-            # "n_samples": 100,
-            # "train_cache_dir": "./train_cache/",
-            # "val_cache_dir": "./val_cache/",
-            # "ckpt_dir": "./ckpts/",
-            # "save_dir": "./save/",
-        }
+        # lrec_config = {
+        #     "base_model": model_name,
+        #     "intq_checkpoint": str(
+        #         Path(__file__).parent / "llama7b-2bit-128g.pt"
+        #     ),  ## how to do this
+        #     "wbits": wbits,
+        #     "lora_target_modules": [
+        #         "q_proj",
+        #         "v_proj",
+        #         "k_proj",
+        #         "o_proj",
+        #         "up_proj",
+        #         "down_proj",
+        #         "gate_proj",
+        #     ],
+        #     # "n_samples": 100,
+        #     # "train_cache_dir": "./train_cache/",
+        #     # "val_cache_dir": "./val_cache/",
+        #     # "ckpt_dir": "./ckpts/",
+        #     # "save_dir": "./save/",
+        # }
 
-        # Finetuning config
-        yml_content = read_yaml(
-            Path(__file__).parent.parent / "config" / "finetuning_config.yaml",
-        )
-        lrec_config.update(yml_content["defaults"])
-        lrec_config.update(yml_content[self.config_name.replace("_engine", "")])
+        # # Finetuning config
+        # yml_content = read_yaml(
+        #     Path(__file__).parent.parent / "config" / "finetuning_config.yaml",
+        # )
+        # lrec_config.update(yml_content["defaults"])
+        # lrec_config.update(yml_content[self.config_name.replace("_engine", "")])
 
-        model, fp_model = prepare_models(argparse.Namespace(**lrec_config))
+        # model, fp_model = prepare_models(argparse.Namespace(**lrec_config))
 
-        # The model before applying LoRA
-        self.base_model = fp_model
+        # # The model before applying LoRA
+        # self.base_model = fp_model
 
         tokenizer = LlamaTokenizer.from_pretrained(model_name, add_bos_token=False)
         tokenizer.pad_token = tokenizer.eos_token
@@ -166,8 +166,8 @@ class LlamaLoraKbitEngine(CausalLoraKbitEngine):
 
         super().__init__(
             model_name=model_name,
-            model=model,
             weights_path=None,
             tokenizer=tokenizer,
-            target_modules=lrec_config["lora_target_modules"],
+            target_modules=["q_proj", "v_proj"],
+            load_4bit=True,
         )

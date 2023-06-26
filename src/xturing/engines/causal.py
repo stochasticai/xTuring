@@ -4,8 +4,6 @@ from typing import Any, List, Optional, Union
 
 import evaluate
 import torch
-from peft import LoraConfig as peftLoraConfig
-from peft import get_peft_model, prepare_model_for_kbit_training
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from xturing.config import DEFAULT_DEVICE, DEFAULT_DTYPE
@@ -19,6 +17,8 @@ from xturing.engines.lora_engine import (
     LoraModel,
     prepare_model_for_int8_training,
 )
+from xturing.engines.quant_utils.peft_utils import LoraConfig as peftLoraConfig
+from xturing.engines.quant_utils.peft_utils import prepare_model_for_kbit_training
 from xturing.utils.loss_fns import CrossEntropyLoss
 
 
