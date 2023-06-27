@@ -34,7 +34,9 @@ With `xTuring` you can,
 <br>
 
 ## 🌟 What's new?
-We are excited to announce the latest enhancements to our `xTuring` library: Falcon LLM integration and Generic model support. With this update, you can use and finetune Falcon-7B model with the off-the-shelf, off-the-shelf with INT8 precision, with LoRA architecture, and LoRA architecture with INT8 precision. Moreover, in case you do not find a model you want to run in the models' list, you can still us `xTuring` to run with the new `GenericModel` wrapper available to you. This new integration allows you to test and finetune any new model on xTuring without waiting for it to be integrated.
+We are excited to announce the latest enhancements to our `xTuring` library:
+1. __`Falcon LLM` integration__ - You can use and fine-tune the _`Falcon-7B`_ model in different configurations: _off-the-shelf_, _off-the-shelf with INT8 precision_, _LoRA fine-tuning_, and _LoRA fine-tuning with INT8 precision_.
+2. __`GenericModel` wrapper__ - This new integration allows you to test and fine-tune any new model on `xTuring` without waiting for it to be integrated using class _`GenericModel`_.
 
 You can check the  [Falcon LoRA INT8 working example](examples/falcon/falcon_lora_int8.py) repository to see how it works.
 Also, you can check the  [GenericModel working example](examples/generic/generic_model.py) repository to see how it works.
