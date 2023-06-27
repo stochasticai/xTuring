@@ -32,12 +32,14 @@ class CausalModel(BaseModel):
         model_name: Optional[str] = None,
         target_modules: Optional[List[str]] = None,
         trust_remote_code: Optional[bool] = False,
+        **kwargs,
     ):
         arguments = dict(
             weights_path=weights_path,
             model_name=model_name,
             target_modules=target_modules,
             trust_remote_code=trust_remote_code,
+            **kwargs,
         )
 
         self.engine = BaseEngine.create(
@@ -221,6 +223,7 @@ class CausalInt8Model(CausalModel):
             weights_path=weights_path,
             model_name=model_name,
             trust_remote_code=trust_remote_code,
+        **kwargs,
         )
 
 
@@ -232,6 +235,7 @@ class CausalLoraModel(CausalModel):
         model_name: Optional[str] = None,
         target_modules: Optional[List[str]] = None,
         trust_remote_code: Optional[bool] = False,
+        **kwargs,
     ):
         super().__init__(
             engine,
@@ -239,6 +243,7 @@ class CausalLoraModel(CausalModel):
             model_name=model_name,
             target_modules=target_modules,
             trust_remote_code=trust_remote_code,
+            **kwargs,
         )
 
     def _make_trainer(
@@ -269,6 +274,7 @@ class CausalLoraInt8Model(CausalLoraModel):
         model_name: Optional[str] = None,
         target_modules: Optional[List[str]] = None,
         trust_remote_code: Optional[bool] = False,
+        **kwargs,
     ):
         assert_not_cpu_int8()
         super().__init__(
@@ -277,4 +283,4 @@ class CausalLoraInt8Model(CausalLoraModel):
             model_name=model_name,
             target_modules=target_modules,
             trust_remote_code=trust_remote_code,
-        )
+            **kwargs,
