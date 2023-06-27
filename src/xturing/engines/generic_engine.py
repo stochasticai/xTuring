@@ -9,11 +9,12 @@ class GenericEngine(CausalEngine):
     config_name: str = "generic_engine"
 
     def __init__(
-        self, model_name: str, weights_path: Optional[Union[str, Path]] = None
+        self, model_name: str, weights_path: Optional[Union[str, Path]] = None, trust_remote_code: Optional[bool] = False
     ):
         super().__init__(
             model_name=model_name,
             weights_path=weights_path,
+            trust_remote_code=trust_remote_code,
         )
 
         self.tokenizer.pad_token = self.tokenizer.eos_token

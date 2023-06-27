@@ -31,11 +31,13 @@ class CausalModel(BaseModel):
         weights_path: Optional[str] = None,
         model_name: Optional[str] = None,
         target_modules: Optional[List[str]] = None,
+        trust_remote_code: Optional[bool] = False,
     ):
         arguments = dict(
             weights_path=weights_path,
             model_name=model_name,
             target_modules=target_modules,
+            trust_remote_code=trust_remote_code,
         )
 
         self.engine = BaseEngine.create(

@@ -148,3 +148,4 @@ dmypy.json
 .cache/
 
 .DS_Store
+src/fine-tune-mpt-7b.py

@@ -17,8 +17,13 @@ from xturing.models.causal import (
 class GenericModel(CausalModel):
     config_name: str = "generic"
 
-    def __init__(self, model_name: str, weights_path: Optional[str] = None):
-        super().__init__(GenericEngine.config_name, weights_path, model_name=model_name)
+    def __init__(self, model_name: str, weights_path: Optional[str] = None, trust_remote_code: Optional[bool] = False):
+        super().__init__(
+            GenericEngine.config_name, 
+            weights_path, 
+            model_name=model_name, 
+            trust_remote_code=trust_remote_code
+            )
 
 
 class GenericLoraModel(CausalLoraModel):
