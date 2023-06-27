@@ -59,7 +59,7 @@ const config = {
       async: true,
     },
     {
-      src: '/js/botScript.js',
+      src: 'https://downloads.stochastic.ai/xchat/embed-v1.js',
       async: true,
     },
   ],
