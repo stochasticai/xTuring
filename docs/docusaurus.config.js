@@ -9,7 +9,25 @@ const config = {
   title: 'xTuring - Build and control your own LLMs',
   tagline: 'Fast, efficient and simple fine-tuning of LLMs',
   favicon: 'img/favicon.ico',
-
+  plugins: [
+    () => ({
+      name: 'inject-tag',
+      injectHtmlTags() {
+        return {
+          headTags: [
+            {
+              tagName: 'script',
+              attributes: { src: '/js/botLoader.js', },
+            },
+            {
+              tagName: 'script',
+              attributes: { src: 'https://downloads.stochastic.ai/xchat/embed-v2.js'},
+            },
+          ],
+        }
+      },
+    }),
+  ],
   // Set the production url of your site here
   url: 'https://xturing.stochastic.ai',
   // Set the /<baseUrl>/ pathname under which your site is served
@@ -53,16 +71,16 @@ const config = {
       }),
     ],
   ],
-  scripts: [
-    {
-      src: '/js/botLoader.js',
-      async: true,
-    },
-    {
-      src: 'https://downloads.stochastic.ai/xchat/embed-v2.js',
-      async: true,
-    },
-  ],
+  // scripts: [
+  //   {
+  //     src: '/js/botLoader.js',
+  //     async: false,
+  //   },
+  //   {
+  //     src: 'https://downloads.stochastic.ai/xchat/embed-v2.js',
+  //     async: true,
+  //   },
+  // ],
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
