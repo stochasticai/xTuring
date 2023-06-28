@@ -216,6 +216,7 @@ class CausalInt8Model(CausalModel):
         weights_path: Optional[str] = None,
         model_name: Optional[str] = None,
         trust_remote_code: Optional[bool] = False,
+        **kwargs,
     ):
         assert_not_cpu_int8()
         super().__init__(
