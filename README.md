@@ -43,14 +43,6 @@ Also, you can check the  [GenericModel working example](examples/generic/generic
 
 <br>
 
-## CLI playground
-<img src=".github/cli-playground.gif" width="100%" style="margin: 0 1%;"/>
-
-## UI playground
-<img src=".github/ui-playground2.gif" width="100%" style="margin: 0 1%;"/>
-
-<br>
-
 ## ⚙️ Installation
 ```bash
 pip install xturing
@@ -79,6 +71,35 @@ print("Generated output by the model: {}".format(output))
 ```
 
 You can find the data folder [here](examples/llama/alpaca_data).
+
+<br>
+
+## CLI playground
+<img src=".github/cli-playground.gif" width="80%" style="margin: 0 1%;"/>
+
+```bash
+$ xturing chat -m "<path-to-model-folder>"
+
+```
+
+## UI playground
+<img src=".github/ui-playground2.gif" width="80%" style="margin: 0 1%;"/>
+
+```python
+from xturing.datasets import InstructionDataset
+from xturing.models import BaseModel
+from xturing.ui import Playground
+
+dataset = InstructionDataset("./alpaca_data")
+model = BaseModel.create("<model_name>")
+
+model.finetune(dataset=dataset)
+
+model.save("llama_lora_finetuned")
+
+Playground().launch() ## launches localhost UI
+
+```
 
 <br>
 
@@ -112,11 +133,11 @@ Fine-tuning parameters:
 }
 ```
 
-|      LLaMA 7B      | DeepSpeed + CPU Offloading | LoRA + DeepSpeed  | LoRA + DeepSpeed + CPU Offloading |
-| --------- | ---- | ---- | ---- |
+|      LLaMA-7B      | DeepSpeed + CPU Offloading | LoRA + DeepSpeed  | LoRA + DeepSpeed + CPU Offloading |
+| :---------: | :----: | :----: | :----: |
 | GPU | 33.5 GB | 23.7 GB | 21.9 GB |
 | CPU | 190 GB  | 10.2 GB | 14.9 GB |
-| Time per epoch | 21 hours  | 20 mins | 20 mins |
+| // all in one line {{{Time per epoch}}} | 21 hours  | 20 mins | 20 mins |
 
 Contribute to this by submitting your performance results on other GPUs by creating an issue with your hardware specifications, memory consumption and time per epoch.
 
@@ -139,7 +160,7 @@ model = BaseModel.load("x/distilgpt2_lora_finetuned_alpaca")
 <br>
 
 ## 📈 Roadmap
-- [x] Support for LLaMA, GPT-J, GPT-2, OPT, Cerebras-GPT, Galactica and Bloom models
+- [x] Support for `LLaMA`, `GPT-J`, `GPT-2`, `OPT`, `Cerebras-GPT`, `Galactica` and `Bloom` models
 - [x] Dataset generation using self-instruction
 - [x] Low-precision LoRA fine-tuning and unsupervised fine-tuning
 - [x] INT8 low-precision fine-tuning support
@@ -147,9 +168,11 @@ model = BaseModel.load("x/distilgpt2_lora_finetuned_alpaca")
 - [x] Added fine-tuned checkpoints for some models to the hub
 - [x] INT4 LLaMA LoRA fine-tuning demo
 - [x] INT4 LLaMA LoRA fine-tuning with INT4 generation
-- [x] Support for a generic model wrapper
-- [x] Support for Falcon-7B model
+- [x] Support for a `Generic model` wrapper
+- [x] Support for `Falcon-7B` model
 - [ ] Evaluation of LLM models
+- [ ] INT4 low-precision fine-tuning support
+- [ ] INT3, INT2, INT1 low-precision fine-tuning support
 - [ ] Support for Stable Diffusion
 
 <br>
