@@ -137,7 +137,7 @@ Fine-tuning parameters:
 | :---------: | :----: | :----: | :----: |
 | GPU | 33.5 GB | 23.7 GB | 21.9 GB |
 | CPU | 190 GB  | 10.2 GB | 14.9 GB |
-| // all in one line {{{Time per epoch}}} | 21 hours  | 20 mins | 20 mins |
+| Time/epoch | 21 hours  | 20 mins | 20 mins |
 
 Contribute to this by submitting your performance results on other GPUs by creating an issue with your hardware specifications, memory consumption and time per epoch.
 
