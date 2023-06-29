@@ -14,6 +14,179 @@ defaults:
   optimizer_name: adamw
   output_dir: saved_model
 
+bloom:
+  learning_rate: 5e-5
+  weight_decay: 0.01
+  num_train_epochs: 3
+
+bloom_lora:
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 4
+
+bloom_lora_int8:
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 8
+  max_length: 256
+
+cerebras:
+  learning_rate: 5e-5
+  weight_decay: 0.01
+  num_train_epochs: 3
+
+cerebras_lora:
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 4
+
+cerebras_lora_int8:
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 8
+  max_length: 256
+
+distilgpt2:
+  learning_rate: 1e-3
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 8
+
+distilgpt2_lora:
+  learning_rate: 3e-3
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 16
+
+falcon:
+  learning_rate: 5e-5
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 1
+  max_length: 256
+
+falcon_int8:
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 1
+  max_length: 256
+
+falcon_lora:
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 1
+
+falcon_lora_int8:
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 8
+  max_length: 256
+
+falcon_lora_kbit:
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 8
+  max_length: 256
+
+galactica:
+  learning_rate: 5e-5
+  weight_decay: 0.01
+  num_train_epochs: 3
+  optimizer_name: cpu_adam
+
+galactica_lora:
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 1
+
+galactica_lora_int8:
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 8
+  max_length: 256
+
+generic:
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 8
+  max_length: 256
+
+generic_int8:
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 8
+  max_length: 256
+
+generic_lora:
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 8
+  max_length: 256
+
+generic_lora_int8:
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 8
+  max_length: 256
+
+generic_lora_kbit:
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 8
+  max_length: 256
+
+gptj:
+  learning_rate: 5e-5
+  weight_decay: 0.01
+  num_train_epochs: 3
+  optimizer_name: cpu_adam
+
+gptj_lora:
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 1
+
+gptj_lora_int8:
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 8
+  max_length: 256
+
+gpt2:
+  learning_rate: 1e-3
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 8
+
+gpt2_lora:
+  learning_rate: 3e-3
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 16
+
+gpt2_lora_int8:
+  learning_rate: 3e-3
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 16
+
 llama:
   learning_rate: 5e-5
   weight_decay: 0.01
@@ -54,74 +227,6 @@ llama_lora_kbit:
   intra_save_freq: 200
   groupsize: 128
 
-gptj:
-  learning_rate: 5e-5
-  weight_decay: 0.01
-  num_train_epochs: 3
-  optimizer_name: cpu_adam
-
-gptj_lora:
-  learning_rate: 1e-4
-  weight_decay: 0.01
-  num_train_epochs: 3
-  batch_size: 1
-
-gptj_lora_int8:
-  learning_rate: 1e-4
-  weight_decay: 0.01
-  num_train_epochs: 3
-  batch_size: 8
-  max_length: 256
-
-gpt2:
-  learning_rate: 1e-3
-  weight_decay: 0.01
-  num_train_epochs: 3
-  batch_size: 8
-
-gpt2_lora:
-  learning_rate: 3e-3
-  weight_decay: 0.01
-  num_train_epochs: 3
-  batch_size: 16
-
-gpt2_lora_int8:
-  learning_rate: 3e-3
-  weight_decay: 0.01
-  num_train_epochs: 3
-  batch_size: 16
-
-distilgpt2:
-  learning_rate: 1e-3
-  weight_decay: 0.01
-  num_train_epochs: 3
-  batch_size: 8
-
-distilgpt2_lora:
-  learning_rate: 3e-3
-  weight_decay: 0.01
-  num_train_epochs: 3
-  batch_size: 16
-
-galactica:
-  learning_rate: 5e-5
-  weight_decay: 0.01
-  num_train_epochs: 3
-  optimizer_name: cpu_adam
-
-galactica_lora:
-  learning_rate: 1e-4
-  weight_decay: 0.01
-  num_train_epochs: 3
-  batch_size: 1
-
-galactica_lora_int8:
-  learning_rate: 1e-4
-  weight_decay: 0.01
-  num_train_epochs: 3
-  batch_size: 8
-  max_length: 256
-
 opt:
   learning_rate: 5e-5
   weight_decay: 0.01
@@ -134,97 +239,6 @@ opt_lora:
   batch_size: 1
 
 opt_lora_int8:
-  learning_rate: 1e-4
-  weight_decay: 0.01
-  num_train_epochs: 3
-  batch_size: 8
-  max_length: 256
-
-cerebras:
-  learning_rate: 5e-5
-  weight_decay: 0.01
-  num_train_epochs: 3
-
-cerebras_lora:
-  learning_rate: 1e-4
-  weight_decay: 0.01
-  num_train_epochs: 3
-  batch_size: 4
-
-cerebras_lora_int8:
-  learning_rate: 1e-4
-  weight_decay: 0.01
-  num_train_epochs: 3
-  batch_size: 8
-  max_length: 256
-
-bloom:
-  learning_rate: 5e-5
-  weight_decay: 0.01
-  num_train_epochs: 3
-
-bloom_lora:
-  learning_rate: 1e-4
-  weight_decay: 0.01
-  num_train_epochs: 3
-  batch_size: 4
-
-bloom_lora_int8:
-  learning_rate: 1e-4
-  weight_decay: 0.01
-  num_train_epochs: 3
-  batch_size: 8
-  max_length: 256
-
-generic:
-  learning_rate: 1e-4
-  weight_decay: 0.01
-  num_train_epochs: 3
-  batch_size: 8
-  max_length: 256
-
-generic_int8:
-  learning_rate: 1e-4
-  weight_decay: 0.01
-  num_train_epochs: 3
-  batch_size: 8
-  max_length: 256
-
-generic_int8_lora:
-  learning_rate: 1e-4
-  weight_decay: 0.01
-  num_train_epochs: 3
-  batch_size: 8
-  max_length: 256
-
-generic_lora:
-  learning_rate: 1e-4
-  weight_decay: 0.01
-  num_train_epochs: 3
-  batch_size: 8
-  max_length: 256
-
-falcon:
-  learning_rate: 5e-5
-  weight_decay: 0.01
-  num_train_epochs: 3
-  batch_size: 1
-  max_length: 256
-
-falcon_int8:
-  learning_rate: 1e-4
-  weight_decay: 0.01
-  num_train_epochs: 3
-  batch_size: 1
-  max_length: 256
-
-falcon_lora:
-  learning_rate: 1e-4
-  weight_decay: 0.01
-  num_train_epochs: 3
-  batch_size: 1
-
-falcon_lora_int8:
   learning_rate: 1e-4
   weight_decay: 0.01
   num_train_epochs: 3
