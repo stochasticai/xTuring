@@ -213,14 +213,19 @@ class CausalLoraKbitEngine(CausalEngine):
         trust_remote_code: Optional[bool] = False,
     ):
         if model is None:
+            device_map = {"": int(os.environ.get("LOCAL_RANK") or 0)}
             model = AutoModelForCausalLM.from_pretrained(
                 model_name,
                 torch_dtype=DEFAULT_DTYPE,
+                device_map=device_map,
                 load_in_4bit=True,
                 trust_remote_code=trust_remote_code,
             )
 
             model = prepare_model_for_kbit_training(model)
+
+        if tokenizer is None:
+            tokenizer = AutoTokenizer.from_pretrained(model_name)
 
         super().__init__(
             model_name=model_name,
