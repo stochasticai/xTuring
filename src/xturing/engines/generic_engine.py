@@ -32,12 +32,14 @@ class GenericLoraEngine(CausalLoraEngine):
         target_modules: List[str],
         weights_path: Optional[Union[str, Path]] = None,
         trust_remote_code: Optional[bool] = False,
+        **kwargs,
     ):
         super().__init__(
             model_name=model_name,
             weights_path=weights_path,
             target_modules=target_modules,
             trust_remote_code=trust_remote_code,
+            **kwargs,
         )
 
         self.tokenizer.pad_token = self.tokenizer.eos_token
