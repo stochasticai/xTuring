@@ -31,12 +31,16 @@ class CausalModel(BaseModel):
         weights_path: Optional[str] = None,
         model_name: Optional[str] = None,
         target_modules: Optional[List[str]] = None,
+        **kwargs,
     ):
-        arguments = dict(
-            weights_path=weights_path,
-            model_name=model_name,
-            target_modules=target_modules,
-        )
+        arguments = {
+            **dict(
+                weights_path=weights_path,
+                model_name=model_name,
+                target_modules=target_modules,
+            ),
+            **kwargs,
+        }
 
         self.engine = BaseEngine.create(
             engine,

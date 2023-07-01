@@ -30,6 +30,7 @@ class CausalEngine(BaseEngine):
         tokenizer: Optional[Any] = None,
         load_8bit: Optional[bool] = False,
         trust_remote_code: Optional[bool] = False,
+        **kwargs,
     ):
         self.model_name = model_name
 
@@ -45,11 +46,12 @@ class CausalEngine(BaseEngine):
                     load_in_8bit=True,
                     device_map=device_map,
                     trust_remote_code=trust_remote_code,
+                    **kwargs,
                 )
                 self.model = prepare_model_for_int8_training(self.model)
             else:
                 self.model = AutoModelForCausalLM.from_pretrained(
-                    weights_path, torch_dtype=DEFAULT_DTYPE
+                    weights_path, torch_dtype=DEFAULT_DTYPE, **kwargs
                 )
             self.tokenizer = AutoTokenizer.from_pretrained(weights_path)
         elif model is not None and tokenizer is not None:
@@ -64,6 +66,7 @@ class CausalEngine(BaseEngine):
                     load_in_8bit=True,
                     device_map=device_map,
                     trust_remote_code=trust_remote_code,
+                    **kwargs,
                 )
                 for param in self.model.parameters():
                     param.data = param.data.contiguous()
@@ -73,6 +76,7 @@ class CausalEngine(BaseEngine):
                     model_name,
                     torch_dtype=DEFAULT_DTYPE,
                     trust_remote_code=trust_remote_code,
+                    **kwargs,
                 )
             self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         else:
