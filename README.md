@@ -34,18 +34,12 @@ With `xTuring` you can,
 <br>
 
 ## 🌟 What's new?
-We are excited to announce the latest enhancements to our `xTuring` library: Falcon LLM integration and Generic model support. With this update, you can use and finetune Falcon-7B model with the off-the-shelf, off-the-shelf with INT8 precision, with LoRA architecture, and LoRA architecture with INT8 precision. Moreover, in case you do not find a model you want to run in the models' list, you can still us `xTuring` to run with the new `GenericModel` wrapper available to you. This new integration allows you to test and finetune any new model on xTuring without waiting for it to be integrated.
+We are excited to announce the latest enhancements to our `xTuring` library:
+1. __`Falcon LLM` integration__ - You can use and fine-tune the _`Falcon-7B`_ model in different configurations: _off-the-shelf_, _off-the-shelf with INT8 precision_, _LoRA fine-tuning_, and _LoRA fine-tuning with INT8 precision_.
+2. __`GenericModel` wrapper__ - This new integration allows you to test and fine-tune any new model on `xTuring` without waiting for it to be integrated using class _`GenericModel`_.
 
 You can check the  [Falcon LoRA INT8 working example](examples/falcon/falcon_lora_int8.py) repository to see how it works.
 Also, you can check the  [GenericModel working example](examples/generic/generic_model.py) repository to see how it works.
-
-<br>
-
-## CLI playground
-<img src=".github/cli-playground.gif" width="100%" style="margin: 0 1%;"/>
-
-## UI playground
-<img src=".github/ui-playground2.gif" width="100%" style="margin: 0 1%;"/>
 
 <br>
 
@@ -80,6 +74,35 @@ You can find the data folder [here](examples/llama/alpaca_data).
 
 <br>
 
+## CLI playground
+<img src=".github/cli-playground.gif" width="80%" style="margin: 0 1%;"/>
+
+```bash
+$ xturing chat -m "<path-to-model-folder>"
+
+```
+
+## UI playground
+<img src=".github/ui-playground2.gif" width="80%" style="margin: 0 1%;"/>
+
+```python
+from xturing.datasets import InstructionDataset
+from xturing.models import BaseModel
+from xturing.ui import Playground
+
+dataset = InstructionDataset("./alpaca_data")
+model = BaseModel.create("<model_name>")
+
+model.finetune(dataset=dataset)
+
+model.save("llama_lora_finetuned")
+
+Playground().launch() ## launches localhost UI
+
+```
+
+<br>
+
 ## 📚 Tutorials
 - [Preparing your dataset](examples/llama/preparing_your_dataset.py)
 - [Cerebras-GPT fine-tuning with LoRA and INT8](examples/cerebras/cerebras_lora_int8.ipynb) &ensp; [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1eKq3oF7dnK8KuIfsTE70Gvvniwr1O9D0?usp=sharing)
@@ -110,11 +133,11 @@ Fine-tuning parameters:
 }
 ```
 
-|      LLaMA 7B      | DeepSpeed + CPU Offloading | LoRA + DeepSpeed  | LoRA + DeepSpeed + CPU Offloading |
-| --------- | ---- | ---- | ---- |
+|      LLaMA-7B      | DeepSpeed + CPU Offloading | LoRA + DeepSpeed  | LoRA + DeepSpeed + CPU Offloading |
+| :---------: | :----: | :----: | :----: |
 | GPU | 33.5 GB | 23.7 GB | 21.9 GB |
 | CPU | 190 GB  | 10.2 GB | 14.9 GB |
-| Time per epoch | 21 hours  | 20 mins | 20 mins |
+| Time/epoch | 21 hours  | 20 mins | 20 mins |
 
 Contribute to this by submitting your performance results on other GPUs by creating an issue with your hardware specifications, memory consumption and time per epoch.
 
@@ -137,7 +160,7 @@ model = BaseModel.load("x/distilgpt2_lora_finetuned_alpaca")
 <br>
 
 ## 📈 Roadmap
-- [x] Support for LLaMA, GPT-J, GPT-2, OPT, Cerebras-GPT, Galactica and Bloom models
+- [x] Support for `LLaMA`, `GPT-J`, `GPT-2`, `OPT`, `Cerebras-GPT`, `Galactica` and `Bloom` models
 - [x] Dataset generation using self-instruction
 - [x] Low-precision LoRA fine-tuning and unsupervised fine-tuning
 - [x] INT8 low-precision fine-tuning support
@@ -145,9 +168,11 @@ model = BaseModel.load("x/distilgpt2_lora_finetuned_alpaca")
 - [x] Added fine-tuned checkpoints for some models to the hub
 - [x] INT4 LLaMA LoRA fine-tuning demo
 - [x] INT4 LLaMA LoRA fine-tuning with INT4 generation
-- [x] Support for a generic model wrapper
-- [x] Support for Falcon-7B model
+- [x] Support for a `Generic model` wrapper
+- [x] Support for `Falcon-7B` model
 - [ ] Evaluation of LLM models
+- [ ] INT4 low-precision fine-tuning support
+- [ ] INT3, INT2, INT1 low-precision fine-tuning support
 - [ ] Support for Stable Diffusion
 
 <br>
