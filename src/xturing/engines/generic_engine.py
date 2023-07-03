@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 from typing import List, Optional, Union
 
-from xturing.engines.causal import CausalEngine, CausalLoraEngine
+from xturing.engines.causal import CausalEngine, CausalLoraEngine, CausalLoraKbitEngine
 
 
 class GenericEngine(CausalEngine):
@@ -58,6 +58,25 @@ class GenericLoraInt8Engine(CausalLoraEngine):
             model_name=model_name,
             weights_path=weights_path,
             load_8bit=True,
+            target_modules=target_modules,
+        )
+
+        self.tokenizer.pad_token = self.tokenizer.eos_token
+
+
+class GenericLoraKbitEngine(CausalLoraKbitEngine):
+    config_name: str = "generic+lora_kbit_engine"
+
+    def __init__(
+        self,
+        model_name: str,
+        target_modules: List[str],
+        weights_path: Optional[Union[str, Path]] = None,
+    ):
+        super().__init__(
+            model_name=model_name,
+            weights_path=weights_path,
+            load_4bit=True,
             target_modules=target_modules,
         )
 
