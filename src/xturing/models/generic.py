@@ -7,10 +7,12 @@ from xturing.engines.generic_engine import (
     GenericInt8Engine,
     GenericLoraEngine,
     GenericLoraInt8Engine,
+    GenericLoraKbitEngine,
 )
 from xturing.models.causal import (
     CausalInt8Model,
     CausalLoraInt8Model,
+    CausalLoraKbitModel,
     CausalLoraModel,
     CausalModel,
 )
@@ -81,4 +83,21 @@ class GenericLoraInt8Model(CausalLoraInt8Model):
             model_name=model_name,
             target_modules=target_modules,
             **kwargs,
+        )
+
+
+class GenericLoraKbitModel(CausalLoraKbitModel):
+    config_name: str = "generic_lora_kbit"
+
+    def __init__(
+        self,
+        model_name: str,
+        target_modules: List[str] = ["c_attn"],
+        weights_path: Optional[str] = None,
+    ):
+        super().__init__(
+            GenericLoraKbitEngine.config_name,
+            weights_path,
+            model_name=model_name,
+            target_modules=target_modules,
         )

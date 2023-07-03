@@ -1,22 +1,24 @@
 from typing import Iterable, List, Optional, Union
+
 from pytorch_lightning.loggers import Logger
 
+from xturing.datasets.instruction_dataset import InstructionDataset
+from xturing.datasets.text_dataset import TextDataset
 from xturing.engines.llama_engine import (
     LLamaEngine,
     LLamaInt8Engine,
     LlamaLoraEngine,
     LlamaLoraInt8Engine,
-    LlamaLoraInt4Engine,
+    LlamaLoraKbitEngine,
 )
 from xturing.models.causal import (
     CausalInt8Model,
     CausalLoraInt8Model,
+    CausalLoraKbitModel,
     CausalLoraModel,
     CausalModel,
 )
 from xturing.trainers.base import BaseTrainer
-from xturing.datasets.instruction_dataset import InstructionDataset
-from xturing.datasets.text_dataset import TextDataset
 from xturing.trainers.lightning_trainer import LightningTrainer
 
 
@@ -48,25 +50,28 @@ class LlamaLoraInt8(CausalLoraInt8Model):
         super().__init__(LlamaLoraInt8Engine.config_name, weights_path)
 
 
-class LlamaLoraInt4(CausalLoraInt8Model):
-    config_name: str = "llama_lora_int4"
+class LlamaLoraKbit(CausalLoraKbitModel):
+    config_name: str = "llama_lora_kbit"
 
-    def _make_trainer(self, dataset: Union[TextDataset, InstructionDataset], 
-                      logger: Union[Logger, Iterable[Logger], bool] = True):
-        return BaseTrainer.create(
-            LightningTrainer.config_name,
-            self.engine,
-            dataset,
-            self._make_collate_fn(dataset),
-            int(self.finetuning_args.num_train_epochs),
-            int(self.finetuning_args.batch_size),
-            float(self.finetuning_args.learning_rate),
-            self.finetuning_args.optimizer_name,
-            True,
-            True,
-            lora_type=32,
-            logger=logger,
-        )
+    # def _make_trainer(
+    #     self,
+    #     dataset: Union[TextDataset, InstructionDataset],
+    #     logger: Union[Logger, Iterable[Logger], bool] = True,
+    # ):
+    #     return BaseTrainer.create(
+    #         LightningTrainer.config_name,
+    #         self.engine,
+    #         dataset,
+    #         self._make_collate_fn(dataset),
+    #         int(self.finetuning_args.num_train_epochs),
+    #         int(self.finetuning_args.batch_size),
+    #         float(self.finetuning_args.learning_rate),
+    #         self.finetuning_args.optimizer_name,
+    #         True,
+    #         True,
+    #         lora_type=32,
+    #         logger=logger,
+    #     )
 
     def __init__(self, weights_path: Optional[str] = None):
-        super().__init__(LlamaLoraInt4Engine.config_name, weights_path)
+        super().__init__(LlamaLoraKbitEngine.config_name, weights_path)
