@@ -170,8 +170,8 @@ model = BaseModel.load("x/distilgpt2_lora_finetuned_alpaca")
 - [x] INT4 LLaMA LoRA fine-tuning with INT4 generation
 - [x] Support for a `Generic model` wrapper
 - [x] Support for `Falcon-7B` model
+- [X] INT4 low-precision fine-tuning support
 - [ ] Evaluation of LLM models
-- [ ] INT4 low-precision fine-tuning support
 - [ ] INT3, INT2, INT1 low-precision fine-tuning support
 - [ ] Support for Stable Diffusion
 
