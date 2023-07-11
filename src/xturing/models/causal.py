@@ -215,9 +215,10 @@ class CausalModel(BaseModel):
     def completion_query(
         self, prompt: Union[OpenAICreatePrompt, OpenAICreateChatPrompt, Prompt]
     ):
-        actual_prompt = chat_prompt_to_text(prompt)
-
-        text_out = self.model.generate(texts=[actual_prompt])
+        # actual_prompt = chat_prompt_to_text(prompt)
+        actual_prompt = prompt
+        logger.info(prompt)
+        text_out = self.generate(texts=[actual_prompt])
 
         # parse results
         # result = {
@@ -259,8 +260,8 @@ class CausalModel(BaseModel):
         return result
 
     def eval_sample(self, sample, *args):
-        prompt = sample["input"]
-        return self.check_sampled_text(prompt, expected=sample["ideal"])
+        prompt = f"{sample.get('instruction', '')} {sample.get('text', ' ')}".strip()
+        return self.check_sampled_text(prompt, expected=sample["target"])
 
     def eval_all_samples(
         self,
