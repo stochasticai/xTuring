@@ -1,3 +1,4 @@
+import argparse
 import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
@@ -6,10 +7,13 @@ import torch
 import transformers
 from torch import nn
 
-from xturing.engines.causal import CausalEngine, CausalLoraEngine
+from xturing.config.config_data_classes import FinetuningConfig, GenerationConfig
+from xturing.config.read_config import load_config, read_yaml
+from xturing.engines.causal import CausalEngine, CausalLoraEngine, CausalLoraKbitEngine
 from xturing.engines.llama_utils import LlamaConfig, LlamaForCausalLM, LlamaTokenizer
 from xturing.engines.lora_engine import prepare_model_for_int8_training
 from xturing.engines.quant_utils import autotune_warmup, make_quant
+from xturing.engines.quant_utils.lrec import get_c4, prepare_models, train_model
 from xturing.utils.hub import ModelHub
 
 
@@ -117,76 +121,53 @@ def find_layers(module, layers=[nn.Conv2d, nn.Linear], name=""):
     return res
 
 
-class LlamaLoraInt4Engine(CausalLoraEngine):
-    config_name: str = "llama_lora_int4_engine"
+class LlamaLoraKbitEngine(CausalLoraKbitEngine):
+    config_name: str = "llama_lora_kbit_engine"
 
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
         model_name = "decapoda-research/llama-7b-hf"
+        # lrec_config = {
+        #     "base_model": model_name,
+        #     "intq_checkpoint": str(
+        #         Path(__file__).parent / "llama7b-2bit-128g.pt"
+        #     ),  ## how to do this
+        #     "wbits": wbits,
+        #     "lora_target_modules": [
+        #         "q_proj",
+        #         "v_proj",
+        #         "k_proj",
+        #         "o_proj",
+        #         "up_proj",
+        #         "down_proj",
+        #         "gate_proj",
+        #     ],
+        #     # "n_samples": 100,
+        #     # "train_cache_dir": "./train_cache/",
+        #     # "val_cache_dir": "./val_cache/",
+        #     # "ckpt_dir": "./ckpts/",
+        #     # "save_dir": "./save/",
+        # }
 
-        if weights_path is None:
-            weights_path = ModelHub().load("x/llama_lora_int4")
+        # # Finetuning config
+        # yml_content = read_yaml(
+        #     Path(__file__).parent.parent / "config" / "finetuning_config.yaml",
+        # )
+        # lrec_config.update(yml_content["defaults"])
+        # lrec_config.update(yml_content[self.config_name.replace("_engine", "")])
 
-        config = LlamaConfig.from_pretrained(model_name)
+        # model, fp_model = prepare_models(argparse.Namespace(**lrec_config))
 
-        saved_kaiming_uniform_ = torch.nn.init.kaiming_uniform_
-        saved_uniform_ = torch.nn.init.uniform_
-        saved_normal_ = torch.nn.init.normal_
-
-        def noop(*args, **kwargs):
-            pass
-
-        torch.nn.init.kaiming_uniform_ = noop
-        torch.nn.init.uniform_ = noop
-        torch.nn.init.normal_ = noop
-
-        torch.set_default_dtype(torch.half)
-        transformers.modeling_utils._init_weights = False
-        torch.set_default_dtype(torch.half)
-        model = LlamaForCausalLM(config)
-        torch.set_default_dtype(torch.float)
-        model = model.eval()
-
-        layers = find_layers(model)
-
-        for name in ["lm_head"]:
-            if name in layers:
-                del layers[name]
-
-        wbits = 4
-        groupsize = 128
-        warmup_autotune = True
-
-        make_quant(model, layers, wbits, groupsize)
-
-        state_dict = torch.load(
-            weights_path / Path("pytorch_model.bin"), map_location="cpu"
-        )
-
-        if warmup_autotune:
-            autotune_warmup(model)
-
-        model.seqlen = 2048
-
-        model.gptq = True
-
-        model.gradient_checkpointing_enable()
-        model.enable_input_require_grads()
+        # # The model before applying LoRA
+        # self.base_model = fp_model
 
         tokenizer = LlamaTokenizer.from_pretrained(model_name, add_bos_token=False)
         tokenizer.pad_token = tokenizer.eos_token
         tokenizer.pad_token_id = tokenizer.eos_token_id
 
         super().__init__(
-            model=model,
+            model_name=model_name,
+            weights_path=None,
             tokenizer=tokenizer,
-            target_modules=[
-                "q_proj",
-                "v_proj",
-            ],
+            target_modules=["q_proj", "v_proj"],
+            load_4bit=True,
         )
-
-        torch.nn.init.kaiming_uniform_ = saved_kaiming_uniform_
-        torch.nn.init.uniform_ = saved_uniform_
-        torch.nn.init.normal_ = saved_normal_
-
-        self.set_from_state_dict(state_dict)

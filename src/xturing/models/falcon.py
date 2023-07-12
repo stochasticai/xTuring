@@ -5,10 +5,12 @@ from xturing.engines.falcon_engine import (
     FalconInt8Engine,
     FalconLoraEngine,
     FalconLoraInt8Engine,
+    FalconLoraKbitEngine,
 )
 from xturing.models.causal import (
     CausalInt8Model,
     CausalLoraInt8Model,
+    CausalLoraKbitModel,
     CausalLoraModel,
     CausalModel,
 )
@@ -40,3 +42,10 @@ class FalconLoraInt8(CausalLoraInt8Model):
 
     def __init__(self, weights_path: Optional[str] = None):
         super().__init__(FalconLoraInt8Engine.config_name, weights_path)
+
+
+class FalconLoraKbit(CausalLoraKbitModel):
+    config_name: str = "falcon_lora_kbit"
+
+    def __init__(self, weights_path: Optional[str] = None):
+        super().__init__(FalconLoraKbitEngine.config_name, weights_path)
