@@ -7,28 +7,123 @@ defaults:
   max_new_tokens: 256
 
 # Contrastive search
-llama:
+bloom:
   penalty_alpha: 0.6
   top_k: 4
   max_new_tokens: 256
   do_sample: false
 
 # Contrastive search
-llama_lora:
+bloom_lora:
   penalty_alpha: 0.6
   top_k: 4
   max_new_tokens: 256
   do_sample: false
 
 # Greedy search
-llama_lora_int8:
+bloom_lora_int8:
   max_new_tokens: 256
   do_sample: false
 
 # Contrastive search
-llama_lora_int4:
+cerebras:
   penalty_alpha: 0.6
   top_k: 4
+  max_new_tokens: 256
+  do_sample: false
+
+# Contrastive search
+cerebras_lora:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 256
+  do_sample: false
+
+# Greedy search
+cerebras_lora_int8:
+  max_new_tokens: 256
+  do_sample: false
+
+# Top-p sampling
+distilgpt2:
+  do_sample: true
+  top_k: 0
+  top_p: 0.92
+  max_new_tokens: 256
+
+# Top-p sampling
+distilgpt2_lora:
+  do_sample: true
+  top_k: 0
+  top_p: 0.92
+  max_new_tokens: 256
+
+# Greedy search
+falcon:
+  max_new_tokens: 256
+  do_sample: false
+
+# Greedy search
+falcon_int8:
+  max_new_tokens: 256
+  do_sample: false
+
+# Greedy search
+falcon_lora:
+  max_new_tokens: 256
+  do_sample: false
+
+# Greedy search
+falcon_lora_int8:
+  max_new_tokens: 256
+  do_sample: false
+
+# Greedy search
+falcon_lora_kbit:
+  max_new_tokens: 256
+  do_sample: false
+
+# Contrastive search
+galactica:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 256
+  do_sample: false
+
+# Contrastive search
+galactica_lora:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 256
+  do_sample: false
+
+# Greedy search
+galactica_lora_int8:
+  max_new_tokens: 256
+  do_sample: false
+
+# Greedy search
+generic:
+  max_new_tokens: 256
+  do_sample: false
+
+# Greedy search
+generic_int8:
+  max_new_tokens: 256
+  do_sample: false
+
+# Greedy search
+generic_lora:
+  max_new_tokens: 256
+  do_sample: false
+
+# Greedy search
+generic_lora_int8:
+  max_new_tokens: 256
+  do_sample: false
+
+# Greedy search
+generic_lora_kbit:
   max_new_tokens: 256
   do_sample: false
 
@@ -72,36 +167,27 @@ gpt2_lora_int8:
   top_p: 0.92
   max_new_tokens: 256
 
-# Top-p sampling
-distilgpt2:
-  do_sample: true
-  top_k: 0
-  top_p: 0.92
-  max_new_tokens: 256
-
-# Top-p sampling
-distilgpt2_lora:
-  do_sample: true
-  top_k: 0
-  top_p: 0.92
-  max_new_tokens: 256
-
 # Contrastive search
-galactica:
+llama:
   penalty_alpha: 0.6
   top_k: 4
   max_new_tokens: 256
   do_sample: false
 
 # Contrastive search
-galactica_lora:
+llama_lora:
   penalty_alpha: 0.6
   top_k: 4
   max_new_tokens: 256
   do_sample: false
 
 # Greedy search
-galactica_lora_int8:
+llama_lora_int8:
+  max_new_tokens: 256
+  do_sample: false
+
+# Greedy search
+llama_lora_kbit:
   max_new_tokens: 256
   do_sample: false
 
@@ -121,84 +207,5 @@ opt_lora:
 
 # Greedy search
 opt_lora_int8:
-  max_new_tokens: 256
-  do_sample: false
-
-# Contrastive search
-cerebras:
-  penalty_alpha: 0.6
-  top_k: 4
-  max_new_tokens: 256
-  do_sample: false
-
-# Contrastive search
-cerebras_lora:
-  penalty_alpha: 0.6
-  top_k: 4
-  max_new_tokens: 256
-  do_sample: false
-
-# Greedy search
-cerebras_lora_int8:
-  max_new_tokens: 256
-  do_sample: false
-
-# Contrastive search
-bloom:
-  penalty_alpha: 0.6
-  top_k: 4
-  max_new_tokens: 256
-  do_sample: false
-
-# Contrastive search
-bloom_lora:
-  penalty_alpha: 0.6
-  top_k: 4
-  max_new_tokens: 256
-  do_sample: false
-
-# Greedy search
-bloom_lora_int8:
-  max_new_tokens: 256
-  do_sample: false
-
-# Greedy search
-generic:
-  max_new_tokens: 256
-  do_sample: false
-
-# Greedy search
-generic_int8:
-  max_new_tokens: 256
-  do_sample: false
-
-# Greedy search
-generic_lora:
-  max_new_tokens: 256
-  do_sample: false
-
-
-# Greedy search
-generic_lora_int8:
-  max_new_tokens: 256
-  do_sample: false
-
-# Greedy search
-falcon:
-  max_new_tokens: 256
-  do_sample: false
-
-# Greedy search
-falcon_lora:
-  max_new_tokens: 256
-  do_sample: false
-
-# Greedy search
-falcon_int8:
-  max_new_tokens: 256
-  do_sample: false
-
-# Greedy search
-falcon_lora_int8:
   max_new_tokens: 256
   do_sample: false

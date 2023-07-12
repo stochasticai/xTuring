@@ -31,11 +31,13 @@ class CausalModel(BaseModel):
         weights_path: Optional[str] = None,
         model_name: Optional[str] = None,
         target_modules: Optional[List[str]] = None,
+        **kwargs,
     ):
         arguments = dict(
             weights_path=weights_path,
             model_name=model_name,
             target_modules=target_modules,
+            **kwargs,
         )
 
         self.engine = BaseEngine.create(
@@ -211,9 +213,12 @@ class CausalInt8Model(CausalModel):
         engine: str,
         weights_path: Optional[str] = None,
         model_name: Optional[str] = None,
+        **kwargs,
     ):
         assert_not_cpu_int8()
-        super().__init__(engine, weights_path=weights_path, model_name=model_name)
+        super().__init__(
+            engine, weights_path=weights_path, model_name=model_name, **kwargs
+        )
 
 
 class CausalLoraModel(CausalModel):
@@ -223,12 +228,14 @@ class CausalLoraModel(CausalModel):
         weights_path: Optional[str] = None,
         model_name: Optional[str] = None,
         target_modules: Optional[List[str]] = None,
+        **kwargs,
     ):
         super().__init__(
             engine,
             weights_path=weights_path,
             model_name=model_name,
             target_modules=target_modules,
+            **kwargs,
         )
 
     def _make_trainer(
@@ -258,6 +265,7 @@ class CausalLoraInt8Model(CausalLoraModel):
         weights_path: Optional[str] = None,
         model_name: Optional[str] = None,
         target_modules: Optional[List[str]] = None,
+        **kwargs,
     ):
         assert_not_cpu_int8()
         super().__init__(
@@ -265,4 +273,11 @@ class CausalLoraInt8Model(CausalLoraModel):
             weights_path=weights_path,
             model_name=model_name,
             target_modules=target_modules,
+            **kwargs,
         )
+        
+
+class CausalLoraKbitModel(CausalLoraModel):
+    def __init__(self, engine: str, weights_path: Optional[str] = None):
+        assert_not_cpu_int8()
+        super().__init__(engine, weights_path)

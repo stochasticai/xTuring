@@ -53,7 +53,12 @@ class BaseModel(BaseParent):
             cls.registry.get(model_name) is not None
         ), "The model_name {} is not valid".format(model_name)
 
-        model = cls.create(model_name, weights_path=weights_dir_path)
+        if "generic" in model_name:
+            model = cls.create(
+                model_name, model_name=model_name, weights_path=weights_dir_path
+            )
+        else:
+            model = cls.create(model_name, weights_path=weights_dir_path)
 
         return model
 
