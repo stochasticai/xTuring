@@ -29,6 +29,7 @@ class CausalEngine(BaseEngine):
         model: Optional[Any] = None,
         tokenizer: Optional[Any] = None,
         load_8bit: Optional[bool] = False,
+        trust_remote_code: Optional[bool] = False,
     ):
         self.model_name = model_name
 
@@ -43,6 +44,7 @@ class CausalEngine(BaseEngine):
                     torch_dtype=DEFAULT_DTYPE,
                     load_in_8bit=True,
                     device_map=device_map,
+                    trust_remote_code=trust_remote_code,
                 )
                 self.model = prepare_model_for_int8_training(self.model)
             else:
@@ -61,13 +63,16 @@ class CausalEngine(BaseEngine):
                     torch_dtype=DEFAULT_DTYPE,
                     load_in_8bit=True,
                     device_map=device_map,
+                    trust_remote_code=trust_remote_code,
                 )
                 for param in self.model.parameters():
                     param.data = param.data.contiguous()
                 self.model = prepare_model_for_int8_training(self.model)
             else:
                 self.model = AutoModelForCausalLM.from_pretrained(
-                    model_name, torch_dtype=DEFAULT_DTYPE
+                    model_name,
+                    torch_dtype=DEFAULT_DTYPE,
+                    trust_remote_code=trust_remote_code,
                 )
             self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         else:
@@ -128,6 +133,7 @@ class CausalLoraEngine(CausalEngine):
         tokenizer: Optional[Any] = None,
         load_8bit: Optional[bool] = False,
         target_modules: Optional[Union[List[str], str]] = None,
+        trust_remote_code: Optional[bool] = False,
     ):
         # The base model should always be loaded from the original model
         # That's why weights_path is None. If not model.eval() will fail later
@@ -139,6 +145,7 @@ class CausalLoraEngine(CausalEngine):
             model=model,
             tokenizer=tokenizer,
             load_8bit=load_8bit,
+            trust_remote_code=trust_remote_code,
         )
 
         # The model before applying LoRA
@@ -166,7 +173,7 @@ class CausalLoraEngine(CausalEngine):
             model_weights_path = str(Path(weights_path).resolve() / "pytorch_model.bin")
             self.model.load_state_dict(
                 torch.load(
-                    model_weights_path  # , map_location=torch.device(DEFAULT_DEVICE)
+                    model_weights_path, map_location=torch.device(DEFAULT_DEVICE)
                 )
             )
         else:
@@ -174,6 +181,9 @@ class CausalLoraEngine(CausalEngine):
             self.model.print_trainable_parameters()
 
         self.loss_fct = CrossEntropyLoss()
+
+    def set_from_state_dict(self, state_dict, strict=False):
+        self.model.load_state_dict(state_dict, strict=strict)
 
     def save(self, saving_path: Union[str, Path]):
         # Save HF config file

@@ -1,0 +1,64 @@
+# Rule reference documentation: http://jorisroovers.github.io/gitlint/rules/
+[general]
+# verbosity should be a value between 1 and 3, the commandline -v flags take
+# precedence over this
+verbosity = 3
+
+
+# Hard fail when the target commit range is empty. Note that gitlint will
+# already fail by default on invalid commit ranges. This option is specifically
+# to tell gitlint to fail on *valid but empty* commit ranges.
+# Disabled by default.
+fail-without-commits=true
+
+# Whether to use Python `search` instead of `match` semantics in rules that use
+# regexes. Context: https://github.com/jorisroovers/gitlint/issues/254
+# Disabled by default, but will be enabled by default in the future.
+regex-style-search=true
+
+# Enable debug mode (prints more output). Disabled by default.
+debug=true
+
+# Enable community contributed rules
+# See http://jorisroovers.github.io/gitlint/contrib_rules for details
+contrib=contrib-title-conventional-commits
+
+# Set the extra-path where gitlint will search for user defined rules
+# See http://jorisroovers.github.io/gitlint/user_defined_rules for details
+# extra-path=examples/
+
+# This is an example of how to configure the "title-max-length" rule and
+# set the line-length it enforces to 80
+[title-max-length]
+line-length=80
+
+# Conversely, you can also enforce minimal length of a title with the
+# "title-min-length" rule:
+[title-min-length]
+min-length=5
+
+[title-must-not-contain-word]
+# Comma-separated list of words that should not occur in the title. Matching is case
+# insensitive. It's fine if the keyword occurs as part of a larger word (so "WIPING"
+# will not cause a violation, but "WIP: my title" will.
+words=wip
+
+[body-max-line-length]
+line-length=120
+
+[body-min-length]
+min-length=5
+
+[body-changed-file-mention]
+# List of files that need to be explicitly mentioned in the body when they are changed
+# This is useful for when developers often erroneously edit certain files or git submodules.
+# By specifying this rule, developers can only change the file when they explicitly
+# reference it in the commit message.
+files=README.md
+
+[author-valid-email]
+# python like regex (https://docs.python.org/3/library/re.html) that the
+# commit author email address should be matched to
+# E.g.: For example, use the following regex if you only want to allow email
+# addresses from stochastic.ai
+regex=[^@]+@stochastic.ai

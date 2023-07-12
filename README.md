@@ -19,12 +19,12 @@
 
 ___
 
-`xturing` provides fast, efficient and simple fine-tuning of LLMs, such as LLaMA, GPT-J, Galactica, and more.
+`xTuring` provides fast, efficient and simple fine-tuning of LLMs, such as LLaMA, GPT-J, Galactica, and more.
 By providing an easy-to-use interface for fine-tuning LLMs to your own data and application, xTuring makes it
 simple to build, customize and control LLMs. The entire process can be done inside your computer or in your
 private cloud, ensuring data privacy and security.
 
-With `xturing` you can,
+With `xTuring` you can,
 - Ingest data from different sources and preprocess them to a format LLMs can understand
 - Scale from single to multiple GPUs for faster fine-tuning
 - Leverage memory-efficient methods (i.e. INT4, LoRA fine-tuning) to reduce hardware costs by up to 90%
@@ -33,13 +33,11 @@ With `xturing` you can,
 
 <br>
 
-## 🌟 INT4 fine-tuning with LLaMA LoRA
+## 🌟 What's new?
+We are excited to announce the latest enhancements to our `xTuring` library: Falcon LLM integration and Generic model support. With this update, you can use and finetune Falcon-7B model with the off-the-shelf, off-the-shelf with INT8 precision, with LoRA architecture, and LoRA architecture with INT8 precision. Moreover, in case you do not find a model you want to run in the models' list, you can still us `xTuring` to run with the new `GenericModel` wrapper available to you. This new integration allows you to test and finetune any new model on xTuring without waiting for it to be integrated.
 
-We are excited to announce the latest enhancement to our `xTuring` library: INT4 fine-tuning demo. With this update, you can fine-tune LLMs like LLaMA with LoRA architecture in INT4 precision with less than `6 GB` of VRAM. This breakthrough significantly reduces memory requirements and accelerates the fine-tuning process, allowing you to achieve state-of-the-art performance with less computational resources.
-
-More information about INT4 fine-tuning and benchmarks can be found in the [INT4 README](examples/int4_finetuning/README.md).
-
-You can check out the [LLaMA INT4 fine-tuning example](examples/int4_finetuning/LLaMA_lora_int4.ipynb) to see how it works.
+You can check the  [Falcon LoRA INT8 working example](examples/falcon/falcon_lora_int8.py) repository to see how it works.
+Also, you can check the  [GenericModel working example](examples/generic/generic_model.py) repository to see how it works.
 
 <br>
 
@@ -146,6 +144,9 @@ model = BaseModel.load("x/distilgpt2_lora_finetuned_alpaca")
 - [x] OpenAI, Cohere and AI21 Studio model APIs for dataset generation
 - [x] Added fine-tuned checkpoints for some models to the hub
 - [x] INT4 LLaMA LoRA fine-tuning demo
+- [x] INT4 LLaMA LoRA fine-tuning with INT4 generation
+- [x] Support for a generic model wrapper
+- [x] Support for Falcon-7B model
 - [ ] Evaluation of LLM models
 - [ ] Support for Stable Diffusion
 

@@ -3,13 +3,14 @@ import os
 import tempfile
 import uuid
 from pathlib import Path
-from typing import Optional, Union
+from typing import Iterable, Optional, Union, Type
 
 import pytorch_lightning as pl
 import torch
 from deepspeed.ops.adam import DeepSpeedCPUAdam
 from pytorch_lightning import callbacks
 from pytorch_lightning.trainer.trainer import Trainer
+from pytorch_lightning.loggers import Logger
 
 from xturing.config import DEFAULT_DEVICE, IS_INTERACTIVE
 from xturing.datasets.base import BaseDataset
@@ -101,6 +102,7 @@ class LightningTrainer:
         use_deepspeed: bool = False,
         max_training_time_in_secs: Optional[int] = None,
         lora_type: int = 16,
+        logger: Union[Logger, Iterable[Logger], bool] = True,
     ):
         self.lightning_model = TuringLightningModule(
             model_engine=model_engine,
@@ -131,7 +133,11 @@ class LightningTrainer:
                 )
             )
         model_engine.model.train()
-        model_engine.model.print_trainable_parameters()
+
+        try:
+            model_engine.model.print_trainable_parameters()
+        except AttributeError:
+            pass
 
         if DEFAULT_DEVICE.type == "cpu":
             self.trainer = Trainer(
@@ -141,6 +147,7 @@ class LightningTrainer:
                 callbacks=training_callbacks,
                 enable_checkpointing=False,
                 log_every_n_steps=50,
+                logger=logger,
             )
         elif not use_lora and not use_deepspeed:
             self.trainer = Trainer(
@@ -150,6 +157,7 @@ class LightningTrainer:
                 callbacks=training_callbacks,
                 enable_checkpointing=True,
                 log_every_n_steps=50,
+                logger=logger,
             )
         else:
             training_callbacks = [
@@ -175,6 +183,7 @@ class LightningTrainer:
                 callbacks=training_callbacks,
                 enable_checkpointing=True,
                 log_every_n_steps=50,
+                logger=logger,
             )
 
     def fit(self):

@@ -50,7 +50,7 @@ class InstructionDataset(BaseDataset):
         self,
         path: Union[str, Path, HFDataset, dict],
         infix_instruction: bool = False,
-        promt_template: str = None,
+        promt_template: Optional[str] = None,
     ):
         if isinstance(path, HFDataset) or isinstance(path, DatasetDict):
             self.data = path
@@ -59,7 +59,6 @@ class InstructionDataset(BaseDataset):
         else:
             path = Path(path)
             assert Path(path).exists(), "path does not exist"
-
             if path.is_dir():
                 self.data = load_from_disk(str(path))
             elif path.suffix == ".jsonl":
@@ -123,7 +122,7 @@ class InstructionDataset(BaseDataset):
         return self.data["train"][idx]
 
     def save(self, path):
-        return self.data.save_to_disk(path)
+        return self.data["train"].save_to_disk(path)
 
     @classmethod
     def generate_dataset(

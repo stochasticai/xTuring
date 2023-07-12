@@ -44,7 +44,7 @@ class Hub:
                 sys.stdout.flush()
 
             try:
-                wget.download(url, str(zip_filename), bar=bar_progress)
+                wget.download(url, str(zip_filename))
 
                 with ZipFile(zip_filename, "r") as zip_ref:
                     zip_ref.extractall(path=model_dir)
@@ -55,13 +55,15 @@ class Hub:
 
                 entries = list(model_dir.glob("*"))
 
-                if len(entries) == 1 and entries[0].is_dir():
+                while len(entries) == 1 and entries[0].is_dir():
                     single_folder = entries[0]
 
                     for item in single_folder.iterdir():
                         shutil.move(str(item), str(model_dir / item.name))
 
                     shutil.rmtree(single_folder)
+
+                    entries = list(model_dir.glob("*"))
 
             except Exception as e:
                 print(f"Error downloading model {model_name} from {url}: {e}")

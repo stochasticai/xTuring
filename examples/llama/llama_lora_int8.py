@@ -1,3 +1,5 @@
+import gc
+
 from xturing.datasets.instruction_dataset import InstructionDataset
 from xturing.models import BaseModel
 
@@ -11,6 +13,9 @@ model.finetune(dataset=instruction_dataset)
 model.save("./llama_weights")
 
 # Once the model has been finetuned, you can start doing inferences
+del model
+gc.collect()
+model = BaseModel.load("./llama_weights")
 output = model.generate(texts=["Why LLM models are becoming so important?"])
 print("Generated output by the model: {}".format(output))
 
