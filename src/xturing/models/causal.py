@@ -3,9 +3,11 @@ from pathlib import Path
 from typing import Iterable, List, Optional, Tuple, Type, Union
 
 import torch
+import torch.nn.functional as F
 from pytorch_lightning.loggers import Logger
 from torch.utils.data import DataLoader
 from tqdm import tqdm
+from transformers import BatchEncoding
 
 from xturing.config import DEFAULT_DEVICE, assert_not_cpu_int8
 from xturing.config.config_data_classes import FinetuningConfig, GenerationConfig
@@ -29,6 +31,8 @@ from xturing.utils.prompt import (
     is_chat_prompt,
 )
 from xturing.utils.utils import _filter_args, _index_samples
+
+TokenSequence = Union[List[int], torch.LongTensor, torch.Tensor, BatchEncoding]
 
 logger = configure_logger(__name__)
 
@@ -212,6 +216,25 @@ class CausalModel(BaseModel):
         self.engine.save(path)
         self._save_config(path=path)
 
+    def _loglikelihood_tokens(
+        self,
+        data_iterator: Iterable,
+        disable_tqdm: Optional[bool] = False,
+    ) -> List[Tuple[float, bool]]:
+        results = []
+        for chunk in tqdm(data_iterator, disable=disable_tqdm):
+            del input_tokens["label_masks"], input_tokens["targets"]
+            input_tokens = chunk.to(DEFAULT_DEVICE)
+            outputs = self._model_call(inputs=input_tokens, labels=input_tokens)
+            results.append(outputs.loss)
+        return results
+
+    def _model_call(
+        self, inputs: TokenSequence, labels: Optional[TokenSequence] = None
+    ) -> TokenSequence:
+        self.engine.model = self.engine.model.to(DEFAULT_DEVICE)
+        return self.engine.model(**inputs, labels=labels["input_ids"])
+
     def completion_query(
         self, prompt: Union[OpenAICreatePrompt, OpenAICreateChatPrompt, Prompt]
     ):
@@ -271,7 +294,7 @@ class CausalModel(BaseModel):
         """
         Evaluate all provided samples in parallel.
         """
-        work_items = _index_samples(samples, logger)
+        work_items = _index_samples([samples[i] for i in range(10)], logger)
         show_progress = show_progress
 
         def eval_sample(args):
@@ -286,8 +309,18 @@ class CausalModel(BaseModel):
         return [r for _, r in sorted(idx_and_result)]
 
     def evaluate(self, dataset: Union[TextDataset, InstructionDataset]):
-        outputs = self.eval_all_samples(dataset)
-        return get_accuracy(outputs)
+        # outputs = self.eval_all_samples(dataset)
+        collate_fn = self._make_collate_fn(dataset)
+        dataloader = DataLoader(
+            dataset,
+            batch_size=1,
+            shuffle=False,
+            drop_last=False,
+            collate_fn=collate_fn,
+        )
+        results = self._loglikelihood_tokens(dataloader)
+        return torch.exp(torch.stack(results).mean())
+        # return get_accuracy(outputs)
 
 
 class CausalInt8Model(CausalModel):
