@@ -35,7 +35,9 @@ class CausalEngine(BaseEngine):
         **kwargs,
     ):
         self.model_name = model_name
-
+        print(weights_path)
+        print(model)
+        print(model_name)
         if weights_path is not None:
             assert Path(
                 weights_path
@@ -60,6 +62,7 @@ class CausalEngine(BaseEngine):
             self.model = model
             self.tokenizer = tokenizer
         elif model_name is not None:
+            print("here")
             if load_8bit:
                 device_map = {"": int(os.environ.get("LOCAL_RANK") or 0)}
                 self.model = AutoModelForCausalLM.from_pretrained(
