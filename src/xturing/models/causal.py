@@ -223,8 +223,8 @@ class CausalModel(BaseModel):
     ) -> List[Tuple[float, bool]]:
         results = []
         for chunk in tqdm(data_iterator, disable=disable_tqdm):
-            del input_tokens["label_masks"], input_tokens["targets"]
             input_tokens = chunk.to(DEFAULT_DEVICE)
+            del input_tokens["label_masks"], input_tokens["targets"]
             outputs = self._model_call(inputs=input_tokens, labels=input_tokens)
             results.append(outputs.loss)
         return results
@@ -308,19 +308,23 @@ class CausalModel(BaseModel):
         )
         return [r for _, r in sorted(idx_and_result)]
 
-    def evaluate(self, dataset: Union[TextDataset, InstructionDataset]):
+    def evaluate(
+        self,
+        dataset: Union[TextDataset, InstructionDataset],
+        batch_size: Optional[int] = 1,
+    ):
         # outputs = self.eval_all_samples(dataset)
+        # return get_accuracy(outputs)
         collate_fn = self._make_collate_fn(dataset)
         dataloader = DataLoader(
             dataset,
-            batch_size=1,
+            batch_size=batch_size,
             shuffle=False,
             drop_last=False,
             collate_fn=collate_fn,
         )
         results = self._loglikelihood_tokens(dataloader)
-        return torch.exp(torch.stack(results).mean())
-        # return get_accuracy(outputs)
+        return torch.exp(torch.stack(results).sum() / len(dataset))
 
 
 class CausalInt8Model(CausalModel):
