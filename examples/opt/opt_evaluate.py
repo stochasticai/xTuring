@@ -5,6 +5,6 @@ instruction_dataset = InstructionDataset("../examples/llama/alpaca_data")
 # Initializes the model
 model = BaseModel.create("opt")
 # Call the evaluate function
-perplexity = model.evaluate(instruction_dataset)
+perplexity = model.evaluate(instruction_dataset, batch_size=5)
 
 print(perplexity)
