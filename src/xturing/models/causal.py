@@ -135,7 +135,7 @@ class CausalModel(BaseModel):
         else:
             enumeration = enumerate(data_iterator)
 
-        for i, batch in enumeration:
+        for _, batch in enumeration:
             if do_tokenization:
                 inputs = self.engine.tokenizer(batch, return_tensors="pt")
                 input_ids = inputs.input_ids.to(DEFAULT_DEVICE)
@@ -148,11 +148,11 @@ class CausalModel(BaseModel):
                         input_ids=input_ids, **self.generation_args.dict()
                     )
 
-            output = self.engine.tokenizer.decode(
-                output[0][len_input:], skip_special_tokens=True
+            output = self.engine.tokenizer.batch_decode(
+                torch.stack([output[i][len_input:] for i in range(output.shape[0])]),
+                skip_special_tokens=True,
             )
-            outputs.append(output)
-
+            outputs.extend(output)
         return outputs
 
     def generate(
@@ -160,6 +160,7 @@ class CausalModel(BaseModel):
         *,
         texts: Optional[Union[List[str], str]] = None,
         dataset: Optional[Union[TextDataset, InstructionDataset]] = None,
+        batch_size: Optional[int] = 1,
     ):
         self.engine.model.eval()
         self.engine.model = self.engine.model.to(DEFAULT_DEVICE)
@@ -179,7 +180,7 @@ class CausalModel(BaseModel):
             collate_fn = self._make_collate_fn(dataset)
             dataloader = DataLoader(
                 dataset,
-                batch_size=1,
+                batch_size=batch_size,
                 shuffle=False,
                 drop_last=False,
                 collate_fn=collate_fn,
