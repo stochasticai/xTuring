@@ -39,13 +39,15 @@ You can quickly get started with xTuring by following the [Quickstart](/quicksta
 
 | Model | Examples |
 | --- | --- |
-| LLaMA | [LLaMA 7B fine-tuning on Alpaca dataset with/without LoRA and with/without INT8](https://github.com/stochasticai/xturing/tree/main/examples/llama) |
+| Bloom | [Bloom fine-tuning on Alpaca dataset with/without LoRA and with/without INT8](https://github.com/stochasticai/xturing/tree/main/examples/bloom) |
+| Cerebras-GPT | [Cerebras-GPT fine-tuning on Alpaca dataset with/without LoRA and with/without INT8](https://github.com/stochasticai/xturing/tree/main/examples/cerebras) |
+| Falcon | [Falcon 7B fine-tuning on Alpaca dataset with/without LoRA and with/without INT8](https://github.com/stochasticai/xturing/tree/main/examples/falcon) |
+| Galactica | [Galactica fine-tuning on Alpaca dataset with/without LoRA and with/without INT8](https://github.com/stochasticai/xturing/tree/main/examples/galactica) |
+| Generic Wrapper | [Any large language model fine-tuning on Alpaca dataset with/without LoRA and with/without INT8](https://github.com/stochasticai/xturing/tree/main/examples/generic) |
 | GPT-J | [GPT-J 6B LoRA fine-tuning with/without INT8 ](https://github.com/stochasticai/xturing/tree/main/examples/gptj) |
 | GPT-2 | [GPT-2 fine-tuning on Alpaca dataset with/without LoRA and with/without INT8](https://github.com/stochasticai/xturing/tree/main/examples/gpt2) |
+| LLaMA | [LLaMA 7B fine-tuning on Alpaca dataset with/without LoRA and with/without INT8](https://github.com/stochasticai/xturing/tree/main/examples/llama) |
 | OPT | [OPT fine-tuning on Alpaca dataset with/without LoRA and with/without INT8](https://github.com/stochasticai/xturing/tree/main/examples/opt) |
-| Cerebras-GPT | [Cerebras-GPT fine-tuning on Alpaca dataset with/without LoRA and with/without INT8](https://github.com/stochasticai/xturing/tree/main/examples/cerebras) |
-| Galactica | [Galactica fine-tuning on Alpaca dataset with/without LoRA and with/without INT8](https://github.com/stochasticai/xturing/tree/main/examples/galactica) |
-| Bloom | [Bloom fine-tuning on Alpaca dataset with/without LoRA and with/without INT8](https://github.com/stochasticai/xturing/tree/main/examples/bloom) |
 
 xTuring is licensed under [Apache 2.0](https://github.com/stochasticai/xturing/blob/main/LICENSE)
 
