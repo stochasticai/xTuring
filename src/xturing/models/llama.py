@@ -1,9 +1,5 @@
-from typing import Iterable, List, Optional, Union
+from typing import Optional
 
-from pytorch_lightning.loggers import Logger
-
-from xturing.datasets.instruction_dataset import InstructionDataset
-from xturing.datasets.text_dataset import TextDataset
 from xturing.engines.llama_engine import (
     LLamaEngine,
     LLamaInt8Engine,
@@ -18,8 +14,6 @@ from xturing.models.causal import (
     CausalLoraModel,
     CausalModel,
 )
-from xturing.trainers.base import BaseTrainer
-from xturing.trainers.lightning_trainer import LightningTrainer
 
 
 class Llama(CausalModel):
