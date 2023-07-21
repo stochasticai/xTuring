@@ -35,10 +35,14 @@ With `xTuring` you can,
 
 ## 🌟 What's new?
 We are excited to announce the latest enhancements to our `xTuring` library:
-1. __`Falcon LLM` integration__ - You can use and fine-tune the _`Falcon-7B`_ model in different configurations: _off-the-shelf_, _off-the-shelf with INT8 precision_, _LoRA fine-tuning_, and _LoRA fine-tuning with INT8 precision_.
-2. __`GenericModel` wrapper__ - This new integration allows you to test and fine-tune any new model on `xTuring` without waiting for it to be integrated using class _`GenericModel`_.
+1. __`LLaMA 2` integration__ - You can use and fine-tune the _`LLaMA 2`_ model in different configurations: _off-the-shelf_, _off-the-shelf with INT8 precision_, _LoRA fine-tuning_, _LoRA fine-tuning with INT8 precision_ and _LoRA fine-tuning with INT4 precision_ using the `GenericModel` wrapper.
+2. __`Evaluation`__ - Now you can evaluate any `Causal Language Model` on any dataset. The metrics currently supported is `perplexity`.
+3. __`INT4` Precision__ - You can now use and fine-tune any LLM with `INT4 Precision` using `GenericKbitModel`.
+4. __CPU inference__ - Now you can use just your CPU for inference of any LLM. _CAUTION : The inference will be very slow as CPUs are extremely slow for the amount of computation needed for inference_.
+5. __Batch integration__ - Now you play around with `batch_size` in `.generate()` and `.evaluate()` functions. This will lead to faster results with `batch_size>1`.
 
-You can check the  [Falcon LoRA INT8 working example](examples/falcon/falcon_lora_int8.py) repository to see how it works.
+You can check the  [Llama LoRA INT4 working example](examples/int4_finetuning/LLaMA_lora_int4.ipynb) file to see how it works.
+
 Also, you can check the  [GenericModel working example](examples/generic/generic_model.py) repository to see how it works.
 
 <br>
@@ -170,8 +174,8 @@ model = BaseModel.load("x/distilgpt2_lora_finetuned_alpaca")
 - [x] INT4 LLaMA LoRA fine-tuning with INT4 generation
 - [x] Support for a `Generic model` wrapper
 - [x] Support for `Falcon-7B` model
-- [ ] Evaluation of LLM models
-- [ ] INT4 low-precision fine-tuning support
+- [x] INT4 low-precision fine-tuning support
+- [x] Evaluation of LLM models
 - [ ] INT3, INT2, INT1 low-precision fine-tuning support
 - [ ] Support for Stable Diffusion
 
