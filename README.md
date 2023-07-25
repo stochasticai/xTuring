@@ -35,11 +35,67 @@ With `xTuring` you can,
 
 ## 🌟 What's new?
 We are excited to announce the latest enhancements to our `xTuring` library:
-1. __`LLaMA 2` integration__ - You can use and fine-tune the _`LLaMA 2`_ model in different configurations: _off-the-shelf_, _off-the-shelf with INT8 precision_, _LoRA fine-tuning_, _LoRA fine-tuning with INT8 precision_ and _LoRA fine-tuning with INT4 precision_ using the `GenericModel` wrapper.
-2. __`Evaluation`__ - Now you can evaluate any `Causal Language Model` on any dataset. The metrics currently supported is `perplexity`.
+1. __`LLaMA 2` integration__ - You can use and fine-tune the _`LLaMA 2`_ model in different configurations: _off-the-shelf_, _off-the-shelf with INT8 precision_, _LoRA fine-tuning_, _LoRA fine-tuning with INT8 precision_ and _LoRA fine-tuning with INT4 precision_ using the `GenericModel` wrapper and/or you can use the `Llama2` class from `xturing.models` to test and finetune the model.
+```python
+from xturing.models import Llama2
+model = Llama2()
+
+## or
+from xturing.models import BaseModel
+model = BaseModel.create('llama2')
+
+```
+2. __`Evaluation`__ - Now you can evaluate any `Causal Language Model` on any dataset. The metrics currently supported is [`perplexity`](https://towardsdatascience.com/perplexity-in-language-models-87a196019a94).
+```python
+# Make the necessary imports
+from xturing.datasets import InstructionDataset
+from xturing.models import BaseModel
+
+# Load the desired dataset
+dataset = InstructionDataset('../llama/alpaca_data')
+
+# Load the desired model
+model = BaseModel.create('gpt2')
+
+# Run the Evaluation of the model on the dataset
+result = model.evaluate(dataset)
+
+# Print the result
+print(f"Perplexity of the evalution: {result}")
+
+```
 3. __`INT4` Precision__ - You can now use and fine-tune any LLM with `INT4 Precision` using `GenericKbitModel`.
+```python
+# Make the necessary imports
+from xturing.datasets import InstructionDataset
+from xturing.models import GenericKbitModel
+
+# Load the desired dataset
+dataset = InstructionDataset('../llama/alpaca_data')
+
+# Load the desired model for INT4 bit fine-tuning
+model = GenericKbitModel('tiiuae/falcon-7b')
+
+# Run the fine-tuning
+model.finetune(dataset)
+```
 4. __CPU inference__ - Now you can use just your CPU for inference of any LLM. _CAUTION : The inference will be very slow as CPUs are extremely slow for the amount of computation needed for inference_.
 5. __Batch integration__ - Now you play around with `batch_size` in `.generate()` and `.evaluate()` functions. This will lead to faster results with `batch_size>1`.
+```python
+# Make the necessary imports
+from xturing.datasets import InstructionDataset
+from xturing.models import GenericKbitModel
+
+# Load the desired dataset
+dataset = InstructionDataset('../llama/alpaca_data')
+
+# Load the desired model for INT4 bit fine-tuning
+model = GenericKbitModel('tiiuae/falcon-7b')
+
+# Generate outputs on desired prompts
+outputs = model.generate(dataset = dataset, batch_size=10)
+
+```
 
 You can check the  [Llama LoRA INT4 working example](examples/int4_finetuning/LLaMA_lora_int4.ipynb) file to see how it works.
 

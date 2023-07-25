@@ -47,6 +47,7 @@ You can quickly get started with xTuring by following the [Quickstart](/quicksta
 | GPT-J | [GPT-J 6B LoRA fine-tuning with/without INT8 ](https://github.com/stochasticai/xturing/tree/main/examples/gptj) |
 | GPT-2 | [GPT-2 fine-tuning on Alpaca dataset with/without LoRA and with/without INT8](https://github.com/stochasticai/xturing/tree/main/examples/gpt2) |
 | LLaMA | [LLaMA 7B fine-tuning on Alpaca dataset with/without LoRA and with/without INT8](https://github.com/stochasticai/xturing/tree/main/examples/llama) |
+| LLaMA 2 | [LLaMA 2 7B fine-tuning on Alpaca dataset with/without LoRA and with/without INT8](https://github.com/stochasticai/xturing/tree/main/examples/llama2) |
 | OPT | [OPT fine-tuning on Alpaca dataset with/without LoRA and with/without INT8](https://github.com/stochasticai/xturing/tree/main/examples/opt) |
 
 xTuring is licensed under [Apache 2.0](https://github.com/stochasticai/xturing/blob/main/LICENSE)
