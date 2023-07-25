@@ -192,6 +192,13 @@ llama_lora_kbit:
   do_sample: false
 
 # Contrastive search
+llama2:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 256
+  do_sample: false
+
+# Contrastive search
 opt:
   penalty_alpha: 0.6
   top_k: 4
