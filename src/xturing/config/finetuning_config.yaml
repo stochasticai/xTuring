@@ -234,6 +234,30 @@ llama2:
   num_train_epochs: 3
   optimizer_name: cpu_adam
 
+llama2_lora:
+  learning_rate: 5e-5
+  weight_decay: 0.01
+  num_train_epochs: 3
+  optimizer_name: cpu_adam
+
+llama2_lora_int8:
+  learning_rate: 5e-5
+  weight_decay: 0.01
+  num_train_epochs: 3
+  optimizer_name: cpu_adam
+
+llama2_int8:
+  learning_rate: 5e-5
+  weight_decay: 0.01
+  num_train_epochs: 3
+  optimizer_name: cpu_adam
+
+llama2_lora_kbit:
+  learning_rate: 5e-5
+  weight_decay: 0.01
+  num_train_epochs: 3
+  optimizer_name: cpu_adam
+
 opt:
   learning_rate: 5e-5
   weight_decay: 0.01
