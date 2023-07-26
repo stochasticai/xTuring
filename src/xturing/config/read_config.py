@@ -45,6 +45,7 @@ def exists_xturing_config_file(dir_path: Optional[Union[Path, str]] = None):
 
 
 def exists_lora_config_file(dir_path: Optional[Union[Path, str]] = None):
+    # Check if lora config exists
     if dir_path is None:
         return False
     dir_path = Path(dir_path)
