@@ -97,9 +97,9 @@ outputs = model.generate(dataset = dataset, batch_size=10)
 
 ```
 
-You can check the  [Llama LoRA INT4 working example](examples/int4_finetuning/LLaMA_lora_int4.ipynb) file to see how it works.
+An exploration of the [Llama LoRA INT4 working example](examples/int4_finetuning/LLaMA_lora_int4.ipynb) is recommended for an understanding of its application.
 
-Also, you can check the  [GenericModel working example](examples/generic/generic_model.py) repository to see how it works.
+For an extended insight, consider examining the [GenericModel working example](examples/generic/generic_model.py) available in the repository.
 
 <br>
 
