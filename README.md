@@ -79,7 +79,7 @@ model = GenericKbitModel('tiiuae/falcon-7b')
 # Run the fine-tuning
 model.finetune(dataset)
 ```
-4. __CPU inference__ - Now you can use just your CPU for inference of any LLM. _CAUTION : The inference will be very slow as CPUs are extremely slow for the amount of computation needed for inference_.
+4. __CPU inference__ - Now you can use just your CPU for inference of any LLM. _CAUTION : The inference process may be sluggish because CPUs lack the required computational capacity for efficient inference_.
 5. __Batch integration__ - Now you play around with `batch_size` in `.generate()` and `.evaluate()` functions. This will lead to faster results with `batch_size>1`.
 ```python
 # Make the necessary imports
