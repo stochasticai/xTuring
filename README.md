@@ -80,7 +80,7 @@ model = GenericKbitModel('tiiuae/falcon-7b')
 model.finetune(dataset)
 ```
 4. __CPU inference__ - Now you can use just your CPU for inference of any LLM. _CAUTION : The inference process may be sluggish because CPUs lack the required computational capacity for efficient inference_.
-5. __Batch integration__ - Now you play around with `batch_size` in `.generate()` and `.evaluate()` functions. This will lead to faster results with `batch_size>1`.
+5. __Batch integration__ - By tweaking the 'batch_size' in the .generate() and .evaluate() functions, you can expedite results. Using a 'batch_size' greater than 1 typically enhances processing efficiency.
 ```python
 # Make the necessary imports
 from xturing.datasets import InstructionDataset
