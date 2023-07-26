@@ -35,11 +35,71 @@ With `xTuring` you can,
 
 ## 🌟 What's new?
 We are excited to announce the latest enhancements to our `xTuring` library:
-1. __`Falcon LLM` integration__ - You can use and fine-tune the _`Falcon-7B`_ model in different configurations: _off-the-shelf_, _off-the-shelf with INT8 precision_, _LoRA fine-tuning_, and _LoRA fine-tuning with INT8 precision_.
-2. __`GenericModel` wrapper__ - This new integration allows you to test and fine-tune any new model on `xTuring` without waiting for it to be integrated using class _`GenericModel`_.
+1. __`LLaMA 2` integration__ - You can use and fine-tune the _`LLaMA 2`_ model in different configurations: _off-the-shelf_, _off-the-shelf with INT8 precision_, _LoRA fine-tuning_, _LoRA fine-tuning with INT8 precision_ and _LoRA fine-tuning with INT4 precision_ using the `GenericModel` wrapper and/or you can use the `Llama2` class from `xturing.models` to test and finetune the model.
+```python
+from xturing.models import Llama2
+model = Llama2()
 
-You can check the  [Falcon LoRA INT8 working example](examples/falcon/falcon_lora_int8.py) repository to see how it works.
-Also, you can check the  [GenericModel working example](examples/generic/generic_model.py) repository to see how it works.
+## or
+from xturing.models import BaseModel
+model = BaseModel.create('llama2')
+
+```
+2. __`Evaluation`__ - Now you can evaluate any `Causal Language Model` on any dataset. The metrics currently supported is [`perplexity`](https://towardsdatascience.com/perplexity-in-language-models-87a196019a94).
+```python
+# Make the necessary imports
+from xturing.datasets import InstructionDataset
+from xturing.models import BaseModel
+
+# Load the desired dataset
+dataset = InstructionDataset('../llama/alpaca_data')
+
+# Load the desired model
+model = BaseModel.create('gpt2')
+
+# Run the Evaluation of the model on the dataset
+result = model.evaluate(dataset)
+
+# Print the result
+print(f"Perplexity of the evalution: {result}")
+
+```
+3. __`INT4` Precision__ - You can now use and fine-tune any LLM with `INT4 Precision` using `GenericKbitModel`.
+```python
+# Make the necessary imports
+from xturing.datasets import InstructionDataset
+from xturing.models import GenericKbitModel
+
+# Load the desired dataset
+dataset = InstructionDataset('../llama/alpaca_data')
+
+# Load the desired model for INT4 bit fine-tuning
+model = GenericKbitModel('tiiuae/falcon-7b')
+
+# Run the fine-tuning
+model.finetune(dataset)
+```
+4. __CPU inference__ - Now you can use just your CPU for inference of any LLM. _CAUTION : The inference process may be sluggish because CPUs lack the required computational capacity for efficient inference_.
+5. __Batch integration__ - By tweaking the 'batch_size' in the .generate() and .evaluate() functions, you can expedite results. Using a 'batch_size' greater than 1 typically enhances processing efficiency.
+```python
+# Make the necessary imports
+from xturing.datasets import InstructionDataset
+from xturing.models import GenericKbitModel
+
+# Load the desired dataset
+dataset = InstructionDataset('../llama/alpaca_data')
+
+# Load the desired model for INT4 bit fine-tuning
+model = GenericKbitModel('tiiuae/falcon-7b')
+
+# Generate outputs on desired prompts
+outputs = model.generate(dataset = dataset, batch_size=10)
+
+```
+
+An exploration of the [Llama LoRA INT4 working example](examples/int4_finetuning/LLaMA_lora_int4.ipynb) is recommended for an understanding of its application.
+
+For an extended insight, consider examining the [GenericModel working example](examples/generic/generic_model.py) available in the repository.
 
 <br>
 
@@ -170,8 +230,8 @@ model = BaseModel.load("x/distilgpt2_lora_finetuned_alpaca")
 - [x] INT4 LLaMA LoRA fine-tuning with INT4 generation
 - [x] Support for a `Generic model` wrapper
 - [x] Support for `Falcon-7B` model
-- [X] INT4 low-precision fine-tuning support
-- [ ] Evaluation of LLM models
+- [x] INT4 low-precision fine-tuning support
+- [x] Evaluation of LLM models
 - [ ] INT3, INT2, INT1 low-precision fine-tuning support
 - [ ] Support for Stable Diffusion
 

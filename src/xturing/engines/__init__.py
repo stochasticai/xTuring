@@ -1,47 +1,63 @@
-from .base import BaseEngine
-from .bloom_engine import (
+from xturing.engines.base import BaseEngine
+from xturing.engines.bloom_engine import (
     BloomEngine,
     BloomInt8Engine,
     BloomLoraEngine,
     BloomLoraInt8Engine,
 )
-from .cerebras_engine import (
+from xturing.engines.cerebras_engine import (
     CerebrasEngine,
     CerebrasInt8Engine,
     CerebrasLoraEngine,
     CerebrasLoraInt8Engine,
 )
-from .distilgpt2_engine import DistilGPT2Engine, DistilGPT2LoraEngine
-from .falcon_engine import (
+from xturing.engines.distilgpt2_engine import DistilGPT2Engine, DistilGPT2LoraEngine
+from xturing.engines.falcon_engine import (
     FalconEngine,
     FalconInt8Engine,
     FalconLoraEngine,
     FalconLoraInt8Engine,
     FalconLoraKbitEngine,
 )
-from .galactica_engine import (
+from xturing.engines.galactica_engine import (
     GalacticaEngine,
     GalacticaInt8Engine,
     GalacticaLoraEngine,
     GalacticaLoraInt8Engine,
 )
-from .generic_engine import (
+from xturing.engines.generic_engine import (
     GenericEngine,
     GenericInt8Engine,
     GenericLoraEngine,
     GenericLoraInt8Engine,
     GenericLoraKbitEngine,
 )
-from .gpt2_engine import GPT2Engine, GPT2Int8Engine, GPT2LoraEngine, GPT2LoraInt8Engine
-from .gptj_engine import GPTJEngine, GPTJInt8Engine, GPTJLoraEngine, GPTJLoraInt8Engine
-from .llama_engine import (
+from xturing.engines.gpt2_engine import (
+    GPT2Engine,
+    GPT2Int8Engine,
+    GPT2LoraEngine,
+    GPT2LoraInt8Engine,
+)
+from xturing.engines.gptj_engine import (
+    GPTJEngine,
+    GPTJInt8Engine,
+    GPTJLoraEngine,
+    GPTJLoraInt8Engine,
+)
+from xturing.engines.llama2_engine import LLama2Engine
+from xturing.engines.llama_engine import (
     LLamaEngine,
     LLamaInt8Engine,
     LlamaLoraEngine,
     LlamaLoraInt8Engine,
     LlamaLoraKbitEngine,
 )
-from .opt_engine import OPTEngine, OPTInt8Engine, OPTLoraEngine, OPTLoraInt8Engine
+from xturing.engines.opt_engine import (
+    OPTEngine,
+    OPTInt8Engine,
+    OPTLoraEngine,
+    OPTLoraInt8Engine,
+)
 
 BaseEngine.add_to_registry(BloomEngine.config_name, BloomEngine)
 BaseEngine.add_to_registry(BloomInt8Engine.config_name, BloomInt8Engine)
@@ -80,6 +96,7 @@ BaseEngine.add_to_registry(LLamaInt8Engine.config_name, LLamaInt8Engine)
 BaseEngine.add_to_registry(LlamaLoraEngine.config_name, LlamaLoraEngine)
 BaseEngine.add_to_registry(LlamaLoraInt8Engine.config_name, LlamaLoraInt8Engine)
 BaseEngine.add_to_registry(LlamaLoraKbitEngine.config_name, LlamaLoraKbitEngine)
+BaseEngine.add_to_registry(LLama2Engine.config_name, LLama2Engine)
 BaseEngine.add_to_registry(OPTEngine.config_name, OPTEngine)
 BaseEngine.add_to_registry(OPTInt8Engine.config_name, OPTInt8Engine)
 BaseEngine.add_to_registry(OPTLoraEngine.config_name, OPTLoraEngine)

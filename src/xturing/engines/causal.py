@@ -35,7 +35,6 @@ class CausalEngine(BaseEngine):
         **kwargs,
     ):
         self.model_name = model_name
-
         if weights_path is not None:
             assert Path(
                 weights_path
