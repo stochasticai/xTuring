@@ -36,6 +36,7 @@ from xturing.models.llama import (
     LlamaLoraInt8,
     LlamaLoraKbit,
 )
+from xturing.models.llama2 import Llama2
 from xturing.models.opt import OPT, OPTInt8, OPTLora, OPTLoraInt8
 from xturing.models.stable_diffusion import StableDiffusion
 
@@ -76,6 +77,7 @@ BaseModel.add_to_registry(LlamaInt8.config_name, LlamaInt8)
 BaseModel.add_to_registry(LlamaLora.config_name, LlamaLora)
 BaseModel.add_to_registry(LlamaLoraInt8.config_name, LlamaLoraInt8)
 BaseModel.add_to_registry(LlamaLoraKbit.config_name, LlamaLoraKbit)
+BaseModel.add_to_registry(Llama2.config_name, Llama2)
 BaseModel.add_to_registry(OPT.config_name, OPT)
 BaseModel.add_to_registry(OPTInt8.config_name, OPTInt8)
 BaseModel.add_to_registry(OPTLora.config_name, OPTLora)

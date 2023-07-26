@@ -2,8 +2,9 @@ import os
 from pathlib import Path
 from typing import Optional, Union
 
-import torch
 from torch import nn
+
+from xturing.config import DEFAULT_DTYPE
 
 from xturing.engines.causal import CausalEngine, CausalLoraEngine, CausalLoraKbitEngine
 from xturing.engines.llama_utils import LlamaForCausalLM, LlamaTokenizer
@@ -15,7 +16,7 @@ class LLamaEngine(CausalEngine):
 
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
         model_name = "aleksickx/llama-7b-hf"
-        model = LlamaForCausalLM.from_pretrained(model_name, torch_dtype=torch.float16)
+        model = LlamaForCausalLM.from_pretrained(model_name, torch_dtype=DEFAULT_DTYPE)
         tokenizer = LlamaTokenizer.from_pretrained(model_name, add_bos_token=False)
         tokenizer.pad_token = tokenizer.eos_token
         tokenizer.pad_token_id = tokenizer.eos_token_id
@@ -34,7 +35,7 @@ class LlamaLoraEngine(CausalLoraEngine):
         model_name = "aleksickx/llama-7b-hf"
         model = LlamaForCausalLM.from_pretrained(
             model_name,
-            torch_dtype=torch.float16,
+            torch_dtype=DEFAULT_DTYPE,
         )
         tokenizer = LlamaTokenizer.from_pretrained(model_name, add_bos_token=False)
         tokenizer.pad_token = tokenizer.eos_token
@@ -56,7 +57,7 @@ class LLamaInt8Engine(CausalEngine):
         device_map = {"": int(os.environ.get("LOCAL_RANK") or 0)}
         model = LlamaForCausalLM.from_pretrained(
             model_name,
-            torch_dtype=torch.float16,
+            torch_dtype=DEFAULT_DTYPE,
             load_in_8bit=True,
             device_map=device_map,
         )
@@ -82,7 +83,7 @@ class LlamaLoraInt8Engine(CausalLoraEngine):
         device_map = {"": int(os.environ.get("LOCAL_RANK") or 0)}
         model = LlamaForCausalLM.from_pretrained(
             model_name,
-            torch_dtype=torch.float16,
+            torch_dtype=DEFAULT_DTYPE,
             load_in_8bit=True,
             device_map=device_map,
         )
@@ -119,39 +120,6 @@ class LlamaLoraKbitEngine(CausalLoraKbitEngine):
 
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
         model_name = "decapoda-research/llama-7b-hf"
-        # lrec_config = {
-        #     "base_model": model_name,
-        #     "intq_checkpoint": str(
-        #         Path(__file__).parent / "llama7b-2bit-128g.pt"
-        #     ),  ## how to do this
-        #     "wbits": wbits,
-        #     "lora_target_modules": [
-        #         "q_proj",
-        #         "v_proj",
-        #         "k_proj",
-        #         "o_proj",
-        #         "up_proj",
-        #         "down_proj",
-        #         "gate_proj",
-        #     ],
-        #     # "n_samples": 100,
-        #     # "train_cache_dir": "./train_cache/",
-        #     # "val_cache_dir": "./val_cache/",
-        #     # "ckpt_dir": "./ckpts/",
-        #     # "save_dir": "./save/",
-        # }
-
-        # # Finetuning config
-        # yml_content = read_yaml(
-        #     Path(__file__).parent.parent / "config" / "finetuning_config.yaml",
-        # )
-        # lrec_config.update(yml_content["defaults"])
-        # lrec_config.update(yml_content[self.config_name.replace("_engine", "")])
-
-        # model, fp_model = prepare_models(argparse.Namespace(**lrec_config))
-
-        # # The model before applying LoRA
-        # self.base_model = fp_model
 
         tokenizer = LlamaTokenizer.from_pretrained(model_name, add_bos_token=False)
         tokenizer.pad_token = tokenizer.eos_token
