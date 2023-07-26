@@ -1,21 +1,44 @@
-from .base import BaseModel
-from .bloom import Bloom, BloomInt8, BloomLora, BloomLoraInt8
-from .cerebras import Cerebras, CerebrasInt8, CerebrasLora, CerebrasLoraInt8
-from .distilgpt2 import DistilGPT2, DistilGPT2Lora
-from .falcon import Falcon, FalconInt8, FalconLora, FalconLoraInt8, FalconLoraKbit
-from .galactica import Galactica, GalacticaInt8, GalacticaLora, GalacticaLoraInt8
-from .generic import (
+from xturing.models.base import BaseModel
+from xturing.models.bloom import Bloom, BloomInt8, BloomLora, BloomLoraInt8
+from xturing.models.cerebras import (
+    Cerebras,
+    CerebrasInt8,
+    CerebrasLora,
+    CerebrasLoraInt8,
+)
+from xturing.models.distilgpt2 import DistilGPT2, DistilGPT2Lora
+from xturing.models.falcon import (
+    Falcon,
+    FalconInt8,
+    FalconLora,
+    FalconLoraInt8,
+    FalconLoraKbit,
+)
+from xturing.models.galactica import (
+    Galactica,
+    GalacticaInt8,
+    GalacticaLora,
+    GalacticaLoraInt8,
+)
+from xturing.models.generic import (
     GenericInt8Model,
     GenericLoraInt8Model,
     GenericLoraKbitModel,
     GenericLoraModel,
     GenericModel,
 )
-from .gpt2 import GPT2, GPT2Int8, GPT2Lora, GPT2LoraInt8
-from .gptj import GPTJ, GPTJInt8, GPTJLora, GPTJLoraInt8
-from .llama import Llama, LlamaInt8, LlamaLora, LlamaLoraInt8, LlamaLoraKbit
-from .opt import OPT, OPTInt8, OPTLora, OPTLoraInt8
-from .stable_diffusion import StableDiffusion
+from xturing.models.gpt2 import GPT2, GPT2Int8, GPT2Lora, GPT2LoraInt8
+from xturing.models.gptj import GPTJ, GPTJInt8, GPTJLora, GPTJLoraInt8
+from xturing.models.llama import (
+    Llama,
+    LlamaInt8,
+    LlamaLora,
+    LlamaLoraInt8,
+    LlamaLoraKbit,
+)
+from xturing.models.llama2 import Llama2
+from xturing.models.opt import OPT, OPTInt8, OPTLora, OPTLoraInt8
+from xturing.models.stable_diffusion import StableDiffusion
 
 BaseModel.add_to_registry(Bloom.config_name, Bloom)
 BaseModel.add_to_registry(BloomInt8.config_name, BloomInt8)
@@ -54,6 +77,7 @@ BaseModel.add_to_registry(LlamaInt8.config_name, LlamaInt8)
 BaseModel.add_to_registry(LlamaLora.config_name, LlamaLora)
 BaseModel.add_to_registry(LlamaLoraInt8.config_name, LlamaLoraInt8)
 BaseModel.add_to_registry(LlamaLoraKbit.config_name, LlamaLoraKbit)
+BaseModel.add_to_registry(Llama2.config_name, Llama2)
 BaseModel.add_to_registry(OPT.config_name, OPT)
 BaseModel.add_to_registry(OPTInt8.config_name, OPTInt8)
 BaseModel.add_to_registry(OPTLora.config_name, OPTLora)
