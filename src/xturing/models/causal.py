@@ -1,11 +1,14 @@
 import json
 from pathlib import Path
-from typing import Iterable, List, Optional, Union
+
+from typing import Iterable, List, Optional, Tuple, Type, Union
 
 import torch
+import torch.nn.functional as F
 from pytorch_lightning.loggers import Logger
 from torch.utils.data import DataLoader
 from tqdm import tqdm
+from transformers import BatchEncoding
 
 from xturing.config import DEFAULT_DEVICE, assert_not_cpu_int8
 from xturing.config.config_data_classes import FinetuningConfig, GenerationConfig
@@ -18,7 +21,18 @@ from xturing.preprocessors.base import BasePreprocessor
 from xturing.trainers.base import BaseTrainer
 from xturing.trainers.lightning_trainer import LightningTrainer
 from xturing.utils.logging import configure_logger
-from xturing.utils.utils import _filter_args
+from xturing.utils.metrics import get_accuracy
+from xturing.utils.prompt import (
+    OpenAIChatMessage,
+    OpenAICreateChatPrompt,
+    OpenAICreatePrompt,
+    Prompt,
+    chat_prompt_to_text,
+    is_chat_prompt,
+)
+from xturing.utils.utils import _filter_args, _index_samples
+
+TokenSequence = Union[List[int], torch.LongTensor, torch.Tensor, BatchEncoding]
 
 logger = configure_logger(__name__)
 
@@ -111,9 +125,6 @@ class CausalModel(BaseModel):
         trainer = self._make_trainer(dataset, logger)
         trainer.fit()
 
-    def evaluate(self, dataset: Union[TextDataset, InstructionDataset]):
-        pass
-
     def _generate_from_iterable(
         self, data_iterator: Iterable, do_tokenization=False, show_tqdm_bar=True
     ):
@@ -124,7 +135,7 @@ class CausalModel(BaseModel):
         else:
             enumeration = enumerate(data_iterator)
 
-        for i, batch in enumeration:
+        for _, batch in enumeration:
             if do_tokenization:
                 inputs = self.engine.tokenizer(batch, return_tensors="pt")
                 input_ids = inputs.input_ids.to(DEFAULT_DEVICE)
@@ -137,11 +148,11 @@ class CausalModel(BaseModel):
                         input_ids=input_ids, **self.generation_args.dict()
                     )
 
-            output = self.engine.tokenizer.decode(
-                output[0][len_input:], skip_special_tokens=True
+            output = self.engine.tokenizer.batch_decode(
+                torch.stack([output[i][len_input:] for i in range(output.shape[0])]),
+                skip_special_tokens=True,
             )
-            outputs.append(output)
-
+            outputs.extend(output)
         return outputs
 
     def generate(
@@ -149,6 +160,7 @@ class CausalModel(BaseModel):
         *,
         texts: Optional[Union[List[str], str]] = None,
         dataset: Optional[Union[TextDataset, InstructionDataset]] = None,
+        batch_size: Optional[int] = 1,
     ):
         self.engine.model.eval()
         self.engine.model = self.engine.model.to(DEFAULT_DEVICE)
@@ -168,7 +180,7 @@ class CausalModel(BaseModel):
             collate_fn = self._make_collate_fn(dataset)
             dataloader = DataLoader(
                 dataset,
-                batch_size=1,
+                batch_size=batch_size,
                 shuffle=False,
                 drop_last=False,
                 collate_fn=collate_fn,
@@ -204,6 +216,116 @@ class CausalModel(BaseModel):
 
         self.engine.save(path)
         self._save_config(path=path)
+
+    def _loglikelihood_tokens(
+        self,
+        data_iterator: Iterable,
+        disable_tqdm: Optional[bool] = False,
+    ) -> List[Tuple[float, bool]]:
+        results = []
+        for chunk in tqdm(data_iterator, disable=disable_tqdm):
+            input_tokens = chunk.to(DEFAULT_DEVICE)
+            del input_tokens["label_masks"], input_tokens["targets"]
+            outputs = self._model_call(inputs=input_tokens, labels=input_tokens)
+            results.append(outputs.loss)
+        return results
+
+    def _model_call(
+        self, inputs: TokenSequence, labels: Optional[TokenSequence] = None
+    ) -> TokenSequence:
+        self.engine.model = self.engine.model.to(DEFAULT_DEVICE)
+        return self.engine.model(**inputs, labels=labels["input_ids"])
+
+    def completion_query(
+        self, prompt: Union[OpenAICreatePrompt, OpenAICreateChatPrompt, Prompt]
+    ):
+        # actual_prompt = chat_prompt_to_text(prompt)
+        actual_prompt = prompt
+        logger.info(prompt)
+        text_out = self.generate(texts=[actual_prompt])
+
+        # parse results
+        # result = {
+        #     "text": text_out,
+        #     "tokens": None,
+        #     "logprobs": None,
+        # }
+
+        return text_out, actual_prompt
+
+    def check_sampled_text(
+        self,
+        prompt: Union[OpenAICreatePrompt, OpenAICreateChatPrompt, Prompt],
+        expected: Union[str, List[str], Tuple[str]],
+        *,
+        options: Optional[List[str]] = None,
+    ) -> Optional[str]:
+        if isinstance(expected, tuple):
+            expected = list(expected)
+        elif not isinstance(expected, list):
+            expected = [expected]
+        if options is None:
+            options = expected
+
+        output, actual_prompt = self.completion_query(prompt=prompt)
+
+        choice = output[0]
+
+        picked = sampled = choice.strip()
+
+        result = {
+            "prompt": actual_prompt,
+            "sampled": sampled,
+            "options": options,
+            "picked": picked,
+        }
+        result["expected"] = expected
+        result["match"] = picked in expected
+        return result
+
+    def eval_sample(self, sample, *args):
+        prompt = f"{sample.get('instruction', '')} {sample.get('text', ' ')}".strip()
+        return self.check_sampled_text(prompt, expected=sample["target"])
+
+    def eval_all_samples(
+        self,
+        samples,
+        show_progress=True,
+    ):
+        """
+        Evaluate all provided samples in parallel.
+        """
+        work_items = _index_samples([samples[i] for i in range(10)], logger)
+        show_progress = show_progress
+
+        def eval_sample(args):
+            sample, idx = args
+            return idx, self.eval_sample(sample)
+
+        logger.info(f"Running in sequential mode!")
+        iter = map(eval_sample, work_items)
+        idx_and_result = list(
+            tqdm(iter, total=len(work_items), disable=not show_progress)
+        )
+        return [r for _, r in sorted(idx_and_result)]
+
+    def evaluate(
+        self,
+        dataset: Union[TextDataset, InstructionDataset],
+        batch_size: Optional[int] = 1,
+    ):
+        # outputs = self.eval_all_samples(dataset)
+        # return get_accuracy(outputs)
+        collate_fn = self._make_collate_fn(dataset)
+        dataloader = DataLoader(
+            dataset,
+            batch_size=batch_size,
+            shuffle=False,
+            drop_last=False,
+            collate_fn=collate_fn,
+        )
+        results = self._loglikelihood_tokens(dataloader)
+        return torch.exp(torch.stack(results).sum() / len(dataset))
 
 
 class CausalInt8Model(CausalModel):

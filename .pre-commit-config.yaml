@@ -30,4 +30,4 @@ repos:
     rev: v0.3.1
     hooks:
     -   id: absolufy-imports
-        args: ["--application-directories=src"]
+        args: ["--application-directories=.:src"]
