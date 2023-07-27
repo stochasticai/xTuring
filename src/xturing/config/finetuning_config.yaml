@@ -179,7 +179,7 @@ gpt2_lora:
   learning_rate: 3e-3
   weight_decay: 0.01
   num_train_epochs: 3
-  batch_size: 16
+  batch_size: 4
 
 gpt2_lora_int8:
   learning_rate: 3e-3
