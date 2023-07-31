@@ -64,17 +64,17 @@ result = model.evaluate(dataset)
 print(f"Perplexity of the evalution: {result}")
 
 ```
-3. __`INT4` Precision__ - You can now use and fine-tune any LLM with `INT4 Precision` using `GenericKbitModel`.
+3. __`INT4` Precision__ - You can now use and fine-tune any LLM with `INT4 Precision` using `GenericLoraKbitModel`.
 ```python
 # Make the necessary imports
 from xturing.datasets import InstructionDataset
-from xturing.models import GenericKbitModel
+from xturing.models import GenericLoraKbitModel
 
 # Load the desired dataset
 dataset = InstructionDataset('../llama/alpaca_data')
 
 # Load the desired model for INT4 bit fine-tuning
-model = GenericKbitModel('tiiuae/falcon-7b')
+model = GenericLoraKbitModel('tiiuae/falcon-7b')
 
 # Run the fine-tuning
 model.finetune(dataset)
@@ -84,13 +84,13 @@ model.finetune(dataset)
 ```python
 # Make the necessary imports
 from xturing.datasets import InstructionDataset
-from xturing.models import GenericKbitModel
+from xturing.models import GenericLoraKbitModel
 
 # Load the desired dataset
 dataset = InstructionDataset('../llama/alpaca_data')
 
 # Load the desired model for INT4 bit fine-tuning
-model = GenericKbitModel('tiiuae/falcon-7b')
+model = GenericLoraKbitModel('tiiuae/falcon-7b')
 
 # Generate outputs on desired prompts
 outputs = model.generate(dataset = dataset, batch_size=10)
