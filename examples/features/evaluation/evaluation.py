@@ -3,7 +3,7 @@ from xturing.datasets import InstructionDataset
 from xturing.models import BaseModel
 
 # Load the desired dataset
-dataset = InstructionDataset("../llama/alpaca_data")
+dataset = InstructionDataset("../../models/llama/alpaca_data")
 
 # Load the desired model
 model = BaseModel.create("gpt2")
