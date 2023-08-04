@@ -399,6 +399,19 @@ class CausalLoraInt8Model(CausalLoraModel):
 
 
 class CausalLoraKbitModel(CausalLoraModel):
-    def __init__(self, engine: str, weights_path: Optional[str] = None):
+    def __init__(
+            self, 
+            engine: str, 
+            weights_path: Optional[str] = None,
+            model_name: Optional[str] = None,
+            target_modules: Optional[List[str]] = None,
+            **kwargs,
+        ):
         assert_not_cpu_int8()
-        super().__init__(engine, weights_path)
+        super().__init__(
+            engine,
+            weights_path=weights_path,
+            model_name=model_name,
+            target_modules=target_modules,
+            **kwargs,
+        )
