@@ -94,10 +94,12 @@ class GenericLoraKbitModel(CausalLoraKbitModel):
         model_name: str,
         target_modules: List[str] = ["c_attn"],
         weights_path: Optional[str] = None,
+        **kwargs,
     ):
         super().__init__(
             GenericLoraKbitEngine.config_name,
             weights_path,
             model_name=model_name,
             target_modules=target_modules,
+            **kwargs,
         )
