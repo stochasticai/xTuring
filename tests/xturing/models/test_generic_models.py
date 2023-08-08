@@ -15,7 +15,7 @@ def test_generic_model():
     model = GenericModel("distilgpt2")
     model.save(str(saving_path))
 
-    model2 = GenericModel.load(str(saving_path))
+    model2 = GenericModel(str(saving_path))
     model2.generate(texts=["Why are the LLM so important?"])
 
 
@@ -24,7 +24,7 @@ def test_generic_model_int8():
     model = GenericInt8Model("distilgpt2")
     model.save(str(saving_path))
 
-    model2 = GenericInt8Model.load(str(saving_path))
+    model2 = GenericInt8Model(str(saving_path))
     model2.generate(texts=["Why are the LLM so important?"])
 
 
@@ -33,7 +33,7 @@ def test_generic_model_lora():
     model = GenericLoraModel("distilgpt2")
     model.save(str(saving_path))
 
-    model2 = GenericLoraModel.load(str(saving_path))
+    model2 = GenericLoraModel(str(saving_path))
     model2.generate(texts=["Why are the LLM so important?"])
 
 
@@ -42,7 +42,7 @@ def test_generic_model_int8_lora():
     model = GenericLoraInt8Model("distilgpt2")
     model.save(str(saving_path))
 
-    model2 = GenericLoraInt8Model.load(str(saving_path))
+    model2 = GenericLoraInt8Model(str(saving_path))
     model2.generate(texts=["Why are the LLM so important?"])
 
 
@@ -51,5 +51,5 @@ def test_generic_model_lora_kbit():
     model = GenericLoraKbitModel("distilgpt2")
     model.save(str(saving_path))
 
-    model2 = GenericLoraKbitModel.load(str(saving_path))
+    model2 = GenericLoraKbitModel(str(saving_path))
     model2.generate(texts=["Why are the LLM so important?"])
