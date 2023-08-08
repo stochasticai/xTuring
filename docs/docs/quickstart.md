@@ -4,7 +4,7 @@ title: 🚀 Quick Tour
 description: Your first fine-tuning job with xTuring
 ---
 
-# QuickStart
+<!-- ## Quick Start -->
 
 **xTuring** provides fast, efficient and simple fine-tuning of LLMs, such as LLaMA, GPT-J, GPT-2, and more. It supports both single GPU and multi-GPU training. Leverage memory-efficient fine-tuning techniques like LoRA to reduce your hardware costs by up to 90% and train your models in a fraction of the time.
 
@@ -22,6 +22,7 @@ pip install xturing
 The `BaseModel` is the easiest way use an off-the-shelf supported model for inference and fine-tuning.
 You can use `BaseModel` to load from a wide-range of supported models, the list of which is mentioned below:
 
+### Supported Models
 |  Model |  Key |
 | -- | -- |
 |Bloom | bloom |
@@ -34,14 +35,14 @@ You can use `BaseModel` to load from a wide-range of supported models, the list 
 |LlaMA | llama |
 |LlaMA2 | llama2 |
 |OPT-1.3B | opt |
-|  |  |
+
 The above mentioned are the base variants of the LLMs. Below are the templates to get their `LoRA`, `INT8`, `INT8 + LoRA` and `INT4 + LoRA` versions.
 
 | Version | Template |
 | -- | -- |
-| LoRA|  <model_key>_lora|
-| INT8|  <model_key>_int8|
-| INT8 + LoRA|  <model_key>_lora_int8|
+| LoRA |  <model_key>_lora|
+| INT8 |  <model_key>_int8|
+| INT8 + LoRA |  <model_key>_lora_int8|
 
 ** In order to load any model's __`INT4+LoRA`__ version, you will need to make use of `GenericLoraKbitModel` class from `xturing.models`. Below is how to use it:
 ```python
