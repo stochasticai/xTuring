@@ -3,9 +3,12 @@ title: Guide
 description: Fine-tuning with xTuring
 sidebar_position: 1
 ---
-<!-- import Test from './test'; -->
+
+import Test from './test';
+
 # Fine-tuning guide
-<!-- <Test /> -->
+
+<Test />
 
 ## 1. Prepare dataset
 
