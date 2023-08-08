@@ -5,6 +5,9 @@ description: Your first time installing xTuring
 ---
 <Reference: https://huggingface.co/docs/transformers/installation >
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ## Install via pip 
 You can install `xTuring` globally on your machine, but it is advised to install it inside a virtual environment. Before starting, make sure you have __Python 3.0+__ installed on your machine and have _virtualenv_ package installed as well. 
 
@@ -12,14 +15,26 @@ Start by creating a virtual environment in your working directory:
 ```bash
 $ virtualenv venv
 ```
-Activate the virtual environment. On Unix based systems like Linux and MacOS:
+Activate the virtual environment.
+
+<Tabs>
+  <TabItem value="unix" label="OSX/Linux">
+
 ```bash
 $ source venv/bin/activate
 ```
-On Windows:
+
+  </TabItem>
+  <TabItem value="windows" label="Windows">
+
 ```bash
-> venv\Scripts\activate
+> venv\Scripts\Activate
 ```
+
+  </TabItem>
+</Tabs>
+
+
 Once the virtual environment is activated, you can now install `xTuring` library by running the following command on your terminal:
 ```bash
 $ pip install xTuring
