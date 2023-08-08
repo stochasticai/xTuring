@@ -64,7 +64,7 @@ class GenericLoraInt8Engine(CausalLoraEngine):
 
 
 class GenericLoraKbitEngine(CausalLoraKbitEngine):
-    config_name: str = "generic+lora_kbit_engine"
+    config_name: str = "generic_lora_kbit_engine"
 
     def __init__(
         self,
@@ -75,7 +75,6 @@ class GenericLoraKbitEngine(CausalLoraKbitEngine):
         super().__init__(
             model_name=model_name,
             weights_path=weights_path,
-            load_4bit=True,
             target_modules=target_modules,
         )
 
