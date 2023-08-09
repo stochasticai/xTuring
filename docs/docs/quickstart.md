@@ -23,18 +23,18 @@ The `BaseModel` is the easiest way use an off-the-shelf supported model for infe
 You can use `BaseModel` to load from a wide-range of supported models, the list of which is mentioned below:
 
 ### Supported Models
-|  Model |  Key |
-| -- | -- |
-|Bloom | bloom |
-|Cerebras | cerebras |
-|DistilGPT-2 | distilgpt2 |
-|Falcon-7B | falcon |
-|Galactica | galactica |
-|GPT-J | gptj |
-|GPT-2 | gpt2 |
-|LlaMA | llama |
-|LlaMA2 | llama2 |
-|OPT-1.3B | opt |
+|  Model |  Key | Description |
+| -- | -- | ---- |
+|Bloom | bloom | Bloom 1.1B model |
+|Cerebras | cerebras | Cerebras-GPT 1.3B model |
+|DistilGPT-2 | distilgpt2 | DistilGPT-2 model |
+|Falcon | falcon | Falcon 7B model |
+|Galactica | galactica | Galactica 6.7B model |
+|GPT-J | gptj | GPT-J 6B model |
+|GPT-2 | gpt2 | GPT-2 model |
+|LLaMA | llama | LLaMA 7B model |
+|LlaMA2 | llama2 | LLaMA2 model |
+|OPT | opt | OPT 1.3B model |
 
 The above mentioned are the base variants of the LLMs. Below are the templates to get their `LoRA`, `INT8`, `INT8 + LoRA` and `INT4 + LoRA` versions.
 
