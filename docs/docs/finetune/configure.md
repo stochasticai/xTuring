@@ -40,14 +40,7 @@ finetuning_config.weight_decay = 0.01
 finetuning_config.optimizer_name = "adamw"
 finetuning_config.output_dir = "training_dir/"
 ```
-
-### 4. Start the finetuning
-
-```python
-model.finetune(dataset=instruction_dataset)
-```
-
-## Reference
+#### Parameters
 
 - `learning_rate`: the initial learning rate for the optimizer.
 - `gradient_accumulation_steps`: number of updates steps to accumulate the gradients for, before performing a backward/update pass.
@@ -63,3 +56,9 @@ model.finetune(dataset=instruction_dataset)
 - `save_total_limit`: if a value is passed, will limit the total amount of checkpoints. Deletes the older checkpoints in output_dir.
 - `optimizer_name`: optimizer that will be used
 - `output_dir`: the output directory where the model predictions and checkpoints will be written.
+
+### 4. Start the finetuning
+
+```python
+model.finetune(dataset=instruction_dataset)
+```

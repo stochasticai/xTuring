@@ -72,9 +72,9 @@ The editable install is needed when you:
 
 To do so, clone the library from _GitHub_ and install the necessary packages by running the following commands:
 ```bash
-git clone https://github.com/stochasticai/xTuring.git
-cd xTuring
-pip install -e .
+$ git clone https://github.com/stochasticai/xTuring.git
+$ cd xTuring
+$ pip install -e .
 ```
 Now you will be able to test the changes you do to the library as Python will now look at `~/xTuring/` directory in addition to the normal installation of the library.
 
