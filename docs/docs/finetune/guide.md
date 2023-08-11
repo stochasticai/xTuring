@@ -18,7 +18,9 @@ Start by loading the instruction dataset and initializing the model of your choi
 
 <Test instruction={'Instruction'}/>
 
-xTuring supports following models:
+A list of all the supported models can be found [here](/supported_models).
+
+<!-- xTuring supports following models:
 
 |   Model Name     |      Model Key      | Description |
 | ------------ | --------- | ---- |
@@ -44,7 +46,7 @@ xTuring supports following models:
 | LLaMA LoRA INT8  | llama_lora_int8 | LLaMA 7B INT8 model with LoRA technique to speed up fine-tuning
 | OPT | opt | OPT 1.3B model |
 | OPT LoRA | opt_lora | OPT 1.3B model with LoRA technique to speed up fine-tuning  |
-| OPT LoRA INT8 | opt_lora_int8 | OPT 1.3B INT8 model with LoRA technique to speed up fine-tuning |
+| OPT LoRA INT8 | opt_lora_int8 | OPT 1.3B INT8 model with LoRA technique to speed up fine-tuning | -->
 
 
 Next, we need to start the fine-tuning

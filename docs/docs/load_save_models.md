@@ -44,7 +44,7 @@ finetuned_model = BaseModel.load("/path/to/a/directory")
 ```
 
 <details>
-<summary><h3>Refer to the below sample code</h3></summary>
+<summary><h3>Sample code to load and save a model</h3></summary>
 
 ```python
 ## make the necessary imports
@@ -102,7 +102,7 @@ The model weights will be saved into 2 files. The whole model weights including 
 
 
 <details>
-    <summary> <h3>Below are 2 sample codes</h3> </summary>
+    <summary> <h3> Examples to load fine-tuned and pre-trained models</h3> </summary>
 
 1. To load a pre-trained model
 
