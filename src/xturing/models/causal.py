@@ -1,10 +1,8 @@
 import json
 from pathlib import Path
-
-from typing import Iterable, List, Optional, Tuple, Type, Union
+from typing import Iterable, List, Optional, Tuple, Union
 
 import torch
-import torch.nn.functional as F
 from pytorch_lightning.loggers import Logger
 from torch.utils.data import DataLoader
 from tqdm import tqdm
@@ -21,15 +19,7 @@ from xturing.preprocessors.base import BasePreprocessor
 from xturing.trainers.base import BaseTrainer
 from xturing.trainers.lightning_trainer import LightningTrainer
 from xturing.utils.logging import configure_logger
-from xturing.utils.metrics import get_accuracy
-from xturing.utils.prompt import (
-    OpenAIChatMessage,
-    OpenAICreateChatPrompt,
-    OpenAICreatePrompt,
-    Prompt,
-    chat_prompt_to_text,
-    is_chat_prompt,
-)
+from xturing.utils.prompt import OpenAICreateChatPrompt, OpenAICreatePrompt, Prompt
 from xturing.utils.utils import _filter_args, _index_samples
 
 TokenSequence = Union[List[int], torch.LongTensor, torch.Tensor, BatchEncoding]
@@ -44,6 +34,7 @@ class CausalModel(BaseModel):
         weights_path: Optional[str] = None,
         model_name: Optional[str] = None,
         target_modules: Optional[List[str]] = None,
+        transfer_to_device: Optional[bool] = True,
         **kwargs,
     ):
         arguments = dict(
@@ -81,6 +72,8 @@ class CausalModel(BaseModel):
 
         logger.debug(f"Finetuning parameters: {self.finetuning_args}")
         logger.debug(f"Generation parameters: {self.generation_args}")
+
+        self.transfer_to_device = transfer_to_device
 
     def finetuning_config(self):
         return self.finetuning_args
@@ -163,7 +156,9 @@ class CausalModel(BaseModel):
         batch_size: Optional[int] = 1,
     ):
         self.engine.model.eval()
-        self.engine.model = self.engine.model.to(DEFAULT_DEVICE)
+
+        if self.transfer_to_device:
+            self.engine.model = self.engine.model.to(DEFAULT_DEVICE)
 
         outputs = []
 
@@ -239,18 +234,9 @@ class CausalModel(BaseModel):
     def completion_query(
         self, prompt: Union[OpenAICreatePrompt, OpenAICreateChatPrompt, Prompt]
     ):
-        # actual_prompt = chat_prompt_to_text(prompt)
         actual_prompt = prompt
         logger.info(prompt)
         text_out = self.generate(texts=[actual_prompt])
-
-        # parse results
-        # result = {
-        #     "text": text_out,
-        #     "tokens": None,
-        #     "logprobs": None,
-        # }
-
         return text_out, actual_prompt
 
     def check_sampled_text(
@@ -314,8 +300,6 @@ class CausalModel(BaseModel):
         dataset: Union[TextDataset, InstructionDataset],
         batch_size: Optional[int] = 1,
     ):
-        # outputs = self.eval_all_samples(dataset)
-        # return get_accuracy(outputs)
         collate_fn = self._make_collate_fn(dataset)
         dataloader = DataLoader(
             dataset,
@@ -338,7 +322,11 @@ class CausalInt8Model(CausalModel):
     ):
         assert_not_cpu_int8()
         super().__init__(
-            engine, weights_path=weights_path, model_name=model_name, **kwargs
+            engine,
+            weights_path=weights_path,
+            model_name=model_name,
+            transfer_to_device=False,
+            **kwargs,
         )
 
 
@@ -400,18 +388,19 @@ class CausalLoraInt8Model(CausalLoraModel):
 
 class CausalLoraKbitModel(CausalLoraModel):
     def __init__(
-            self, 
-            engine: str, 
-            weights_path: Optional[str] = None,
-            model_name: Optional[str] = None,
-            target_modules: Optional[List[str]] = None,
-            **kwargs,
-        ):
+        self,
+        engine: str,
+        weights_path: Optional[str] = None,
+        model_name: Optional[str] = None,
+        target_modules: Optional[List[str]] = None,
+        **kwargs,
+    ):
         assert_not_cpu_int8()
         super().__init__(
             engine,
             weights_path=weights_path,
             model_name=model_name,
             target_modules=target_modules,
+            transfer_to_device=False,
             **kwargs,
         )
