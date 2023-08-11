@@ -17,12 +17,13 @@ pip install xturing
 ```
 
 
-## class `BaseModel`
+<!-- ## class `BaseModel` -->
+## Load Supported Model
 
 The `BaseModel` is the easiest way use an off-the-shelf supported model for inference and fine-tuning.
-You can use `BaseModel` to load from a wide-range of supported models, the list of which is mentioned below:
+You can use `BaseModel` to load from a wide-range of supported models, the list of which is mentioned [here](/supported_models).
 
-### Supported Models
+<!-- ### Supported Models
 |  Model |  Key | Description |
 | -- | -- | ---- |
 |Bloom | bloom | Bloom 1.1B model |
@@ -50,7 +51,7 @@ You can use `BaseModel` to load from a wide-range of supported models, the list 
 ```python
 model = GenericLoraKbitModel('<model_path>')
 ```
-The `model_path` can be replaced with you local directory or any HuggingFace library model like `facebook/opt-1.3b`.
+The `model_path` can be replaced with you local directory or any HuggingFace library model like `facebook/opt-1.3b`. -->
 
 In this guide, we will be using `BaseModel` to fine-tune __LLaMA 7B__ on the __Alpaca dataset__ using __LoRA__ technique.
 
@@ -104,7 +105,8 @@ from xturing.ui.playground import Playground
 Playground().launch()
 ```
 
-## class `GenericModel`
+<!-- ## class `GenericModel` -->
+## Load Any Model
 The `GenericModel` class makes it possible to test and fine-tune the models which are not directly available via the `BaseModel` class. Apart from the base class, we can use classes mentioned below to load the models for memory-efficient computations:
 
 | Class Name | Description |
