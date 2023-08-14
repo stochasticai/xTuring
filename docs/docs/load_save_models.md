@@ -21,7 +21,7 @@ For example,
 model = BaseModel.create("distilgpt2_lora")
 '''
 ```
-You can find all the supported model keys [here](../../README.md)
+You can find all the supported model keys [here](/supported_models)
 
 ### 2. Save a fine-tuned model
 
