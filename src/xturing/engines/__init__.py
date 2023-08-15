@@ -44,7 +44,13 @@ from xturing.engines.gptj_engine import (
     GPTJLoraEngine,
     GPTJLoraInt8Engine,
 )
-from xturing.engines.llama2_engine import LLama2Engine
+from xturing.engines.llama2_engine import (
+    LLama2Engine,
+    LLama2Int8Engine,
+    LLama2LoraEngine,
+    LLama2LoraInt8Engine,
+    LLama2LoraKbitEngine,
+)
 from xturing.engines.llama_engine import (
     LLamaEngine,
     LLamaInt8Engine,
@@ -97,6 +103,10 @@ BaseEngine.add_to_registry(LlamaLoraEngine.config_name, LlamaLoraEngine)
 BaseEngine.add_to_registry(LlamaLoraInt8Engine.config_name, LlamaLoraInt8Engine)
 BaseEngine.add_to_registry(LlamaLoraKbitEngine.config_name, LlamaLoraKbitEngine)
 BaseEngine.add_to_registry(LLama2Engine.config_name, LLama2Engine)
+BaseEngine.add_to_registry(LLama2Int8Engine.config_name, LLama2Int8Engine)
+BaseEngine.add_to_registry(LLama2LoraEngine.config_name, LLama2LoraEngine)
+BaseEngine.add_to_registry(LLama2LoraInt8Engine.config_name, LLama2LoraInt8Engine)
+BaseEngine.add_to_registry(LLama2LoraKbitEngine.config_name, LLama2LoraKbitEngine)
 BaseEngine.add_to_registry(OPTEngine.config_name, OPTEngine)
 BaseEngine.add_to_registry(OPTInt8Engine.config_name, OPTInt8Engine)
 BaseEngine.add_to_registry(OPTLoraEngine.config_name, OPTLoraEngine)
