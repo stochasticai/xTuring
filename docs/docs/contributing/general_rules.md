@@ -1,14 +1,14 @@
 ---
-title: Guide
+title: How to contribute to xTuring?
 description: How to contribute to xTuring?
 sidebar_position: 1
 ---
 
-# Contributing guide
+# Contribute to xTuring
 
 We are excited that you are interested in contributing to our open-source project. xTuring is an open-source library that is maintained by a community of developers and researchers. We welcome contributions of all kinds, including bug reports, feature requests, and code contributions.
 
-### Getting started
+### Ways to contribute
 To start contributing to xTuring, we recommend that you familiarize yourself with our library by reading through our documentation and exploring the codebase. Once you are comfortable with the library, you can start contributing by:
 
 1. **Adding more models and features**: We are always looking to expand the capabilities of xTuring by adding more models and features. If you have expertise in a particular area of machine learning and would like to contribute a new model, we welcome your input. If you have an idea for a new feature, we encourage you to share your ideas with us.
