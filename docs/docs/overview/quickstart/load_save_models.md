@@ -4,10 +4,10 @@ description: Load and save models
 sidebar_position: 1
 ---
 
-# Load and save models
+<!-- # Load and Save models -->
 
-## BaseModel class
-### 1. Load a pre-trained model
+<!-- ## BaseModel class -->
+### Load a pre-trained model
 
 To load a pre-trained model for the first time, run the following line of code. This will load the model with the default weights.
 
@@ -18,12 +18,12 @@ model = BaseModel.create("<model_key>")
 
 '''
 For example,
-model = BaseModel.create("distilgpt2_lora")
+model = BaseModel.create("llama_lora")
 '''
 ```
-You can find all the supported model keys [here](/supported_models)
+You can find all the supported model keys [here](/supported_models).
 
-### 2. Save a fine-tuned model
+### Save a fine-tuned model
 
 After fine-tuning your model, you can save it as simple as:
 
@@ -35,96 +35,86 @@ Remember that the path that you specify should be a directory. If the directory 
 
 The model weights will be saved into 2 files. The whole model weights including based model parameters and LoRA parameters are stored in `pytorch_model.bin` file and only LoRA parameters are stored in `adapter_model.bin` file.
 
-### 3. Load a fine-tuned model
+### Load a model from local directory
 
 To load a saved model, you only have to run the `load` method specifying the directory where the weights were saved.
 
 ```python
-finetuned_model = BaseModel.load("/path/to/a/directory")
+model = BaseModel.load("/path/to/a/directory")
 ```
 
 <details>
-<summary><h3>Sample code to load and save a model</h3></summary>
+<summary>Sample code to load and save a model</summary>
 
 ```python
-## make the necessary imports
 from xturing.models.base import BaseModel
 
-## loading the model
-model = BaseModel.create("distilgpt2_lora")
+## Load the model
+model = BaseModel.create("llama_lora")
 
-# saving the model
+# Save the model
 model.save("/path/to/a/directory")
 
-## loading the fine-tuned model
+## Load the fine-tuned model
 finetuned_model = BaseModel.load("/path/to/a/directory")
 ```
 </details>
 
-## GenericModel classes
-The `GenericModel` classes consists of:
-1. `GenericModel`
-2. `GenericInt8Model`
-3. `GenericLoraModel`
-4. `GenericLoraInt8Model`
-5. `GenericLoraKbitModel`
+<!-- ## Load Supported Model
 
-The below pieces of code will work for all of the above classes by replacing the `GenericModel` in below codes with any of the above classes. The pieces of codes presented below are very similar to that mentioned above with only slight difference.
+The `BaseModel` is the easiest way use an off-the-shelf supported model for inference and fine-tuning.
+You can use `BaseModel` to load from a wide-range of supported models, the list of which is mentioned [here](/supported_models).
 
-### 1. Load a pre-trained and/or fine-tuned model
 
-To load a pre-trained (or fine-tuned) model, run the following line of code. This will load the model with the default weights in the case of a pre-trained model, and the weights which were saved in the case of a fine-tuned one.
-```python
-from xturing.models import GenericModel
+In this guide, we will be using `BaseModel` to fine-tune __LLaMA 7B__ on the __Alpaca dataset__ using __LoRA__ technique.
 
-model = GenericModel("<model_path>")
-'''
-The <model_path> can be path to a local model, for example, "./saved_model" or path from the HuggingFace library, for example, "facebook/opt-1.3b"
-
-For example,
-model = GenericModel('./saved_model')
-OR
-model = GenericModel('facebook/opt-1.3b')
-'''
-```
-
-### 2. Save a fine-tuned model
-
-After fine-tuning your model, you can save it as simple as:
+Start by downloading the Alpaca dataset from [here](https://d33tr4pxdm6e2j.cloudfront.net/public_content/tutorials/datasets/alpaca_data.zip) and extract it to a folder. We will load this dataset using the `InstructionDataset` class.
 
 ```python
-model.save("/path/to/a/directory")
+from xturing.datasets import InstructionDataset
+
+dataset_path = './alpaca_data'
+
+dataset = InstructionDataset(dataset_path)
 ```
 
-Remember that the path that you specify should be a directory. If the directory doesn't exist, it will be created.
-
-The model weights will be saved into 2 files. The whole model weights including based model parameters and LoRA parameters are stored in `pytorch_model.bin` file and only LoRA parameters are stored in `adapter_model.bin` file.
-
-
-<details>
-    <summary> <h3> Examples to load fine-tuned and pre-trained models</h3> </summary>
-
-1. To load a pre-trained model
+Next, initialize the model.
+We can also load the LLaMA model without _LoRA_ initiliazation or load one of the other models supported by xTuring. Look at the [supported models](/#basemodel) section for more details.
 
 ```python
-## Make the necessary imports
-from xturing.models import GenericModel
+from xturing.models import BaseModel
 
-## Loading the model
-model = GenericModel("facebook/opt-1.3b")
+# choose a model 
+model_name = 'llama_lora'
 
-## Saving the model
-model.save("/path/to/a/directory")
+model = BaseModel.create(model_name)
 ```
 
-2. To load a fine-tuned model
+To fine-tune the model on the loaded dataset, we will use the default configuration for the fine-tuning.
+
 ```python
-## Make the necessary imports
-from xturing.models import GenericModel
-
-## Loading the model
-model = GenericModel("./saved_model")
-
+model.finetune(dataset=dataset)
 ```
 
-</details>
+Let's test our fine-tuned model, and make some inference.
+
+```python
+output = model.generate(texts=["Why LLM models are becoming so important?"])
+```
+Print the `output` variable to see the results.
+
+Next, we need to save our fine-tuned model using the `.save()` method. We will send the path of the directory as parameter to the method to save the fine-tuned model.
+
+```python
+finetuned_model_path = 'llama_lora_finetuned'
+
+model.save(finetuned_model_path)
+```
+
+We can also see our model(s) in action with a beautiful UI by launchung the playground locally.
+
+```python
+from xturing.ui.playground import Playground
+
+Playground().launch()
+``` -->
