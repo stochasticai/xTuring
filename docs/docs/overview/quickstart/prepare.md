@@ -1,7 +1,7 @@
 ---
 title: Prepare Dataset
 description: Use self-instruction to generate a dataset
-sidebar_position: 3
+sidebar_position: 2
 ---
 
 ## Prepare Instruction dataset

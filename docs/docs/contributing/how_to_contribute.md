@@ -1,7 +1,7 @@
 ---
 title: How to contribute to xTuring?
 description: How to contribute to xTuring?
-sidebar_position: 1
+sidebar_position: 2
 ---
 
 # Contribute to xTuring
