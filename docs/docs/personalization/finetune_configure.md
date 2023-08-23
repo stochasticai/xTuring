@@ -1,5 +1,5 @@
 ---
-title: Configure
+title: Fine-tune
 description: Fine-tuning parameters
 sidebar_position: 2
 ---

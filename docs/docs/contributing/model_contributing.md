@@ -1,15 +1,15 @@
 ---
-title: Adding new models
+title: Adding new model
 description: Guide on how to add new models to xTuring
-sidebar_position: 2
+sidebar_position: 3
 ---
 
-# Adding new models
+# How to add a model to _xTuring_?
 
 We appreciate your interest in contributing new models to xTuring. This guide will help you understand how to add new models and engines to the library.
 
 ## Prerequisites
-Before you start, make sure you are familiar with the xTuring codebase, particularly the structure of the models and engines folders. Familiarity with PyTorch and the Hugging Face Transformers library is also essential.
+Before you start, make sure you are familiar with the xTuring codebase, particularly the structure of the models and engines folders. Familiarity with _PyTorch_ and the _Hugging Face Transformers_ library is also essential.
 
 ## Steps to add a new model
 

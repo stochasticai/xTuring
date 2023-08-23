@@ -1,7 +1,7 @@
 ---
 title: Generate a dataset
 description: Use self-instruction to generate a dataset
-sidebar_position: 2
+sidebar_position: 1
 ---
 
 import Tabs from '@theme/Tabs';

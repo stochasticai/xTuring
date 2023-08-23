@@ -1,7 +1,7 @@
 ---
 title: 💾 Load and save models
 description: Load and save models
-sidebar_position: 6
+sidebar_position: 1
 ---
 
 # Load and save models

@@ -1,7 +1,7 @@
 ---
-title: Guide
+title: Inference
 description: Inferencing guide
-sidebar_position: 1
+sidebar_position: 4
 ---
 
 # Inference Guide

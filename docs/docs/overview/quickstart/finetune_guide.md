@@ -1,7 +1,7 @@
 ---
-title: Guide
+title: Fine-tune
 description: Fine-tuning with xTuring
-sidebar_position: 1
+sidebar_position: 3
 ---
 
 import Test from './test';

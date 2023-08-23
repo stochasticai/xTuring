@@ -1,5 +1,5 @@
 ---
-title: Configure
+title: Inference
 description: Inference parameters
 sidebar_position: 2
 ---
