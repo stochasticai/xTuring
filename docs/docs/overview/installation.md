@@ -1,6 +1,6 @@
 ---
 sidebar_position: 2
-title: Installation
+title: ⬇️ Installation
 description: Your first time installing xTuring
 ---
 

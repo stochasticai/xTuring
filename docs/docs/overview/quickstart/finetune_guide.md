@@ -22,14 +22,14 @@ Next, we need to start the fine-tuning
 model.finetune(dataset=dataset)
 ```
 
-Finally, let us test how our fine-tuned model performs using the `.generate()` function.
+<!-- Finally, let us test how our fine-tuned model performs using the `.generate()` function.
 
 ```python
 output = model.generate(texts=["Why LLM models are becoming so important?"])
 
 # Print the model outputs
 print("Generated output by the model: {}".format(output))
-```
+``` -->
 
 
 ## Instruction fine-tuning
@@ -52,14 +52,14 @@ Next, we need to start the fine-tuning
 model.finetune(dataset=instruction_dataset)
 ```
 
-Finally, let us test how our fine-tuned model performs using the `.generate()` function.
+<!-- Finally, let us test how our fine-tuned model performs using the `.generate()` function.
 
 ```python
 output = model.generate(texts=["Why LLM models are becoming so important?"])
 
 # Print the model outputs
 print("Generated output by the model: {}".format(output))
-```
+``` -->
 
 <!-- xTuring supports following models:
 
