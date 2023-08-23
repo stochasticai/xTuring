@@ -25,7 +25,7 @@ xTuring prioritizes:
 pip install xturing
 ```
 
-You can quickly get started with xTuring by following the [Quickstart](/quickstart) guide or use one of the examples below.
+You can quickly get started with xTuring by following the [Quickstart](/overview/quickstart) guide or use one of the examples below.
 
 ### UI Playground
 

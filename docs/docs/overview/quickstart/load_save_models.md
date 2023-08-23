@@ -21,7 +21,7 @@ For example,
 model = BaseModel.create("llama_lora")
 '''
 ```
-You can find all the supported model keys [here](/supported_models).
+You can find all the supported model keys [here](/overview/supported_models).
 
 ### Save a fine-tuned model
 
