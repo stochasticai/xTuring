@@ -1,6 +1,6 @@
 ---
 sidebar_position: 2
-title: 🚀 Quick Tour
+title: 🚀 QuickStart
 description: Your first fine-tuning job with xTuring
 ---
 
