@@ -12,7 +12,7 @@ For advanced usage, you can customize the `.generation_config` attribute of the 
 
 ## `BaseModel` usage
 
-In this tutorial, we will be loading __OPT 1.3B__ model and customizing it's generation configuration before ineferencing. To use any other model, head to [supported models](/supported_models) page for model keys to supported models of `xTuring`.
+In this tutorial, we will be loading __OPT 1.3B__ model and customizing it's generation configuration before ineferencing. To use any other model, head to [supported models](/overview/supported_models) page for model keys to supported models of `xTuring`.
 
 ### 1. Load the model
 

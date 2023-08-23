@@ -158,7 +158,7 @@ You just need to provide the directory path where your files are located. Files 
 :::caution
 - The file name is used as a context for the instruction generation. So, it is recommended to use meaningful names.
 - Currently only **ChatGPT** engine is supported.
-- Don't forget to [**save**](/datasets/usage#save-a-dataset) the generated dataset.
+- Don't forget to [**save**](/overview/quickstart/prepare#save-a-dataset) the generated dataset.
 :::
 
 ### Example

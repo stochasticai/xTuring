@@ -34,7 +34,7 @@ print("Generated output by the model: {}".format(output))
 
 ## Instruction fine-tuning
 
-First, make sure that you have prepared your fine-tuning dataset for instruction fine-tuning. To know how, refer [here](/datasets/prepare#prepare-instruction-dataset).
+First, make sure that you have prepared your fine-tuning dataset for instruction fine-tuning. To know how, refer [here](/overview/quickstart/prepare#instructiondataset).
 
 After preparing the dataset in correct format, you can start the instruction fine-tuning.
 
@@ -42,7 +42,7 @@ Start by loading the instruction dataset and initializing the model of your choi
 
 <Test instruction={'Instruction'}/>
 
-A list of all the supported models can be found [here](/supported_models).
+A list of all the supported models can be found [here](/overview/supported_models).
 
 
 
