@@ -40,7 +40,7 @@ export default function Test(
   
   useEffect(() => {
     setCode({
-      model: 'bloom',
+      model: 'llama',
       technique: 'base'
     });
   }, []);
@@ -60,7 +60,7 @@ export default function Test(
         }
       >
         {Object.keys(modelList).map((key) => (
-          <option value={key}>{modelList[key]}</option>
+          <option value={key} selected={key==code.model}>{modelList[key]}</option>
         ))}
       </select>
 
@@ -88,7 +88,10 @@ export default function Test(
       children={`from xturing.datasets import ${instruction}Dataset
 from xturing.models import BaseModel
 
-dataset = ${instruction}Dataset('/path/to/dataset')
+# Load the dataset
+dataset = ${instruction}Dataset('...')
+
+# Load the model
 model = BaseModel.create('${finalKey}')`} 
       />
     </div>

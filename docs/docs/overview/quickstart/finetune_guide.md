@@ -1,12 +1,36 @@
 ---
-title: Fine-tune
+title: 🔧 Fine-tune Pre-trained Models
 description: Fine-tuning with xTuring
 sidebar_position: 3
 ---
 
 import Test from './test';
 
-# Fine-tuning guide
+<!-- # Fine-tuning guide -->
+
+## Text fine-tuning
+After preparing the dataset in correct format, you can start the text fine-tuning.
+
+First, load the text dataset and initialize the model of your choice
+
+<Test instruction={'Text'} />
+
+
+Next, we need to start the fine-tuning
+
+```python
+model.finetune(dataset=dataset)
+```
+
+Finally, let us test how our fine-tuned model performs using the `.generate()` function.
+
+```python
+output = model.generate(texts=["Why LLM models are becoming so important?"])
+
+# Print the model outputs
+print("Generated output by the model: {}".format(output))
+```
+
 
 ## Instruction fine-tuning
 
@@ -19,6 +43,23 @@ Start by loading the instruction dataset and initializing the model of your choi
 <Test instruction={'Instruction'}/>
 
 A list of all the supported models can be found [here](/supported_models).
+
+
+
+Next, we need to start the fine-tuning
+
+```python
+model.finetune(dataset=instruction_dataset)
+```
+
+Finally, let us test how our fine-tuned model performs using the `.generate()` function.
+
+```python
+output = model.generate(texts=["Why LLM models are becoming so important?"])
+
+# Print the model outputs
+print("Generated output by the model: {}".format(output))
+```
 
 <!-- xTuring supports following models:
 
@@ -47,50 +88,3 @@ A list of all the supported models can be found [here](/supported_models).
 | OPT | opt | OPT 1.3B model |
 | OPT LoRA | opt_lora | OPT 1.3B model with LoRA technique to speed up fine-tuning  |
 | OPT LoRA INT8 | opt_lora_int8 | OPT 1.3B INT8 model with LoRA technique to speed up fine-tuning | -->
-
-
-Next, we need to start the fine-tuning
-
-```python
-model.finetune(dataset=instruction_dataset)
-```
-
-Finally, let us test how our fine-tuned model performs using the `.generate()` function.
-
-```python
-output = model.generate(texts=["Why LLM models are becoming so important?"])
-print("Generated output by the model: {}".format(output))
-```
-
-## Text fine-tuning
-After preparing the dataset in correct format, you can start the text fine-tuning.
-
-First, load the text dataset and initialize the model of your choice
-
-<Test instruction={'Text'} />
-
-<!-- ```python
-from xturing.datasets.text_dataset import TextDataset
-
-instruction_dataset = TextDataset('/path/to/dataset')
-``` -->
-<!-- 2. Load the model
-
-```python
-from xturing.models import BaseModel
-model = BaseModel.create(model_name)
-``` -->
-
-
-Next, we need to start the fine-tuning
-
-```python
-model.finetune(dataset=instruction_dataset)
-```
-
-Finally, let us test how our fine-tuned model performs using the `.generate()` function.
-
-```python
-output = model.generate(texts=["Why LLM models are becoming so important?"])
-print("Generated output by the model: {}".format(output))
-```
