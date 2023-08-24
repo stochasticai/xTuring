@@ -1,5 +1,5 @@
 ---
-title: 🏋🏻‍♂️ Fine-tuning Configuration
+title: 🏋🏻‍♂️ Fine-tuning
 description: Fine-tuning parameters
 sidebar_position: 2
 ---

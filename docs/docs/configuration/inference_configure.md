@@ -1,5 +1,5 @@
 ---
-title: 👨🏻‍🏫 Inference Configuration
+title: 👨🏻‍🏫 Inference
 description: Inference parameters
 sidebar_position: 2
 ---
