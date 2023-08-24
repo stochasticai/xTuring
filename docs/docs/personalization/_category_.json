@@ -1,7 +1,7 @@
 {
-    "label": "Personalization",
+    "label": "⚙️ Personalization",
     "position": 2,
-    "collapsed": false,
+    "collapsed": true,
     "link": {
         "type": "doc",
         "id": "personalization"

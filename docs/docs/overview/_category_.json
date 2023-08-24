@@ -1,7 +1,7 @@
 {
     "label": "Overview",
     "position": 1,
-    "collapsed": false,
+    "collapsed": true,
     "link": {
         "type": "doc",
         "id": "overview"

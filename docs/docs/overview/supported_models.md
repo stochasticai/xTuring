@@ -1,11 +1,11 @@
 ---
 sidebar_position: 4
-title: Supported Models
+title: 🦾 Supported Models
 description: Models Supported by xTuring
 ---
 
-# Models supported by xTuring
-
+<!-- # Models supported by xTuring -->
+## Base versions
 |   Model | Model Key | LoRA | INT8 | LoRA + INT8 | LoRA + INT4 |   
 | ------ | --- | ---| --- | --- | --- |
 | BLOOM 1.1B| bloom |  ✅ | ✅ | ✅ | ✅ |
