@@ -4,6 +4,8 @@ description: Fine-tuning parameters
 sidebar_position: 2
 ---
 
+import FinetuneCode from './fine_tune_code';
+
 <!-- # Fine-tuning configuration -->
 
 xTuring is easy to use. The library already loads the best parameters for each model by default.
@@ -12,13 +14,8 @@ For advanced usage, you can customize the `finetuning_config` parameter.
 
 ### 1. Instantiate your model and dataset
 
-```python
-from xturing.models.base import BaseModel
-from xturing.datasets.instruction_dataset import InstructionDataset
+<FinetuneCode />
 
-instruction_dataset = InstructionDataset("alpaca_data")
-model = BaseModel.create("llama_lora")
-```
 
 ### 2. Load the config object
 
@@ -61,7 +58,7 @@ finetuning_config.output_dir = "training_dir/"
 | gradient_accumulation_steps | int | ≥1 | 1 | The number of updates steps to accumulate the gradients for, before performing a backward/update pass. |
 | batch_size | int | ≥1 | 1 | The batch size per device (GPU/TPU core/CPU…) used for training. |
 | weight_decay | float | ≥0 | 0.00 | The weight decay to apply to all layers except all bias and LayerNorm weights in the optimizer. |
-| warmup_steps | int | [0,learning_rate] | 50 | The number of steps used for a linear warmup from 0 to learning_rate. |
+| warmup_steps | int | ≥0 | 50 | The number of steps used for a linear warmup from 0 to learning_rate. |
 | max_length | int | ≥1 | 512 | The maximum length when tokenizing the inputs. |
 | num_train_epochs | int | ≥1 | 1 | The total number of training epochs to perform. |
 | eval_steps | int | ≥1 | 5000 | The number of update steps between two evaluations. |
