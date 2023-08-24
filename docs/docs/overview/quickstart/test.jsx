@@ -5,7 +5,7 @@ import CodeBlock from '@theme/CodeBlock'
 
 const trainingTechniques = {
   base: 'Base',
-  lora: 'LoRa',
+  lora: 'LoRA',
   lora_int8: 'LoRA INT8',
   int8: 'INT8',
 }
@@ -77,7 +77,7 @@ export default function Test(
         }
       >
         {Object.keys(trainingTechniques).map((key) => (
-          <option value={key}>{trainingTechniques[key]}</option>
+          <option value={key} selected={key==code.technique}>{trainingTechniques[key]}</option>
         ))}
       </select>
 

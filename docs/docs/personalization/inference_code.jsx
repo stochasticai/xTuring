@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import clsx from 'clsx'
-import MDXContent from '@theme/MDXContent'
 import CodeBlock from '@theme/CodeBlock'
 
 const trainingTechniques = {
@@ -22,7 +21,7 @@ const modelList = {
   opt: 'OPT',
 }
 
-export default function FinetuneCode(
+export default function InferenceCode(
 ) {
   const [code, setCode] = useState({
     model: '',
@@ -84,9 +83,6 @@ export default function FinetuneCode(
       showLineNumbers={false}
       language='python'
       children={`from xturing.models import BaseModel
-from xturing.datasets import InstructionDataset
-
-instruction_dataset = InstructionDataset("...")
 model = BaseModel.create("${finalKey}")`} 
       />
     </div>

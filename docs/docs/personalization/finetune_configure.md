@@ -10,22 +10,28 @@ import FinetuneCode from './fine_tune_code';
 
 xTuring is easy to use. The library already loads the best parameters for each model by default.
 
-For advanced usage, you can customize the `finetuning_config` parameter.
+For advanced usage, you can customize the `finetuning_config` attribute of the model object.
 
-### 1. Instantiate your model and dataset
+In this tutorial, we will be loading one of the [supported models](/overview/supported_models) and customizing it's fine-tune configuration before calibrating the model to the desired dataset.
+
+### Load the model and the dataset
+First, we need to load the model and the dataset we want to use. 
 
 <FinetuneCode />
 
 
-### 2. Load the config object
+### Load the config object
 
-Print the `finetuning_config` object to check the default configuration.
+Next, we need to fetch model's fine-tune configuration using the below command.
 
 ```python
 finetuning_config = model.finetuning_config()
 ```
 
-### 3. Set the config
+Print the `finetuning_config` object to check the default configuration.
+
+### Customize the configuration
+Now, we can customize the generation configuration as we wish. All the customizable parameters are list [below](#parameters). 
 
 ```python
 finetuning_config.batch_size = 64
@@ -35,7 +41,14 @@ finetuning_config.weight_decay = 0.01
 finetuning_config.optimizer_name = "adamw"
 finetuning_config.output_dir = "training_dir/"
 ```
-#### Parameters
+### Start the finetuning
+Now, we can run tune-up the model on our dataset to see how our set configuration works.
+
+```python
+model.finetune(dataset=instruction_dataset)
+```
+
+### Parameters
 
 <!-- - `learning_rate`: the initial learning rate for the optimizer.
 - `gradient_accumulation_steps`: number of updates steps to accumulate the gradients for, before performing a backward/update pass.
@@ -86,8 +99,3 @@ save_total_limit: 4
 optimizer_name: adamw
 output_dir: saved_model -->
 
-### 4. Start the finetuning
-
-```python
-model.finetune(dataset=instruction_dataset)
-```
