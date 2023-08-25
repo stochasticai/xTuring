@@ -21,7 +21,7 @@ const config = {
             },
             {
               tagName: 'script',
-              attributes: { src: 'https://downloads.stochastic.ai/xchat/embed-v3.js'},
+              attributes: { src: 'https://downloads.stochastic.ai/xchat/embed-v4.js'},
             },
           ],
         }
