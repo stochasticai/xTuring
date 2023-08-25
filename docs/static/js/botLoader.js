@@ -1,2 +1,1 @@
-window.xChatEmbed="https://xchat-dev.stochastic.ai/embed?xchat_id=64a4490273968e746a6e67a6&user_id=6499bb32ed2865161ccd25c5"
-x
+window.xChatEmbed="https://xchat-app.stochastic.ai/embed?xchat_id=64e8c7c25a983adaa9780273&user_id=64e8c786a5c7b2146a88dae0"
