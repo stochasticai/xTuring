@@ -7,12 +7,12 @@ description: Your first time installing xTuring
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-You can install `xTuring` globally on your machine, but it is advised to install it inside a virtual environment. Before starting, make sure you have __Python 3.0+__ installed on your machine.
+We can install `xTuring` globally on our machine, but it is advised to install it inside a virtual environment. Before starting, we have to make sure we have __Python 3.0+__ installed on our machine.
 
 ## Install via pip 
-For this, ensure that you have _virtualenv_ package installed or _anaconda_ setup on your machine.
+For this, we have to ensure that we have _virtualenv_ package installed or _anaconda_ setup on our machine.
 
-Start by creating a virtual environment in your working directory:
+Start by creating a virtual environment in our working directory:
 
 <Tabs>
   <TabItem value="venv" label="virtualenv">
@@ -39,7 +39,7 @@ $ source venv/bin/activate
   </TabItem>
 </Tabs>
 
-Once the virtual environment is activated, you can now install `xTuring` library by running the following command on your terminal:
+Once the virtual environment is activated, we can now install `xTuring` library by running the following command on your terminal:
 
   </TabItem>
   <TabItem value="conda" label="conda">
@@ -65,7 +65,7 @@ $ conda activate venv
   </TabItem>
 </Tabs>
 
-Once the conda environment is activated, you can now install `xTuring` library by running the following command on your terminal:
+Once the conda environment is activated, we can now install `xTuring` library by running the following command on your terminal:
 
 
   </TabItem>
@@ -76,7 +76,7 @@ Once the conda environment is activated, you can now install `xTuring` library b
 $ pip install xTuring
 ``` 
 This will install the latest version of xTuring available on pip.
-Finally, you can test if `xTuring` has been properly installed by running the following commands on your terminal:
+Finally, we can test if `xTuring` has been properly installed by running the following commands on our terminal:
 ```bash
 $ python
 >>> from xturing.models import BaseModel
