@@ -27,13 +27,13 @@ pip install xturing
 
 You can quickly get started with xTuring by following the [Quickstart](/overview/quickstart) guide or use one of the examples below.
 
-### UI Playground
+<!-- ### UI Playground
 
 ![Playground UI Demo](/img/playground/ui-playground.gif)
 
 ### CLI Playground
 
-![Playground CLI Demo](/img/playground/cli-playground.gif)
+![Playground CLI Demo](/img/playground/cli-playground.gif) -->
 
 ### Models supported
 
@@ -55,3 +55,14 @@ xTuring is licensed under [Apache 2.0](https://github.com/stochasticai/xturing/b
 ### Support
 [💬 Join Community Discord](https://discord.gg/YxHuQq8b) <br/>
 [@stochasticai](https://twitter.com/stochasticai)
+
+### About the team
+Welcome to xTuring, an open-source AI personalization software created by Stochastic. Our mission is to make AI more accessible to everyone, regardless of their technical background. We believe that democratizing AI will lead to a more equitable and innovative future.
+
+At Stochastic, we are committed to building effortless AI development, optimization and deployment to enable anyone to ship state-of-the-art AI models with production-grade performance. Our team includes top researchers and engineers who share the same vision of democratizing AI through advancements in efficient machine learning and computing.
+
+We are passionate about making AI accessible and approachable, and we believe that the xTuring library is an important step towards achieving that goal. With xTuring, building and controlling LLMs has never been easier. Our simple interface allows you to personalize LLMs to your own data and application, making it possible for anyone to create and deploy AI models without extensive technical expertise.
+
+At Stochastic, we value transparency, collaboration, and continuous improvement. We are proud to be a distributed team, working together from different parts of the world to create an open-source tool that empowers others to harness the power of AI. We believe that by working together and sharing our knowledge, we can build a more inclusive and equitable future for AI.
+
+Thank you for choosing xTuring. We are committed to supporting our users and ensuring that AI is accessible to all.
