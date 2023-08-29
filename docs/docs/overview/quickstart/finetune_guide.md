@@ -1,7 +1,7 @@
 ---
 title: 🔧 Fine-tune Pre-trained Models
 description: Fine-tuning with xTuring
-sidebar_position: 3
+sidebar_position: 4
 ---
 
 import Test from './test';
