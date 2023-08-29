@@ -1,9 +1,12 @@
 ---
-title: Setting Up
+title: 🍽️ Setting Up
 description: Setup xTuring for contribution
 sidebar_position: 1
 ---
 
+Before we can start contributing to `xTuring`, we need to make sure we have all the neccessary code available to us in our working diretory and up-to-date. Moreover, to be able to test our changes, we need to do something more than just install the latest stable  version of the library from _pip_. 
+
+To just get the latest version of developments on `xTuring`, we need to [install from source](#install-from-source). But in order to test our changes we did locally, we need to go a step ahead and do something called an [editable install](#editable-install). Let's dive into them right away!
 ## Install from source
 Install `xTuring` directly from GitHub by running the following command on your cmd/terminal:
 ```bash
