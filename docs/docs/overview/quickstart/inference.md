@@ -1,7 +1,7 @@
 ---
 title: 🗣️ Inference
 description: Inferencing guide
-sidebar_position: 4
+sidebar_position: 5
 ---
 
 <!-- # Inference Guide -->
