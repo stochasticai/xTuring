@@ -1,5 +1,5 @@
 ---
-title: 📜 Data Usage
+title: 📜 Dataset Usage
 description: Using a an existing dataset
 sidebar_position: 3
 ---
