@@ -15,7 +15,7 @@ To embark on an interactive journey with the xTuring UI Playground, here's your 
 Begin by guaranteeing that you're equipped with the most up-to-date xTuring version. Execute the subsequent command to ensure the latest update:
 
 ```sh
-pip install xturing --upgrade
+$ pip install xturing --upgrade
 ```
 
 ![Playground UI Demo](/img/playground/ui-playground.gif)

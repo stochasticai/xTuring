@@ -14,7 +14,7 @@ After successfully fine-tuning your model, you can perform inference using a Fas
 To initiate the API server, execute the following command in your command line interface:
 
 ```sh
-xturing api -m "/path/to/the/model"
+$ xturing api -m "/path/to/the/model"
 ```
 
 :::info

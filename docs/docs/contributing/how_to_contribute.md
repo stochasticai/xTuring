@@ -48,25 +48,25 @@ You'll need Python 3.8 or above to contribute to __`xTuring`__. To start contrib
 2. Clone your forked repository to your local machine, and add the base repository as a remote.
 
     ```bash
-    git clone https://github.com/<YOUR_USERNAME>/xTuring.git
-    cd xTuring
-    git remote add upstream https://github.com/stochastic/xTuring.git
+    $ git clone https://github.com/<YOUR_USERNAME>/xTuring.git
+    $ cd xTuring
+    $ git remote add upstream https://github.com/stochastic/xTuring.git
     ```
 
 3. Create a new branch for your changes emerging from the `dev` branch.
 
     ```bash
-    git checkout dev
-    git checkout -b a-descriptive-name-for-your-changes
+    $ git checkout dev
+    $ git checkout -b a-descriptive-name-for-your-changes
     ```
     🚨 **Do not** checkout from the _main_ branch or work on it.
 
 4. Make sure you have pre-commit hooks installed and set up to ensure your code is properly formatted before being pushed to _git_. 
 
     ```bash
-    pip install pre-commit
-    pre-commit install
-    pre-commit install --hook-type commit-msg
+    $ pip install pre-commit
+    $ pre-commit install
+    $ pre-commit install --hook-type commit-msg
     ```
 
 5. Set up a development environment by running the following command in a virtual environment:
@@ -74,7 +74,7 @@ You'll need Python 3.8 or above to contribute to __`xTuring`__. To start contrib
     Here are the guides to setting up [virtual environment](https://www.freecodecamp.org/news/how-to-setup-virtual-environments-in-python/) and [conda environment](https://conda.io/projects/conda/en/latest/user-guide/getting-started.html).
 
     ```bash
-    pip install -e .
+    $ pip install -e .
     ```
 
     If `xTuring` is already installed in your virtual environment, remove it with _pip uninstall xturing_ before reinstlling it in editable mode with the _-e_ flag.
@@ -84,27 +84,27 @@ You'll need Python 3.8 or above to contribute to __`xTuring`__. To start contrib
 6. Develop features on your branch
     As you work on your code, you should make sure the test suite passes. Run all the tests to make sure nothing breaks once your code is pushed to GitHub using the following command:
     ```bash
-    pytest tests/
+    $ pytest tests/
     ```
 
     Once you are satisified with your changes and all the tests pass, add changed files with _git add_ and record your changes with _git commit_:
 
     ```bash
-    git add <modified files>
-    git commit -m "<your commit message>"
+    $ git add <modified files>
+    $ git commit -m "<your commit message>"
     ```
     Make sure to write __good commit messages__ to clearly communicate the changes you made!
 
     Before pushing the code to GitHub and making a PR, ensure you have your copy of code up-to-date with the main repository. To do so, rebase your branch on _upstream/branch_:
     ```bash
-    git fetch upstream
-    git rebase upstream/dev
+    $ git fetch upstream
+    $ git rebase upstream/dev
     ```
 
 7. Push your changes to your forked repository
 
     ```bash
-    git push -u origin a-descriptive-name-for-your-changes
+    $ git push -u origin a-descriptive-name-for-your-changes
     ```
 
 8. Now, you can go your fork of the repository on GitHub and click on __[Pull Request](https://github.com/stochasticai/xTuring/compare)__ to open a pull request to the __dev__ branch of the original repository with a clear description of your changes and why they are needed. We will review your changes as soon as possible and provide feedback. Once your changes have been approved, they will be merged into the _dev_ branch.
@@ -122,8 +122,8 @@ To prevent triggering notifications and adding reference notes to each upstream 
 2. In cases where a pull request is genuinely required, follow these steps once you've switched to your branch:
 
     ```bash
-    git checkout -b your-branch-for-syncing
-    git pull --squash --no-commit upstream dev
-    git commit -m '<your message without GitHub references>'
-    git push --set-upstream origin your-branch-for-syncing
+    $ git checkout -b your-branch-for-syncing
+    $ git pull --squash --no-commit upstream dev
+    $ git commit -m '<your message without GitHub references>'
+    $ git push --set-upstream origin your-branch-for-syncing
     ```

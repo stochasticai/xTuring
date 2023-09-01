@@ -13,7 +13,7 @@ Ensure that you have the most recent version of xTuring installed by executing t
 <!-- Be sure to have the latest version of xturing installed: -->
 
 ```sh
-pip install xturing --upgrade
+$ pip install xturing --upgrade
 ```
 
 <!-- ### 1. Launch the playground -->
@@ -23,7 +23,7 @@ Get ready to dive into an immersive chat experience powered by xTuring. Simply i
 <!-- From the CLI run the following command to start the chat: -->
 
 ```sh
-xturing chat -m "/path/to/the/model"
+$ xturing chat -m "/path/to/the/model"
 ```
 
 <!-- ### 2. Chat -->

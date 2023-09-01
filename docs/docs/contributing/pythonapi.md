@@ -15,7 +15,7 @@ This section includes the API documentation from the Finetuner codebase, as extr
         <td>Load a model from your local machine or xTuring Hub.</td>
     </tr>
 </table> -->
-`BaseModel.load(weights_dir_or_model_name)`
+[`BaseModel.load(weights_dir_or_model_name)`](https://github.com/stochasticai/xTuring/blob/9b98c68af8391c7a0f48a141178b70a1a8e47c06/src/xturing/models/base.py#L15)
 > Load a model from your local machine or xTuring Hub.
 >
 > **Parameters**:
@@ -25,16 +25,16 @@ This section includes the API documentation from the Finetuner codebase, as extr
 | --------- | ----------- |
 |`BaseModel.load` | Load a model from your local machine or xTuring Hub. | -->
 
-## `GenericModel`
+## `CausalModel`
 
-`model.finetune(dataset, logger = True)`
+[`model.finetune(dataset, logger = True)`](https://github.com/stochasticai/xTuring/blob/9b98c68af8391c7a0f48a141178b70a1a8e47c06/src/xturing/models/causal.py#L116)
 > Fine-tune the in-memory model on the desired dataset.
 > 
 > **Parameters**:
 > - **dataset** *(Union[TextDataset, InstructionDataset])*: The object of either of the 2 dataset classes specified in the library. If not passed, will throw an error.
 > - **logger** *(Union[Logger, Iterable[Logger], bool])*: If you want to log the progress in the default logger, pass nothing explicitly. Else, you can pass your own logger.
 
-`model.generate(texts = None ,dataset = None, batch_size = 1)`
+[`model.generate(texts = None ,dataset = None, batch_size = 1)`](https://github.com/stochasticai/xTuring/blob/9b98c68af8391c7a0f48a141178b70a1a8e47c06/src/xturing/models/causal.py#L158)
 > Use the in-memory model to generate outputs by passing either a `dataset` as an argument or `texts` as an argument which would be a list of strings.
 > 
 > **Parameters**:
@@ -42,14 +42,14 @@ This section includes the API documentation from the Finetuner codebase, as extr
 > - **dataset** *(Optional[Union[TextDataset, InstructionDataset]])*: The object of either of the 2 dataset classes specified in the library.
 > - **batch_size** *(Optional[int])*: For faster processing given your machine constraints, you can configure the batch size of the model. Higher the batch size, more the parallel compute, faster you will get your result.
 
-`model.evaluate(dataset, batch_size = 1)`
+[`model.evaluate(dataset, batch_size = 1)`](https://github.com/stochasticai/xTuring/blob/9b98c68af8391c7a0f48a141178b70a1a8e47c06/src/xturing/models/causal.py#L312)
 > Evaluate the in-memory model.
 > 
 > **Parameters**:
 > - **dataset** *(Optional[Union[TextDataset, InstructionDataset]])*: The object of either of the 2 dataset classes specified in the library.
 > - **batch_size** *(Optional[int])*: For faster processing given your machine constraints, you can configure the batch size of the model. Higher the batch size, more the parallel compute, faster you will get your result.
 
-`model.save(path)`
+[`model.save(path)`](https://github.com/stochasticai/xTuring/blob/9b98c68af8391c7a0f48a141178b70a1a8e47c06/src/xturing/models/causal.py#L212)
 > Save your in-memory model.
 >
 > **Parameters**:
@@ -58,13 +58,13 @@ This section includes the API documentation from the Finetuner codebase, as extr
 
 ## `InstructionDataset`
 
-`dataset.from_jsonl`
+[`dataset.from_jsonl`](https://github.com/stochasticai/xTuring/blob/9b98c68af8391c7a0f48a141178b70a1a8e47c06/src/xturing/datasets/instruction_dataset.py#L80)
 > Get an instruction data from a `.jsonl` file where each line is a json object with keys _text_, _instruction_ and _target_.
 >
 > **Parameters**:
 > - **path** *(Path)*: the path to the _.jsonl_ file. Should be an object of the class `Path` from the _pathlib_.
 
-`InstructionDataset.generate_dataset`
+[`InstructionDataset.generate_dataset`](https://github.com/stochasticai/xTuring/blob/9b98c68af8391c7a0f48a141178b70a1a8e47c06/src/xturing/datasets/instruction_dataset.py#L127)
 > Generate your custom dataset given the HuggingFace engine.
 >
 > **Parameters**:
