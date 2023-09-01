@@ -184,17 +184,17 @@ First, we need to make sure that all the necessary libraries are installed on ou
   This rely on you having [homebrew](http://brew.sh/) installed
 
   ```bash
-  brew install caskroom/cask/brew-cask
-  brew cask install xquartz
-  brew install poppler antiword unrtf tesseract swig
+  $ brew install caskroom/cask/brew-cask
+  $ brew cask install xquartz
+  $ brew install poppler antiword unrtf tesseract swig
   ```
 
   </TabItem>
   <TabItem value="ubuntu/debian" label="Ubuntu/Debian">
 
   ```bash
-  apt-get update
-  apt-get install python-dev libxml2-dev libxslt1-dev antiword unrtf poppler-utils pstotext tesseract-ocr flac ffmpeg lame libmad0 libsox-fmt-mp3 sox libjpeg-dev swig
+  $ apt-get update
+  $ apt-get install python-dev libxml2-dev libxslt1-dev antiword unrtf poppler-utils pstotext tesseract-ocr flac ffmpeg lame libmad0 libsox-fmt-mp3 sox libjpeg-dev swig
   ```
 
   </TabItem>
