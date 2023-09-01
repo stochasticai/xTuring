@@ -62,10 +62,10 @@ my_model:
 ```
 
 ### 5. Do not forget to Add tests 
-If our model is small enough we can add tests for our new model in the [_tests/_](https://github.com/stochasticai/xTuring/tree/main/tests/xturing) folder. We can use existing tests as a reference. If our model is too large to be included in the tests, we can add a notebook in the [_examples/_](https://github.com/stochasticai/xTuring/tree/main/examples) folder to demonstrate how to use our model.
+If our model is small enough we can add tests for our new model in the [tests/](https://github.com/stochasticai/xTuring/tree/main/tests/xturing) folder. We can use existing tests as a reference. If our model is too large to be included in the tests, we can add a notebook in the [examples/](https://github.com/stochasticai/xTuring/tree/main/examples) folder to demonstrate how to use our model.
 
 ### 6. Update the documentation
-We should not forget to update the documentation to include our new model and engine. We can do so by adding a new _Markdown_ file in the [_examples/_](https://github.com/stochasticai/xTuring/tree/main/examples) folder with a tutorial on how to use our model.
+We should not forget to update the documentation to include our new model and engine. We can do so by adding a new _Markdown_ file in the [examples/](https://github.com/stochasticai/xTuring/tree/main/examples) folder with a tutorial on how to use our model.
 
 ### 7. At last, submit a pull request
 Once we have completed the above steps, we are ready to submit a pull request to the `dev` branch. For that, we should provide a clear description of our changes and why they are needed. Then the seasoned contributors will review our changes as soon as possible and provide feedback. Once our changes have been approved, they will be merged into the `dev` branch.

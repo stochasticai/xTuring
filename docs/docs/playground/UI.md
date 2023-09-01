@@ -1,11 +1,11 @@
 ---
-title: UI
+title: 👁️‍🗨️ UI
 description: UI Playground
 sidebar_position: 1
 ---
 
 
-# Exploring the UI Playground: A First-Person Experience
+# 👁️‍🗨️ Exploring the UI Playground: A First-Person Experience
 
 To embark on an interactive journey with the xTuring UI Playground, here's your guide to installation, setup, and seamless engagement with this fascinating tool.
 

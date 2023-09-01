@@ -107,4 +107,4 @@ The architects of xTuring hail from the innovative hub of Stochastic. Our team e
 
 **Committed to Your Success**: Our dedication doesn't end with the creation of xTuring. We're here to support you on your AI journey, ensuring that our tool empowers you to navigate the dynamic world of AI with confidence.
 
-Join us in shaping the AI landscape of tomorrow. With xTuring, innovation knows no bounds. We are committed to supporting our users and ensuring that AI is accessible to all.
+[Join us](/contributing) in shaping the AI landscape of tomorrow. With xTuring, innovation knows no bounds. We are committed to supporting our users and ensuring that AI is accessible to all.
