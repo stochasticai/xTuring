@@ -7,7 +7,7 @@ description: Models Supported by xTuring
 <!-- # Models supported by xTuring -->
 ## Base versions
 |   Model | Model Key | LoRA | INT8 | LoRA + INT8 | LoRA + INT4 |   
-| ------ | --- | ---| --- | --- | --- |
+| ------ | --- | :---: | :---: | :---: | :---: |
 | BLOOM 1.1B| bloom |  ✅ | ✅ | ✅ | ✅ |
 | Cerebras 1.3B| cerebras | ✅  | ✅ | ✅ | ✅ |
 | DistilGPT-2 | distilgpt2 | ✅  | ✅ | ✅ | ✅ |
