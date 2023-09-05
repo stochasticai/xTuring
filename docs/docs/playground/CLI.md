@@ -4,10 +4,10 @@ description: CLI Playground
 sidebar_position: 2
 ---
 
-# 🧑🏻‍💻 CLI Playground: Engage with the Power of xTuring
+# 🧑🏻‍💻 CLI playground: Engage with the power of xTuring
 To harness the capabilities of xTuring's CLI playground, follow these steps to install and utilize the tool effectively.
 
-### Prerequisites: Installing the Latest xTuring Version
+### Prerequisites: installing the latest xTuring version
 Ensure that you have the most recent version of xTuring installed by executing the following command:
 
 <!-- Be sure to have the latest version of xturing installed: -->
@@ -17,7 +17,7 @@ $ pip install xturing --upgrade
 ```
 
 <!-- ### 1. Launch the playground -->
-### 1. Launching the Playground
+### 1. Launching the playground
 Get ready to dive into an immersive chat experience powered by xTuring. Simply initiate the playground by executing the subsequent command in your command-line interface:
 
 <!-- From the CLI run the following command to start the chat: -->
@@ -28,7 +28,7 @@ $ xturing chat -m "/path/to/the/model"
 
 <!-- ### 2. Chat -->
 
-### 2. Engage in a Dynamic Chat
+### 2. Engage in a dynamic chat
 Once the model is successfully loaded, you'll be prompted to provide your input. Unleash your creativity and curiosity as you interact with the model through the CLI playground.
 
 <!-- If the model loads successfully you will be then asked to enter your prompt. -->

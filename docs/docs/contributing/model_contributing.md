@@ -43,7 +43,7 @@ class MyModel(CausalModel):
 ### 3. Then, update the model and engine registries 
 We have to add our new model to the [`model`](https://github.com/stochasticai/xTuring/blob/main/src/xturing/models/__init__.py) and [`engine`](https://github.com/stochasticai/xTuring/blob/main/src/xturing/engines/__init__.py) registries in `xturing.{models|engines}.__init__.py`. This will allow users to create instances of your model using the `BaseModel.create('<model_name>')` method.
 
-### 4. Alongside, Update the config files
+### 4. Alongside, update the config files
 In the `config` folder, we need to add our new model key and their respective hyperparameters to be run by default in `finetuning_config.yaml` and `generation_config.yaml` files.
 ```yaml
 # finetuning_config.yaml
@@ -61,7 +61,7 @@ my_model:
 
 ```
 
-### 5. Do not forget to Add tests 
+### 5. Do not forget to add tests 
 If our model is small enough we can add tests for our new model in the [tests/](https://github.com/stochasticai/xTuring/tree/main/tests/xturing) folder. We can use existing tests as a reference. If our model is too large to be included in the tests, we can add a notebook in the [examples/](https://github.com/stochasticai/xTuring/tree/main/examples) folder to demonstrate how to use our model.
 
 ### 6. Update the documentation
@@ -91,7 +91,7 @@ class MyLoraEngine(CausalLoraEngine):
 
 The `target_modules` parameter is the list of identifiers used to denote attention layers of your model. For example, for *GPTJ* model, the attention layers are denoted with `q_proj` and `v_proj`.
 
-### 2. Next, Create a new model
+### 2. Next, create a new model
 Analogous to the steps above, create a new model in the `models` folder. The new model should inherit from the `CausalLoraModel` base class. We can use the [`gptj.py`](https://github.com/stochasticai/xTuring/blob/main/src/xturing/models/gptj.py) file as a reference.
 ```python
 from xturing.models.causal import CausalLoraModel

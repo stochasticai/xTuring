@@ -1,5 +1,5 @@
 ---
-title: 🌦️ Work with Any Model
+title: 🌦️ Work with any model
 description: Use self-instruction to generate a dataset
 sidebar_position: 2
 ---

@@ -1,6 +1,6 @@
 ---
 sidebar_position: 4
-title: 🦾 Supported Models
+title: 🦾 Supported models
 description: Models Supported by xTuring
 ---
 

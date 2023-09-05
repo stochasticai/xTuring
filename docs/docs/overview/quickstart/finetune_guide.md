@@ -1,5 +1,5 @@
 ---
-title: 🔧 Fine-tune Pre-trained Models
+title: 🔧 Fine-tune pre-trained models
 description: Fine-tuning with xTuring
 sidebar_position: 4
 ---

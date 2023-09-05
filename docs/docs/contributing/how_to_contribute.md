@@ -1,5 +1,5 @@
 ---
-title: ❓How to contribute to xTuring❓
+title: How to contribute to xTuring?
 description: How to contribute to xTuring?
 sidebar_position: 2
 ---
@@ -36,7 +36,7 @@ Maintaining code is an important part of open-source development. By helping wit
 As an open-source project, xTuring relies on documentation to help users understand how to use the library. If you have a talent for technical writing, we welcome your contributions to our documentation.
 
 
-## Create a Pull Request
+## Create a pull request
 Before you make a PR, make sure to search through existing PRs and issues to make sure nobody else is already working on it. If unsure, it is best to open an issue to get some feedback.
 
 In order to start and meet less hurdles on the way, it would be a good idea to be have _git_ proficiency to contribute to `xTuring`. If you get stuck somewhere, type _git --help_ in a shell and find your command!

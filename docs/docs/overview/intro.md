@@ -27,13 +27,13 @@ pip install xturing
 -->
 
 
-**Welcome to xTuring: Personalize AI Your Way**
+**Welcome to xTuring: Personalize AI your way**
 
 In the world of AI, personalization is incredibly important for making AI truly powerful. This is where xTuring comes in – it's a special open-source software that helps you make AI models, called Large Language Models (LLMs), work exactly the way you want them to. 
 
 What's great about xTuring is that it's super easy to use. It has a simple interface that's designed to help you customize LLMs for your specific needs, whether it's for your own data or applications. Basically, xTuring gives you complete control over personalizing AI, making it work just the way you need it to.
 
-## The xTuring Advantage
+## The xTuring advantage
 
 At xTuring, we have three important principles that guide everything we do:
 
@@ -49,7 +49,7 @@ So, if you're ready to add a personal touch to AI, welcome to xTuring. It's a jo
 
 To get started with xTuring, check out the [Quickstart](/overview/quickstart) guide or try some of the examples below.
 
-## Model Examples
+## Model examples
 
 | Model | Examples |
 | --- | --- |
