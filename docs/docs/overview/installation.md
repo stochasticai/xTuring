@@ -28,6 +28,21 @@ Activate the virtual environment.
 ```bash
 $ source venv/bin/activate
 ```
+Once the virtual environment is activated, we can now install `xTuring` library by running the following command on your terminal:
+
+```bash
+$ pip install xTuring
+``` 
+This will install the latest version of xTuring available on pip.
+Finally, we can test if `xTuring` has been properly installed by running the following commands on our terminal:
+```bash
+$ python
+>>> from xturing.models import BaseModel
+>>> model = BaseModel.create('opt')
+>>> outputs = model.generate(texts=['Hi How are you?'])
+```
+Then print the outputs variable to see what the LLM generated based on the input prompt.
+
 
   </TabItem>
   <TabItem value="windows" label="Windows">
@@ -36,10 +51,25 @@ $ source venv/bin/activate
 > venv\Scripts\Activate
 ```
 
+Once the virtual environment is activated, we can now install `xTuring` library by running the following command on your terminal:
+
+```bash
+> pip install xTuring
+``` 
+This will install the latest version of xTuring available on pip.
+Finally, we can test if `xTuring` has been properly installed by running the following commands on our terminal:
+```bash
+> python
+>>> from xturing.models import BaseModel
+>>> model = BaseModel.create('opt')
+>>> outputs = model.generate(texts=['Hi How are you?'])
+```
+Then print the outputs variable to see what the LLM generated based on the input prompt.
+
+
   </TabItem>
 </Tabs>
 
-Once the virtual environment is activated, we can now install `xTuring` library by running the following command on your terminal:
 
   </TabItem>
   <TabItem value="conda" label="conda">
@@ -55,22 +85,8 @@ Activate the conda environment.
 $ conda activate venv
 ```
 
-  </TabItem>
-  <TabItem value="windows" label="Windows">
-
-```bash
-> conda activate venv
-```
-
-  </TabItem>
-</Tabs>
 
 Once the conda environment is activated, we can now install `xTuring` library by running the following command on your terminal:
-
-
-  </TabItem>
-</Tabs>
-
 
 ```bash
 $ pip install xTuring
@@ -84,3 +100,48 @@ $ python
 >>> outputs = model.generate(texts=['Hi How are you?'])
 ```
 Then print the outputs variable to see what the LLM generated based on the input prompt.
+
+
+  </TabItem>
+  <TabItem value="windows" label="Windows">
+
+```bash
+> conda activate venv
+```
+
+
+Once the conda environment is activated, we can now install `xTuring` library by running the following command on your terminal:
+
+```bash
+> pip install xTuring
+``` 
+This will install the latest version of xTuring available on pip.
+Finally, we can test if `xTuring` has been properly installed by running the following commands on our terminal:
+```bash
+> python
+>>> from xturing.models import BaseModel
+>>> model = BaseModel.create('opt')
+>>> outputs = model.generate(texts=['Hi How are you?'])
+```
+Then print the outputs variable to see what the LLM generated based on the input prompt.
+
+
+  </TabItem>
+</Tabs>
+
+  </TabItem>
+</Tabs>
+
+
+<!-- ```bash
+$ pip install xTuring
+``` 
+This will install the latest version of xTuring available on pip.
+Finally, we can test if `xTuring` has been properly installed by running the following commands on our terminal:
+```bash
+$ python
+>>> from xturing.models import BaseModel
+>>> model = BaseModel.create('opt')
+>>> outputs = model.generate(texts=['Hi How are you?'])
+```
+Then print the outputs variable to see what the LLM generated based on the input prompt. -->
