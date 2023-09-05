@@ -4,7 +4,7 @@ description: FastAPI inference server
 sidebar_position: 3
 ---
 
-# ⚡️ Running Model Inference with FastAPI Server
+# ⚡️ Running model inference with FastAPI Ssrver
 
 <!-- Once you have fine-tuned your model, you can run the inference using a FastAPI server. -->
 After successfully fine-tuning your model, you can perform inference using a FastAPI server. The following steps guide you through launching and utilizing the API server for your fine-tuned model.
@@ -21,7 +21,7 @@ $ xturing api -m "/path/to/the/model"
 Ensure that the model path you provide is a directory containing a valid xturing.json configuration file.
 :::
 
-### 2. Health Check API
+### 2. Health check API
 
 - ### Request
 

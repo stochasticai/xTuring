@@ -41,7 +41,7 @@ finetuning_config.weight_decay = 0.01
 finetuning_config.optimizer_name = "adamw"
 finetuning_config.output_dir = "training_dir/"
 ```
-### Start the finetuning
+### Start the fine-tuning
 Now, we can run tune-up the model on our dataset to see how our set configuration works.
 
 ```python

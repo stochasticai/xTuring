@@ -1,6 +1,6 @@
 ---
 sidebar_position: 3
-title: 🧗🏻 Advanced Topics
+title: 🧗🏻 Advanced topics
 description: Guide for people who want to customise xTuring even further.
 ---
 

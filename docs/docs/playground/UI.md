@@ -5,11 +5,11 @@ sidebar_position: 1
 ---
 
 
-# 👁️‍🗨️ Exploring the UI Playground: A First-Person Experience
+# 👁️‍🗨️ Exploring the UI playground: a first-person experience
 
 To embark on an interactive journey with the xTuring UI Playground, here's your guide to installation, setup, and seamless engagement with this fascinating tool.
 
-### Prerequisites: Ensuring the Latest xTuring Version
+### Prerequisites: Ensuring the latest xTuring version
 <!-- Be sure to have the latest version of xturing installed: -->
 
 Begin by guaranteeing that you're equipped with the most up-to-date xTuring version. Execute the subsequent command to ensure the latest update:
@@ -21,7 +21,7 @@ $ pip install xturing --upgrade
 ![Playground UI Demo](/img/playground/ui-playground.gif)
 
 <!-- ### 1. Launch the playground -->
-### 1. Launching the Playground Interface
+### 1. Launching the playground Interface
 
 To immerse yourself in the world of the UI Playground, you have two equally effective methods:
 
@@ -29,7 +29,7 @@ To immerse yourself in the world of the UI Playground, you have two equally effe
 
 Execute the command xturing ui in your terminal to launch the UI Playground.
 
-#### Option 2: Integration in a Script
+#### Option 2: Integration in a script
 
 Alternatively, in a Python script, you can utilize the following code snippet to launch the Playground interface:
 
@@ -55,11 +55,11 @@ Load your desired model effortlessly using one of two methods:
 
 <!-- You can load the model by specifying the model path in the step 1 or by providing the path in the input field. -->
 
-#### Method 1: Path Specification (Step 1)
+#### Method 1: Path specification (step 1)
 
 During the launch process, provide the model path in Step 1 to initiate model loading.
 
-#### Method 2: Input Field (Load Model Section)
+#### Method 2: Input field (load model section)
 
 Alternatively, you can input the model path directly in the provided field within the UI Playground interface.
 
@@ -78,7 +78,7 @@ Ensure that the model path points to a directory containing a valid `xturing.jso
 <!-- Enter the prompt and start chatting with the model. Use the `Clear chat` to start a new chat. -->
 With the loaded model at your fingertips, enter prompts and initiate engaging conversations with the AI. To start anew, use the "Clear Chat" button for a fresh chat session.
 
-### 4. Tweaking Model Behavior
+### 4. Tweaking model behavior
 
 <!-- We provide some configuration parameters to change the behavior of the model: `Top-p sampling`, `Contrastive search`. You can change the parameters by using the input fields in the `Parameters` section. -->
 

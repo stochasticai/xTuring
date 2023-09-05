@@ -1,5 +1,5 @@
 ---
-title: 💽 Prepare and Save Dataset
+title: 💽 Prepare and save dataset
 description: Use self-instruction to generate a dataset
 sidebar_position: 2
 ---

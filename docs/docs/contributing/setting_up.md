@@ -1,5 +1,5 @@
 ---
-title: 🍽️ Setting Up
+title: 🍽️ Setting up
 description: Setup xTuring for contribution
 sidebar_position: 1
 ---
