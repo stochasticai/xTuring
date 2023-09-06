@@ -1,6 +1,6 @@
 [project]
 name = "xturing"
-version = "0.1.7"
+version = "0.1.8"
 description = "Fine-tuning, evaluation and data generation for LLMs"
 
 authors = [
@@ -43,12 +43,12 @@ keywords = [
 dependencies = [
     "torch >= 1.9.0",
     "pytorch-lightning",
-    "transformers==4.28.1",
-    "datasets",
-    "evaluate",
-    "bitsandbytes==0.37.2",
+    "transformers==4.31.0",
+    "datasets==2.14.5",
+    "evaluate==0.4.0",
+    "bitsandbytes==0.41.1",
     "sentencepiece",
-    "deepspeed",
+    "deepspeed==0.9.5",
     "gradio",
     "click",
     "wget",
@@ -58,7 +58,7 @@ dependencies = [
     "openai >= 0.27.0",
     "pydantic >= 1.10.0",
     "rouge-score >= 0.1.2",
-    "accelerate",
+    "accelerate==0.22.0",
     "wandb",
 ]
 
