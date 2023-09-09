@@ -2,6 +2,7 @@ import time
 from datetime import datetime
 
 import openai
+import litellm
 
 from xturing.model_apis.base import TextGenerationAPI
 
@@ -66,9 +67,9 @@ class OpenAITextGenerationAPI(TextGenerationAPI):
         response = None
         target_length = max_tokens
         if self.api_key is not None:
-            openai.api_key = self.api_key
+            litellm.api_key = self.api_key
         if self.organization is not None:
-            openai.organization = self.organization
+            litellm.organization = self.organization
         retry_cnt = 0
         backoff_time = 30
         while retry_cnt <= retries:
@@ -143,7 +144,7 @@ class ChatGPT(OpenAITextGenerationAPI):
 
     def get_completion(self, prompts, **kwargs):
         messages = [{"role": "user", "content": prompt} for prompt in prompts]
-        completion = openai.ChatCompletion.create(
+        completion = litellm.completion(
             model=self.engine,
             messages=messages,
             temperature=0,
