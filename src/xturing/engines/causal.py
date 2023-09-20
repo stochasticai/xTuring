@@ -19,8 +19,11 @@ from xturing.engines.lora_engine import (
 )
 from xturing.engines.quant_utils.peft_utils import LoraConfig as peftLoraConfig
 from xturing.engines.quant_utils.peft_utils import prepare_model_for_kbit_training
+from xturing.utils.logging import configure_logger
 from xturing.utils.loss_fns import CrossEntropyLoss
 
+
+logger = configure_logger(__name__)
 
 class CausalEngine(BaseEngine):
     def __init__(
@@ -34,6 +37,12 @@ class CausalEngine(BaseEngine):
         trust_remote_code: Optional[bool] = False,
         **kwargs,
     ):
+        if not weights_path:
+            weights_path = kwargs.pop("weights_path", None)
+        quantization_config = kwargs.pop("quantization_config", None)
+        from intel_extension_for_transformers.transformers import WeightOnlyQuantConfig
+        load_woq_model = isinstance(quantization_config, WeightOnlyQuantConfig)
+
         self.model_name = model_name
         if weights_path is not None:
             assert Path(
@@ -72,6 +81,21 @@ class CausalEngine(BaseEngine):
                 for param in self.model.parameters():
                     param.data = param.data.contiguous()
                 self.model = prepare_model_for_int8_training(self.model)
+            elif load_woq_model:
+                # quantize model with weight-only quantization
+                from intel_extension_for_transformers.transformers import AutoModelForCausalLM
+                if model_name == "gpt2":
+                    model_name = "/mnt/disk4/modelHub/gpt2"
+                    logger.info(f"replace model_name to {model_name}")
+                if "llama-2" in model_name:
+                    model_name="/mnt/disk4/modelHub/llama-2-7b-chat-hg"
+                    logger.info(f"replace model_name to {model_name}")
+                self.model = AutoModelForCausalLM.from_pretrained(
+                    model_name,
+                    quantization_config=quantization_config,
+                    trust_remote_code=trust_remote_code,
+                    **kwargs)
+                logger.info(f"Loaded model with weight-only quantization.")
             else:
                 self.model = AutoModelForCausalLM.from_pretrained(
                     model_name,

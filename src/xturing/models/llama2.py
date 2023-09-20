@@ -19,8 +19,8 @@ from xturing.models.causal import (
 class Llama2(CausalModel):
     config_name: str = "llama2"
 
-    def __init__(self, weights_path: Optional[str] = None):
-        super().__init__(LLama2Engine.config_name, weights_path)
+    def __init__(self, *args, **kwargs):
+        super().__init__(LLama2Engine.config_name, *args, **kwargs)
 
 
 class Llama2Lora(CausalLoraModel):

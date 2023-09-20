@@ -17,8 +17,8 @@ from xturing.models.causal import (
 class GPT2(CausalModel):
     config_name: str = "gpt2"
 
-    def __init__(self, weights_path: Optional[str] = None):
-        super().__init__(GPT2Engine.config_name, weights_path)
+    def __init__(self, *args, **kwargs):
+        super().__init__(GPT2Engine.config_name, *args, **kwargs)
 
 
 class GPT2Lora(CausalLoraModel):

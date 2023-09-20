@@ -7,8 +7,8 @@ from xturing.engines.causal import CausalEngine, CausalLoraEngine
 class GPT2Engine(CausalEngine):
     config_name: str = "gpt2_engine"
 
-    def __init__(self, weights_path: Optional[Union[str, Path]] = None):
-        super().__init__(model_name="gpt2", weights_path=weights_path)
+    def __init__(self, *args, **kwargs):
+        super().__init__(model_name="gpt2", *args, **kwargs)
 
         self.tokenizer.pad_token = self.tokenizer.eos_token
 

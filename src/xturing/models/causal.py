@@ -37,6 +37,8 @@ class CausalModel(BaseModel):
         transfer_to_device: Optional[bool] = True,
         **kwargs,
     ):
+        if not weights_path:
+            weights_path = kwargs.pop("weights_path", None)
         arguments = dict(
             weights_path=weights_path,
             model_name=model_name,

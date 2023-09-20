@@ -7,11 +7,12 @@ from xturing.engines.causal import CausalEngine, CausalLoraEngine, CausalLoraKbi
 class LLama2Engine(CausalEngine):
     config_name: str = "llama2_engine"
 
-    def __init__(self, weights_path: Optional[Union[str, Path]] = None):
+    def __init__(self, *args, **kwargs):
         super().__init__(
             model_name="daryl149/llama-2-7b-chat-hf",
-            weights_path=weights_path,
             trust_remote_code=True,
+            *args,
+            **kwargs,
         )
 
         self.tokenizer.pad_token = self.tokenizer.eos_token
