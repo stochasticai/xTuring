@@ -220,6 +220,36 @@ model = BaseModel.load("x/distilgpt2_lora_finetuned_alpaca")
 
 <br>
 
+## Supported Models
+Below is a list of all the supported models via `BaseModel` class of `xTuring` and their corresponding keys to load them.
+
+|  Model |  Key |
+| -- | -- |
+|Bloom | bloom|
+|Cerebras | cerebras|
+|DistilGPT-2 | distilgpt2|
+|Falcon-7B | falcon|
+|Galactica | galactica|
+|GPT-J | gptj|
+|GPT-2 | gpt2|
+|LlaMA | llama|
+|LlaMA2 | llama2|
+|OPT-1.3B | opt|
+
+The above mentioned are the base variants of the LLMs. Below are the templates to get their `LoRA`, `INT8`, `INT8 + LoRA` and `INT4 + LoRA` versions.
+
+| Version | Template |
+| -- | -- |
+| LoRA|  <model_key>_lora|
+| INT8|  <model_key>_int8|
+| INT8 + LoRA|  <model_key>_lora_int8|
+
+** In order to load any model's __`INT4+LoRA`__ version, you will need to make use of `GenericLoraKbitModel` class from `xturing.models`. Below is how to use it:
+```python
+model = GenericLoraKbitModel('<model_path>')
+```
+The `model_path` can be replaced with you local directory or any HuggingFace library model like `facebook/opt-1.3b`.
+
 ## 📈 Roadmap
 - [x] Support for `LLaMA`, `GPT-J`, `GPT-2`, `OPT`, `Cerebras-GPT`, `Galactica` and `Bloom` models
 - [x] Dataset generation using self-instruction

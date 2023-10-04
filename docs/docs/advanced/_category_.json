@@ -1,0 +1,9 @@
+{
+    "label": "🧗🏻 Advanced Topics",
+    "position": 3,
+    "collapsed": true,
+    "link": {
+        "type": "doc",
+        "id": "advanced"
+    }
+}
