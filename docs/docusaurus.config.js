@@ -68,7 +68,7 @@ const config = {
         items: [
           {
             href: 'https://github.com/stochasticai/xturing',
-            label: 'xTuring',
+            label: 'GitHub',
             position: 'right',
           }
         ],
@@ -106,7 +106,7 @@ const config = {
             title: 'More',
             items: [
               {
-                label: 'Github',
+                label: 'GitHub',
                 href: 'https://github.com/stochasticai/xturing',
               },
             ],
