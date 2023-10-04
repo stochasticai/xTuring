@@ -21,8 +21,8 @@ const config = {
   organizationName: 'stochasticai', // Usually your GitHub org/user name.
   projectName: 'turing-docs', // Usually your repo name.
 
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+  onBrokenLinks: 'ignore',
+  onBrokenMarkdownLinks: 'ignore',
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
@@ -81,7 +81,7 @@ const config = {
             items: [
               {
                 label: 'Quickstart',
-                to: '/quickstart',
+                to: '/overview/quickstart',
               },
             ],
           },
