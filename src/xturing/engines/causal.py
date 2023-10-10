@@ -84,12 +84,6 @@ class CausalEngine(BaseEngine):
             elif load_woq_model:
                 # quantize model with weight-only quantization
                 from intel_extension_for_transformers.transformers import AutoModelForCausalLM
-                if model_name == "gpt2":
-                    model_name = "/mnt/disk4/modelHub/gpt2"
-                    logger.info(f"replace model_name to {model_name}")
-                if "llama-2" in model_name:
-                    model_name="/mnt/disk4/modelHub/llama-2-7b-chat-hg"
-                    logger.info(f"replace model_name to {model_name}")
                 self.model = AutoModelForCausalLM.from_pretrained(
                     model_name,
                     quantization_config=quantization_config,
