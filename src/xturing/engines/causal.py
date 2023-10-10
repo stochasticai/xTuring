@@ -21,6 +21,7 @@ from xturing.engines.quant_utils.peft_utils import LoraConfig as peftLoraConfig
 from xturing.engines.quant_utils.peft_utils import prepare_model_for_kbit_training
 from xturing.utils.logging import configure_logger
 from xturing.utils.loss_fns import CrossEntropyLoss
+from xturing.utils.utils import assert_install_itrex
 
 
 logger = configure_logger(__name__)
@@ -82,6 +83,7 @@ class CausalEngine(BaseEngine):
                     param.data = param.data.contiguous()
                 self.model = prepare_model_for_int8_training(self.model)
             elif load_woq_model:
+                assert_install_itrex()
                 # quantize model with weight-only quantization
                 from intel_extension_for_transformers.transformers import AutoModelForCausalLM
                 self.model = AutoModelForCausalLM.from_pretrained(
