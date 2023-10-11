@@ -90,6 +90,7 @@ class CausalEngine(BaseEngine):
                     model_name,
                     quantization_config=quantization_config,
                     trust_remote_code=trust_remote_code,
+                    use_llm_runtime=False, # TODO disable llm runtime for gpt2, removed it later
                     **kwargs)
                 logger.info(f"Loaded model with weight-only quantization.")
             else:
