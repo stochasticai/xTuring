@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 from transformers import BatchEncoding
 
-from xturing.config import DEFAULT_DEVICE, assert_not_cpu_int8
+from xturing.config import DEFAULT_DEVICE, assert_cpu_int8_on_itrex
 from xturing.config.config_data_classes import FinetuningConfig, GenerationConfig
 from xturing.config.read_config import load_config
 from xturing.datasets.instruction_dataset import InstructionDataset
@@ -320,7 +320,7 @@ class CausalInt8Model(CausalModel):
         model_name: Optional[str] = None,
         **kwargs,
     ):
-        assert_not_cpu_int8()
+        assert_cpu_int8_on_itrex()
         super().__init__(
             engine,
             weights_path=weights_path,
@@ -376,7 +376,7 @@ class CausalLoraInt8Model(CausalLoraModel):
         target_modules: Optional[List[str]] = None,
         **kwargs,
     ):
-        assert_not_cpu_int8()
+        assert_cpu_int8_on_itrex()
         super().__init__(
             engine,
             weights_path=weights_path,
@@ -395,7 +395,7 @@ class CausalLoraKbitModel(CausalLoraModel):
         target_modules: Optional[List[str]] = None,
         **kwargs,
     ):
-        assert_not_cpu_int8()
+        assert_cpu_int8_on_itrex()
         super().__init__(
             engine,
             weights_path=weights_path,
