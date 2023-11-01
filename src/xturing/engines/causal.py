@@ -65,8 +65,8 @@ class CausalEngine(BaseEngine):
         elif model_name is not None:
             if load_8bit:
                 use_itrex = DEFAULT_DEVICE.type == "cpu"
-                logger.info("CUDA is not available, using CPU instead, running the model with itrex.")
                 if use_itrex:
+                    logger.info("CUDA is not available, using CPU instead, running the model with itrex.")
                     assert_install_itrex()
                     # quantize model with weight-only quantization
                     from intel_extension_for_transformers.transformers import AutoModelForCausalLM as ItrexAutoModelForCausalLM
@@ -78,6 +78,7 @@ class CausalEngine(BaseEngine):
                         trust_remote_code=trust_remote_code,
                         use_llm_runtime=False, # TODO disable llm runtime for gpt2, removed it later
                         **kwargs)
+                    logger.info("Loaded int8 model from Itrex.")
                 else:
                     device_map = {"": int(os.environ.get("LOCAL_RANK") or 0)}
                     self.model = AutoModelForCausalLM.from_pretrained(
