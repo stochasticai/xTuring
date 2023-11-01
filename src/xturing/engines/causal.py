@@ -19,9 +19,12 @@ from xturing.engines.lora_engine import (
 )
 from xturing.engines.quant_utils.peft_utils import LoraConfig as peftLoraConfig
 from xturing.engines.quant_utils.peft_utils import prepare_model_for_kbit_training
+from xturing.utils.logging import configure_logger
 from xturing.utils.loss_fns import CrossEntropyLoss
 from xturing.utils.utils import assert_install_itrex
 
+
+logger = configure_logger(__name__)
 
 class CausalEngine(BaseEngine):
     def __init__(
@@ -62,7 +65,7 @@ class CausalEngine(BaseEngine):
         elif model_name is not None:
             if load_8bit:
                 use_itrex = DEFAULT_DEVICE.type == "cpu"
-                # CUDA is not available, using CPU instead, running the model with itrex
+                logger.info("CUDA is not available, using CPU instead, running the model with itrex.")
                 if use_itrex:
                     assert_install_itrex()
                     # quantize model with weight-only quantization
