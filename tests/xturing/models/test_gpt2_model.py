@@ -101,3 +101,27 @@ def test_saving_loading_model_lora():
 
     model2 = BaseModel.load(str(saving_path))
     model2.generate(texts=["Why are the LLM so important?"])
+
+
+import os
+
+def disable_cuda(func):
+    def wrapper(*args, **kwargs):
+        # Save the current value of CUDA_VISIBLE_DEVICES
+        original_cuda_visible_devices = os.environ.get('CUDA_VISIBLE_DEVICES', None)
+        # Set CUDA_VISIBLE_DEVICES to -1 to disable CUDA
+        os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+        try:
+            # Call the decorated function
+            return func(*args, **kwargs)
+        finally:
+            # Restore the original value of CUDA_VISIBLE_DEVICES
+            if original_cuda_visible_devices is not None:
+                os.environ['CUDA_VISIBLE_DEVICES'] = original_cuda_visible_devices
+            else:
+
+
+@disable_cuda
+def test_gpt2_int8_woq_cpu():
+    other_model = BaseModel.create("gpt2_int8")
+    assert other_model.generate(texts="I want to") != ""
