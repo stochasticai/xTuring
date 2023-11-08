@@ -80,7 +80,20 @@ model = GenericLoraKbitModel('tiiuae/falcon-7b')
 model.finetune(dataset)
 ```
 
-4. __CPU inference__ - The CPU, including laptop CPUs, is now fully equipped to handle LLM inference. We integrated [Itrex](https://github.com/intel/intel-extension-for-transformers) to conserve memory by compressing the model with [weight-only quantization algorithms](https://github.com/intel/intel-extension-for-transformers/blob/main/docs/weightonlyquant.md) and accelerate the inference by leveraging its highly optimized kernel on Intel platforms.
+4. __CPU inference__ - The CPU, including laptop CPUs, is now fully equipped to handle LLM inference. We integrated [Intel® Extension for Transformers](https://github.com/intel/intel-extension-for-transformers) to conserve memory by compressing the model with [weight-only quantization algorithms](https://github.com/intel/intel-extension-for-transformers/blob/main/docs/weightonlyquant.md) and accelerate the inference by leveraging its highly optimized kernel on Intel platforms.
+
+```python
+# Make the necessary imports
+from xturing.models import BaseModel
+
+# Initializes the model: quantize the model with weight-only algorithms
+# and replace the linear with Itrex's qbits_linear kernel
+model = BaseModel.create("llama2_int8")
+
+# Once the model has been quantized, do inferences directly
+output = model.generate(texts=["Why LLM models are becoming so important?"])
+print(output)
+```
 
 5. __Batch integration__ - By tweaking the 'batch_size' in the .generate() and .evaluate() functions, you can expedite results. Using a 'batch_size' greater than 1 typically enhances processing efficiency.
 ```python
