@@ -2,7 +2,7 @@
   <img src=".github/stochastic_logo_light.svg#gh-light-mode-only" width="250" alt="Stochastic.ai"/>
   <img src=".github/stochastic_logo_dark.svg#gh-dark-mode-only" width="250" alt="Stochastic.ai"/>
 </p>
-<h3 align="center">Build, customize and control your own personal LLMs</h3>
+<h3 align="center">Build, modify, and control your own personalized LLMs</h3>
 
 <p align="center">
   <a href="https://pypi.org/project/xturing/">
@@ -15,13 +15,14 @@
     <img src="https://img.shields.io/badge/Chat-FFFFFF?logo=discord&style=for-the-badge"/>
   </a>
 </p>
+
 <br>
 
 ___
 
-`xTuring` provides fast, efficient and simple fine-tuning of LLMs, such as LLaMA, GPT-J, Galactica, and more.
+`xTuring` provides fast, efficient and simple fine-tuning of open-source LLMs, such as Mistral, LLaMA, GPT-J, and more.
 By providing an easy-to-use interface for fine-tuning LLMs to your own data and application, xTuring makes it
-simple to build, customize and control LLMs. The entire process can be done inside your computer or in your
+simple to build, modify, and control LLMs. The entire process can be done inside your computer or in your
 private cloud, ensuring data privacy and security.
 
 With `xTuring` you can,
@@ -30,6 +31,38 @@ With `xTuring` you can,
 - Leverage memory-efficient methods (i.e. INT4, LoRA fine-tuning) to reduce hardware costs by up to 90%
 - Explore different fine-tuning methods and benchmark them to find the best performing model
 - Evaluate fine-tuned models on well-defined metrics for in-depth analysis
+
+<br>
+
+## ⚙️ Installation
+```bash
+pip install xturing
+```
+
+<br>
+
+## 🚀 Quickstart
+
+```python
+from xturing.datasets import InstructionDataset
+from xturing.models import BaseModel
+
+# Load the dataset
+instruction_dataset = InstructionDataset("./examples/models/llama/alpaca_data")
+
+# Initialize the model
+model = BaseModel.create("llama_lora")
+
+# Finetune the model
+model.finetune(dataset=instruction_dataset)
+
+# Perform inference
+output = model.generate(texts=["Why LLM models are becoming so important?"])
+
+print("Generated output by the model: {}".format(output))
+```
+
+You can find the data folder [here](examples/models/llama/alpaca_data).
 
 <br>
 
@@ -45,7 +78,7 @@ from xturing.models import BaseModel
 model = BaseModel.create('llama2')
 
 ```
-2. __`Evaluation`__ - Now you can evaluate any `Causal Language Model` on any dataset. The metrics currently supported is [`perplexity`](https://towardsdatascience.com/perplexity-in-language-models-87a196019a94).
+2. __`Evaluation`__ - Now you can evaluate any `Causal Language Model` on any dataset. The metrics currently supported is [`perplexity`](https://en.wikipedia.org/wiki/Perplexity).
 ```python
 # Make the necessary imports
 from xturing.datasets import InstructionDataset
@@ -115,38 +148,6 @@ outputs = model.generate(dataset = dataset, batch_size=10)
 An exploration of the [Llama LoRA INT4 working example](examples/features/int4_finetuning/LLaMA_lora_int4.ipynb) is recommended for an understanding of its application.
 
 For an extended insight, consider examining the [GenericModel working example](examples/features/generic/generic_model.py) available in the repository.
-
-<br>
-
-## ⚙️ Installation
-```bash
-pip install xturing
-```
-
-<br>
-
-## 🚀 Quickstart
-
-```python
-from xturing.datasets import InstructionDataset
-from xturing.models import BaseModel
-
-# Load the dataset
-instruction_dataset = InstructionDataset("./alpaca_data")
-
-# Initialize the model
-model = BaseModel.create("llama_lora")
-
-# Finetune the model
-model.finetune(dataset=instruction_dataset)
-
-# Perform inference
-output = model.generate(texts=["Why LLM models are becoming so important?"])
-
-print("Generated output by the model: {}".format(output))
-```
-
-You can find the data folder [here](examples/models/llama/alpaca_data).
 
 <br>
 
