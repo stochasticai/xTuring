@@ -58,6 +58,13 @@ from xturing.engines.llama_engine import (
     LlamaLoraInt8Engine,
     LlamaLoraKbitEngine,
 )
+from xturing.engines.mistral_engine import (
+    MistralEngine,
+    MistralInt8Engine,
+    MistralLoraEngine,
+    MistralLoraInt8Engine,
+    MistralLoraKbitEngine,
+)
 from xturing.engines.opt_engine import (
     OPTEngine,
     OPTInt8Engine,
@@ -111,3 +118,8 @@ BaseEngine.add_to_registry(OPTEngine.config_name, OPTEngine)
 BaseEngine.add_to_registry(OPTInt8Engine.config_name, OPTInt8Engine)
 BaseEngine.add_to_registry(OPTLoraEngine.config_name, OPTLoraEngine)
 BaseEngine.add_to_registry(OPTLoraInt8Engine.config_name, OPTLoraInt8Engine)
+BaseEngine.add_to_registry(MistralEngine.config_name, MistralEngine)
+BaseEngine.add_to_registry(MistralInt8Engine.config_name, MistralInt8Engine)
+BaseEngine.add_to_registry(MistralLoraEngine.config_name, MistralLoraEngine)
+BaseEngine.add_to_registry(MistralLoraInt8Engine.config_name, MistralLoraInt8Engine)
+BaseEngine.add_to_registry(MistralLoraKbitEngine.config_name, MistralLoraKbitEngine)

@@ -322,3 +322,33 @@ opt_int8:
   num_train_epochs: 3
   batch_size: 8
   max_length: 256
+
+mistral:
+  learning_rate: 5e-5
+  weight_decay: 0.01
+  num_train_epochs: 3
+  optimizer_name: cpu_adam
+
+mistral_lora:
+  learning_rate: 5e-5
+  weight_decay: 0.01
+  num_train_epochs: 3
+  optimizer_name: cpu_adam
+
+mistral_lora_int8:
+  learning_rate: 5e-5
+  weight_decay: 0.01
+  num_train_epochs: 3
+  optimizer_name: cpu_adam
+
+mistral_int8:
+  learning_rate: 5e-5
+  weight_decay: 0.01
+  num_train_epochs: 3
+  optimizer_name: cpu_adam
+
+mistral_lora_kbit:
+  learning_rate: 5e-5
+  weight_decay: 0.01
+  num_train_epochs: 3
+  optimizer_name: cpu_adam
