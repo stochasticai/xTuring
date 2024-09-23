@@ -13,3 +13,4 @@ print("Generated output by the model: {}".format(output))
 model.save("./llama_weights")
 
 # If you want to load the model just do BaseModel.load("./llama_weights")
+# If you want to merge the lora weights with the base model, you can do model.merge_lora()
