@@ -6,7 +6,7 @@ description: Models Supported by xTuring
 
 <!-- # Models supported by xTuring -->
 ## Base versions
-|   Model | Model Key | LoRA | INT8 | LoRA + INT8 | LoRA + INT4 |   
+|   Model | Model Key | LoRA | INT8 | LoRA + INT8 | LoRA + INT4 |
 | ------ | --- | :---: | :---: | :---: | :---: |
 | BLOOM 1.1B| bloom |  ✅ | ✅ | ✅ | ✅ |
 | Cerebras 1.3B| cerebras | ✅  | ✅ | ✅ | ✅ |
@@ -18,6 +18,7 @@ description: Models Supported by xTuring
 | LLaMA  7B | llama | ✅ | ✅ | ✅ | ✅ |
 | LLaMA2  | llama2 | ✅ | ✅ | ✅ | ✅ |
 | OPT 1.3B  | opt | ✅ | ✅ |  ✅ | ✅ |
+| Mixtral-8x22 | mixtral | ✅ | ✅ |  ✅ |    |
 
 ### Memory-efficient versions
 > The above mentioned are the base variants of the LLMs. Below are the templates to get their `LoRA`, `INT8`, `INT8 + LoRA` and `INT4 + LoRA` versions.

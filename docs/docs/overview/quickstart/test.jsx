@@ -15,11 +15,12 @@ const modelList = {
   cerebras: 'Cerebras',
   distilgpt2: 'DistilGPT-2',
   galactica: 'Galactica',
-  gptj: 'GPT-J', 
+  gptj: 'GPT-J',
   gpt2: 'GPT-2',
   llama: 'LLaMA',
   llama2: 'LLaMA 2',
   opt: 'OPT',
+  mixtral: 'Mixtral',
 }
 
 export default function Test(
@@ -37,7 +38,7 @@ export default function Test(
   } else {
     finalKey = `${code.model}_${code.technique}`
   }
-  
+
   useEffect(() => {
     setCode({
       model: 'llama',
@@ -92,7 +93,7 @@ from xturing.models import BaseModel
 dataset = ${instruction}Dataset('...')
 
 # Load the model
-model = BaseModel.create('${finalKey}')`} 
+model = BaseModel.create('${finalKey}')`}
       />
     </div>
   )

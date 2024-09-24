@@ -44,6 +44,7 @@ from xturing.models.llama2 import (
     Llama2LoraKbit,
 )
 from xturing.models.mamba import Mamba
+from xturing.models.mixtral import Mixtral, MixtralInt8, MixtralLora, MixtralLoraInt8
 from xturing.models.opt import OPT, OPTInt8, OPTLora, OPTLoraInt8
 from xturing.models.stable_diffusion import StableDiffusion
 
@@ -90,6 +91,10 @@ BaseModel.add_to_registry(Llama2Lora.config_name, Llama2Lora)
 BaseModel.add_to_registry(Llama2LoraInt8.config_name, Llama2LoraInt8)
 BaseModel.add_to_registry(Llama2LoraKbit.config_name, Llama2LoraKbit)
 BaseModel.add_to_registry(Mamba.config_name, Mamba)
+BaseModel.add_to_registry(Mixtral.config_name, Mixtral)
+BaseModel.add_to_registry(MixtralInt8.config_name, MixtralInt8)
+BaseModel.add_to_registry(MixtralLora.config_name, MixtralLora)
+BaseModel.add_to_registry(MixtralLoraInt8.config_name, MixtralLoraInt8)
 BaseModel.add_to_registry(OPT.config_name, OPT)
 BaseModel.add_to_registry(OPTInt8.config_name, OPTInt8)
 BaseModel.add_to_registry(OPTLora.config_name, OPTLora)

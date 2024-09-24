@@ -302,6 +302,32 @@ mamba:
   learning_rate: 5e-5
   weight_decay: 0.01
 
+mixtral:
+  learning_rate: 5e-5
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 1
+
+mixtral_lora:
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 4
+
+mixtral_int8:
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 8
+  max_length: 256
+
+mixtral_lora_int8:
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 8
+  max_length: 256
+
 opt:
   learning_rate: 5e-5
   weight_decay: 0.01
