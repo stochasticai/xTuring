@@ -31,6 +31,7 @@ description: Models Supported by xTuring
 ### INT4 Precision model versions
 > In order to load any model's __`INT4+LoRA`__ version, you will need to make use of `GenericLoraKbitModel` class from `xturing.models`. Below is how to use it:
 ```python
+from xturing.models import GenericLoraKbitModel
 model = GenericLoraKbitModel('/path/to/model')
 ```
 The `/path/to/model` can be replaced with you local directory or any HuggingFace library model like `facebook/opt-1.3b`.
