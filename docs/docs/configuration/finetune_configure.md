@@ -15,7 +15,7 @@ For advanced usage, you can customize the `finetuning_config` attribute of the m
 In this tutorial, we will be loading one of the [supported models](/overview/supported_models) and customizing it's fine-tune configuration before calibrating the model to the desired dataset.
 
 ### Load the model and the dataset
-First, we need to load the model and the dataset we want to use. 
+First, we need to load the model and the dataset we want to use.
 
 <FinetuneCode />
 
@@ -31,7 +31,7 @@ finetuning_config = model.finetuning_config()
 Print the `finetuning_config` object to check the default configuration.
 
 ### Customize the configuration
-Now, we can customize the generation configuration as we wish. All the customizable parameters are list [below](#parameters). 
+Now, we can customize the generation configuration as we wish. All the customizable parameters are list [below](#parameters).
 
 ```python
 finetuning_config.batch_size = 64
@@ -98,4 +98,3 @@ max_grad_norm: 2.0
 save_total_limit: 4
 optimizer_name: adamw
 output_dir: saved_model -->
-

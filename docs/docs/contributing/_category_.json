@@ -1,7 +1,7 @@
 {
     "label": "🤝 Contributing",
     "position": 4,
-    "link": {        
+    "link": {
         "type": "doc",
         "id": "contributing"
     },

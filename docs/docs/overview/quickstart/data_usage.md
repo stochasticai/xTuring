@@ -17,12 +17,12 @@ Certainly, when we're looking to utilize an existing dataset for tasks like fine
 
 4. **Ensuring Coherency**: The reformatted text should maintain coherency and clarity. It should effectively convey the message while adhering to proper grammar and organization.
 
-By following these steps, we ensure that the chosen dataset is transformed into a compatible format for `xTuring`, enabling efficient usage and optimal results. 
+By following these steps, we ensure that the chosen dataset is transformed into a compatible format for `xTuring`, enabling efficient usage and optimal results.
 
 We know __what__ all we need to do to make format the dataset, below is the __how__ behind it!
 
 ## Instruction dataset format
-For this tutorial we will need to prepare a dataset which contains 3 columns (instruction, text, target) for instruction fine-tuning or 2 columns (text, target) for text fine-tuning. Here, we will see how to convert Alpaca dataset to be used for instruction fine-tuning. Before starting, make sure you have downloaded the [Alpaca dataset](https://github.com/tatsu-lab/stanford_alpaca/blob/main/alpaca_data.json) in your working directory. 
+For this tutorial we will need to prepare a dataset which contains 3 columns (instruction, text, target) for instruction fine-tuning or 2 columns (text, target) for text fine-tuning. Here, we will see how to convert Alpaca dataset to be used for instruction fine-tuning. Before starting, make sure you have downloaded the [Alpaca dataset](https://github.com/tatsu-lab/stanford_alpaca/blob/main/alpaca_data.json) in your working directory.
 
 
 ### Convert the dataset to _Instruction Dataset_ format
@@ -68,4 +68,4 @@ instruction_dataset = InstructionDataset('/path/to/instruction_converted_alpaca_
 
 ## Text dataset format
 
-The datasets that we find on the internet are formatted in a way which is accepted by the `xTuring`'s `TextDataset` class, so we need not worry text fine-tuning and just use those datasets as is. 
+The datasets that we find on the internet are formatted in a way which is accepted by the `xTuring`'s `TextDataset` class, so we need not worry text fine-tuning and just use those datasets as is.
