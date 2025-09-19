@@ -19,8 +19,12 @@ from xturing.engines.lora_engine import (
 )
 from xturing.engines.quant_utils.peft_utils import LoraConfig as peftLoraConfig
 from xturing.engines.quant_utils.peft_utils import prepare_model_for_kbit_training
+from xturing.utils.logging import configure_logger
 from xturing.utils.loss_fns import CrossEntropyLoss
+from xturing.utils.utils import assert_install_itrex
 
+
+logger = configure_logger(__name__)
 
 class CausalEngine(BaseEngine):
     def __init__(
@@ -60,18 +64,34 @@ class CausalEngine(BaseEngine):
             self.tokenizer = tokenizer
         elif model_name is not None:
             if load_8bit:
-                device_map = {"": int(os.environ.get("LOCAL_RANK") or 0)}
-                self.model = AutoModelForCausalLM.from_pretrained(
-                    model_name,
-                    torch_dtype=DEFAULT_DTYPE,
-                    load_in_8bit=True,
-                    device_map=device_map,
-                    trust_remote_code=trust_remote_code,
-                    **kwargs,
-                )
-                for param in self.model.parameters():
-                    param.data = param.data.contiguous()
-                self.model = prepare_model_for_int8_training(self.model)
+                use_itrex = DEFAULT_DEVICE.type == "cpu"
+                if use_itrex:
+                    logger.info("CUDA is not available, using CPU instead, running the model with itrex.")
+                    assert_install_itrex()
+                    # quantize model with weight-only quantization
+                    from intel_extension_for_transformers.transformers import AutoModelForCausalLM as ItrexAutoModelForCausalLM
+                    from intel_extension_for_transformers.transformers import WeightOnlyQuantConfig
+                    woq_config = WeightOnlyQuantConfig(weight_dtype='int8')
+                    self.model = ItrexAutoModelForCausalLM.from_pretrained(
+                        model_name,
+                        quantization_config=woq_config,
+                        trust_remote_code=trust_remote_code,
+                        use_llm_runtime=False,
+                        **kwargs)
+                    logger.info("Loaded int8 model from Itrex.")
+                else:
+                    device_map = {"": int(os.environ.get("LOCAL_RANK") or 0)}
+                    self.model = AutoModelForCausalLM.from_pretrained(
+                        model_name,
+                        torch_dtype=DEFAULT_DTYPE,
+                        load_in_8bit=True,
+                        device_map=device_map,
+                        trust_remote_code=trust_remote_code,
+                        **kwargs,
+                    )
+                    for param in self.model.parameters():
+                        param.data = param.data.contiguous()
+                    self.model = prepare_model_for_int8_training(self.model)
             else:
                 self.model = AutoModelForCausalLM.from_pretrained(
                     model_name,

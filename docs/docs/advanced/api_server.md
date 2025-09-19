@@ -4,7 +4,7 @@ description: FastAPI inference server
 sidebar_position: 3
 ---
 
-# ⚡️ Running model inference with FastAPI Ssrver
+# ⚡️ Running model inference with FastAPI Server
 
 <!-- Once you have fine-tuned your model, you can run the inference using a FastAPI server. -->
 After successfully fine-tuning your model, you can perform inference using a FastAPI server. The following steps guide you through launching and utilizing the API server for your fine-tuned model.

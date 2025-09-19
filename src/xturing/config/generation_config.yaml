@@ -252,6 +252,10 @@ llama2_lora_kbit:
   max_new_tokens: 256
   do_sample: false
 
+# Greedy search
+mamba:
+  do_sample: false
+
 # Contrastive search
 opt:
   penalty_alpha: 0.6
