@@ -62,8 +62,9 @@ def generate_instances(
                 try:
                     data = json.loads(line)
                     existing_requests[data["instruction"]] = data
-                except:
-                    pass
+                except json.JSONDecodeError:
+                    # Skip malformed JSON lines
+                    continue
         print(f"Loaded {len(existing_requests)} existing requests")
 
     progress_bar = tqdm(total=len(tasks))
