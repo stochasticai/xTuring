@@ -46,6 +46,7 @@ dependencies = [
     "transformers==4.39.3",
     "datasets==2.14.5",
     "pyarrow >= 8.0.0, < 21.0.0",
+    "scipy >= 1.0.0",
     "evaluate==0.4.0",
     "bitsandbytes==0.41.1",
     "sentencepiece",
