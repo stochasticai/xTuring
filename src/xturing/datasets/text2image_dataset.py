@@ -6,7 +6,7 @@ class Text2ImageDataset:
     config_name: str = "text2image_dataset"
 
     def __init__(self, path: Union[str, Path]):
-        pass
+        raise NotImplementedError("Text2ImageDataset is not implemented yet.")
 
     def _validate(self):
-        pass
+        raise NotImplementedError

@@ -47,7 +47,7 @@ class TuringLightningModule(pl.LightningModule):
                 self.pytorch_model.parameters(), lr=self.learning_rate
             )
         elif self.optimizer_name == "adam":
-            optimizer = torch.optim.adam(
+            optimizer = torch.optim.Adam(
                 self.pytorch_model.parameters(), lr=self.learning_rate
             )
         elif self.optimizer_name == "cpu_adam":
