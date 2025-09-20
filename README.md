@@ -20,7 +20,7 @@
 
 ___
 
-`xTuring` provides fast, efficient and simple fine-tuning of open-source LLMs, such as Mistral, LLaMA, GPT-J, and more.
+`xTuring` provides fast, efficient and simple fine-tuning of open-source LLMs, such as OpenAI's GPT-OSS, Mistral, LLaMA, GPT-J, and more.
 By providing an easy-to-use interface for fine-tuning LLMs to your own data and application, xTuring makes it
 simple to build, modify, and control LLMs. The entire process can be done inside your computer or in your
 private cloud, ensuring data privacy and security.
@@ -50,14 +50,14 @@ from xturing.models import BaseModel
 # Load the dataset
 instruction_dataset = InstructionDataset("./examples/models/llama/alpaca_data")
 
-# Initialize the model
-model = BaseModel.create("llama_lora")
+# Initialize the GPT-OSS 20B model with LoRA
+model = BaseModel.create("gpt_oss_20b_lora")
 
 # Finetune the model
 model.finetune(dataset=instruction_dataset)
 
-# Perform inference
-output = model.generate(texts=["Why LLM models are becoming so important?"])
+# Perform inference with reasoning capabilities
+output = model.generate(texts=["Explain quantum computing and its potential applications in cryptography"])
 
 print("Generated output by the model: {}".format(output))
 ```
@@ -68,7 +68,19 @@ You can find the data folder [here](examples/models/llama/alpaca_data).
 
 ## 🌟 What's new?
 We are excited to announce the latest enhancements to our `xTuring` library:
-1. __`LLaMA 2` integration__ - You can use and fine-tune the _`LLaMA 2`_ model in different configurations: _off-the-shelf_, _off-the-shelf with INT8 precision_, _LoRA fine-tuning_, _LoRA fine-tuning with INT8 precision_ and _LoRA fine-tuning with INT4 precision_ using the `GenericModel` wrapper and/or you can use the `Llama2` class from `xturing.models` to test and finetune the model.
+1. __`OpenAI GPT-OSS` integration__ - You can now use and fine-tune OpenAI's latest open-source models _`GPT-OSS-120B`_ and _`GPT-OSS-20B`_ in different configurations: _off-the-shelf_, _off-the-shelf with INT8 precision_, _LoRA fine-tuning_, _LoRA fine-tuning with INT8 precision_ and _LoRA fine-tuning with INT4 precision_. These models feature advanced reasoning capabilities with configurable reasoning levels (low/medium/high) and support OpenAI's harmony response format.
+```python
+from xturing.models import BaseModel
+
+# Use the production-ready 120B model
+model = BaseModel.create('gpt_oss_120b_lora')
+
+# Or use the efficient 20B model for faster inference
+model = BaseModel.create('gpt_oss_20b_lora')
+
+# Both models support reasoning levels via system prompts
+```
+2. __`LLaMA 2` integration__ - You can use and fine-tune the _`LLaMA 2`_ model in different configurations: _off-the-shelf_, _off-the-shelf with INT8 precision_, _LoRA fine-tuning_, _LoRA fine-tuning with INT8 precision_ and _LoRA fine-tuning with INT4 precision_ using the `GenericModel` wrapper and/or you can use the `Llama2` class from `xturing.models` to test and finetune the model.
 ```python
 from xturing.models import Llama2
 model = Llama2()
@@ -78,7 +90,7 @@ from xturing.models import BaseModel
 model = BaseModel.create('llama2')
 
 ```
-2. __`Evaluation`__ - Now you can evaluate any `Causal Language Model` on any dataset. The metrics currently supported is [`perplexity`](https://en.wikipedia.org/wiki/Perplexity).
+3. __`Evaluation`__ - Now you can evaluate any `Causal Language Model` on any dataset. The metrics currently supported is [`perplexity`](https://en.wikipedia.org/wiki/Perplexity).
 ```python
 # Make the necessary imports
 from xturing.datasets import InstructionDataset
@@ -87,8 +99,8 @@ from xturing.models import BaseModel
 # Load the desired dataset
 dataset = InstructionDataset('../llama/alpaca_data')
 
-# Load the desired model
-model = BaseModel.create('gpt2')
+# Load the desired model (try GPT-OSS for advanced reasoning)
+model = BaseModel.create('gpt_oss_20b')
 
 # Run the Evaluation of the model on the dataset
 result = model.evaluate(dataset)
