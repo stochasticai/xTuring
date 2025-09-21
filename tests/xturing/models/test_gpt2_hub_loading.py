@@ -1,5 +1,4 @@
-from xturing import GPT2, BaseModel
-from xturing.models import DistilGPT2
+from xturing import GPT2
 
 
 def test_gpt_2_hub_loading():

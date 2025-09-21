@@ -33,7 +33,7 @@ We can print the `generation_config` object to check the default configuration.
 
 ### Customize the configuration
 
-Now, we can customize the generation configuration as we wish. All the customizable parameters are list [below](#parameters). 
+Now, we can customize the generation configuration as we wish. All the customizable parameters are list [below](#parameters).
 
 ```python
 generation_config.max_new_tokens = 256
