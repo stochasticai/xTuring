@@ -6,12 +6,10 @@ from concurrent.futures import ThreadPoolExecutor
 import torch
 import torch.nn.functional as F
 import wandb
-from datasets import load_dataset
 from torch.nn import KLDivLoss
 from torch.utils.checkpoint import checkpoint
-from torch.utils.data import DataLoader
 from tqdm import tqdm
-from transformers import AutoModelForCausalLM, LlamaTokenizer
+from transformers import AutoModelForCausalLM
 
 from xturing.engines.lora_engine.lora import LoraConfig, LoraModel, load_quant
 from xturing.engines.quant_utils.qerdataloading import get_c4

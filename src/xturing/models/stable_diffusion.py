@@ -12,11 +12,11 @@ class StableDiffusion:
 
     def finetune(self, dataset: Text2ImageDataset, logger=True):
         """Finetune Stable Diffusion model on a given dataset.
-        
+
         Args:
             dataset (Text2ImageDataset): Dataset to finetune on.
-            logger (bool, optional): To be setup with a Pytorch Lightning logger when implemented."""
-        pass
+            logger (bool, optional): To be setup with a Pytorch Lightning logger when implemented.
+        """
 
     def generate(
         self,

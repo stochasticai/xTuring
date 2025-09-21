@@ -20,7 +20,7 @@ To start contributing to xTuring, we recommend that you familiarize yourself wit
 If you are skeptical where to start, here are some good [First Issues](https://github.com/stochasticai/xTuring/labels/good%20first%20issue) for you to go head on with.
 
 ### Fixing oustanding issues
-If you come across some issue with the current code and have a solution to it, feel free to [contribute](https://github.com/stochasticai/xTuring/issues) and make a [Pull Request](https://github.com/stochasticai/xTuring/compare)! 
+If you come across some issue with the current code and have a solution to it, feel free to [contribute](https://github.com/stochasticai/xTuring/issues) and make a [Pull Request](https://github.com/stochasticai/xTuring/compare)!
 
 
 ### Adding models and features
@@ -61,7 +61,7 @@ You'll need Python 3.8 or above to contribute to __`xTuring`__. To start contrib
     ```
     🚨 **Do not** checkout from the _main_ branch or work on it.
 
-4. Make sure you have pre-commit hooks installed and set up to ensure your code is properly formatted before being pushed to _git_. 
+4. Make sure you have pre-commit hooks installed and set up to ensure your code is properly formatted before being pushed to _git_.
 
     ```bash
     $ pip install pre-commit

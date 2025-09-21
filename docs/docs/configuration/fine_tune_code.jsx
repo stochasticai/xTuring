@@ -15,7 +15,7 @@ const modelList = {
   cerebras: 'Cerebras',
   distilgpt2: 'DistilGPT-2',
   galactica: 'Galactica',
-  gptj: 'GPT-J', 
+  gptj: 'GPT-J',
   gpt2: 'GPT-2',
   llama: 'LLaMA',
   llama2: 'LLaMA 2',
@@ -35,7 +35,7 @@ export default function FinetuneCode(
   } else {
     finalKey = `${code.model}_${code.technique}`
   }
-  
+
   useEffect(() => {
     setCode({
       model: 'llama',
@@ -87,7 +87,7 @@ export default function FinetuneCode(
 from xturing.datasets import InstructionDataset
 
 instruction_dataset = InstructionDataset("...")
-model = BaseModel.create("${finalKey}")`} 
+model = BaseModel.create("${finalKey}")`}
       />
     </div>
   )
