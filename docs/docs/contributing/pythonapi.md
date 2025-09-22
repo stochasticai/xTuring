@@ -19,7 +19,7 @@ This section includes the API documentation from the Finetuner codebase, as extr
 > Load a model from your local machine or xTuring Hub.
 >
 > **Parameters**:
-> - **weights_dir_or_model_name** *(str)*: Path to a local model to be load or a model from `xTuring` Hub. 
+> - **weights_dir_or_model_name** *(str)*: Path to a local model to be load or a model from `xTuring` Hub.
 
 <!-- | Method | Description |
 | --------- | ----------- |
@@ -29,14 +29,14 @@ This section includes the API documentation from the Finetuner codebase, as extr
 
 [`model.finetune(dataset, logger = True)`](https://github.com/stochasticai/xTuring/blob/9b98c68af8391c7a0f48a141178b70a1a8e47c06/src/xturing/models/causal.py#L116)
 > Fine-tune the in-memory model on the desired dataset.
-> 
+>
 > **Parameters**:
 > - **dataset** *(Union[TextDataset, InstructionDataset])*: The object of either of the 2 dataset classes specified in the library. If not passed, will throw an error.
 > - **logger** *(Union[Logger, Iterable[Logger], bool])*: If you want to log the progress in the default logger, pass nothing explicitly. Else, you can pass your own logger.
 
 [`model.generate(texts = None ,dataset = None, batch_size = 1)`](https://github.com/stochasticai/xTuring/blob/9b98c68af8391c7a0f48a141178b70a1a8e47c06/src/xturing/models/causal.py#L158)
 > Use the in-memory model to generate outputs by passing either a `dataset` as an argument or `texts` as an argument which would be a list of strings.
-> 
+>
 > **Parameters**:
 > - **texts** *(Optional[Union[List[str], str]])*: Can be a single string or a list of strings on which you want to test your in-memory model.
 > - **dataset** *(Optional[Union[TextDataset, InstructionDataset]])*: The object of either of the 2 dataset classes specified in the library.
@@ -44,7 +44,7 @@ This section includes the API documentation from the Finetuner codebase, as extr
 
 [`model.evaluate(dataset, batch_size = 1)`](https://github.com/stochasticai/xTuring/blob/9b98c68af8391c7a0f48a141178b70a1a8e47c06/src/xturing/models/causal.py#L312)
 > Evaluate the in-memory model.
-> 
+>
 > **Parameters**:
 > - **dataset** *(Optional[Union[TextDataset, InstructionDataset]])*: The object of either of the 2 dataset classes specified in the library.
 > - **batch_size** *(Optional[int])*: For faster processing given your machine constraints, you can configure the batch size of the model. Higher the batch size, more the parallel compute, faster you will get your result.
@@ -69,7 +69,7 @@ This section includes the API documentation from the Finetuner codebase, as extr
 >
 > **Parameters**:
 > - **path** *(str)*: a string of the path where you want to save the generated dataset.
-> - **engine** *(TextGenerationAPI)*: should be an object of one of the classes mentioned in the [*model_apis*](https://github.com/stochasticai/xTuring/tree/main/src/xturing/model_apis) directory. 
+> - **engine** *(TextGenerationAPI)*: should be an object of one of the classes mentioned in the [*model_apis*](https://github.com/stochasticai/xTuring/tree/main/src/xturing/model_apis) directory.
 > - **num_instructions** *(Optinoal[int])*: a cap on the size of sample set to be generated. Helps you create a more diverse dataset.
 > - **num_instructions_for_finetuning** *(Optinoal[int])*: size of the sample set to be generated. Uses up the credits from your account. <u>_Use this number very carefully._</u>
 <!-- > - **num_prompt_instructions** *(Optinoal[int])*:  -->

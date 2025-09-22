@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem';
 
 We can install `xTuring` globally on our machine, but it is advised to install it inside a virtual environment. Before starting, we have to make sure we have __Python 3.0+__ installed on our machine.
 
-## Install via pip 
+## Install via pip
 For this, we have to ensure that we have _virtualenv_ package installed or _anaconda_ setup on our machine.
 
 Start by creating a virtual environment in our working directory:
@@ -32,7 +32,7 @@ Once the virtual environment is activated, we can now install `xTuring` library 
 
 ```bash
 $ pip install xTuring
-``` 
+```
 This will install the latest version of xTuring available on pip.
 Finally, we can test if `xTuring` has been properly installed by running the following commands on our terminal:
 ```bash
@@ -55,7 +55,7 @@ Once the virtual environment is activated, we can now install `xTuring` library 
 
 ```bash
 > pip install xTuring
-``` 
+```
 This will install the latest version of xTuring available on pip.
 Finally, we can test if `xTuring` has been properly installed by running the following commands on our terminal:
 ```bash
@@ -90,7 +90,7 @@ Once the conda environment is activated, we can now install `xTuring` library by
 
 ```bash
 $ pip install xTuring
-``` 
+```
 This will install the latest version of xTuring available on pip.
 Finally, we can test if `xTuring` has been properly installed by running the following commands on our terminal:
 ```bash
@@ -114,7 +114,7 @@ Once the conda environment is activated, we can now install `xTuring` library by
 
 ```bash
 > pip install xTuring
-``` 
+```
 This will install the latest version of xTuring available on pip.
 Finally, we can test if `xTuring` has been properly installed by running the following commands on our terminal:
 ```bash
@@ -135,7 +135,7 @@ Then print the outputs variable to see what the LLM generated based on the input
 
 <!-- ```bash
 $ pip install xTuring
-``` 
+```
 This will install the latest version of xTuring available on pip.
 Finally, we can test if `xTuring` has been properly installed by running the following commands on our terminal:
 ```bash

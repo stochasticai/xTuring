@@ -54,7 +54,7 @@ def is_gptq_available():
 
 
 if is_gptq_available():
-    from ..quant_utils import QuantLinear
+    from xturing.engines.quant_utils import QuantLinear
 
 
 class PeftType(str, enum.Enum):

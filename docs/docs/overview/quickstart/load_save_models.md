@@ -84,7 +84,7 @@ We can also load the LLaMA model without _LoRA_ initiliazation or load one of th
 ```python
 from xturing.models import BaseModel
 
-# choose a model 
+# choose a model
 model_name = 'llama_lora'
 
 model = BaseModel.create(model_name)
