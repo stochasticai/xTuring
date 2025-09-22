@@ -194,6 +194,66 @@ gpt2_int8:
   top_p: 0.92
   max_new_tokens: 256
 
+# Contrastive search for GPT-OSS models (high reasoning capability)
+gpt_oss_120b:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 512
+  do_sample: false
+  temperature: 0.1
+
+gpt_oss_120b_lora:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 512
+  do_sample: false
+  temperature: 0.1
+
+gpt_oss_120b_int8:
+  max_new_tokens: 512
+  do_sample: false
+  temperature: 0.1
+
+gpt_oss_120b_lora_int8:
+  max_new_tokens: 512
+  do_sample: false
+  temperature: 0.1
+
+gpt_oss_120b_lora_kbit:
+  max_new_tokens: 512
+  do_sample: false
+  temperature: 0.1
+
+# Contrastive search for GPT-OSS 20B models
+gpt_oss_20b:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 512
+  do_sample: false
+  temperature: 0.1
+
+gpt_oss_20b_lora:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 512
+  do_sample: false
+  temperature: 0.1
+
+gpt_oss_20b_int8:
+  max_new_tokens: 512
+  do_sample: false
+  temperature: 0.1
+
+gpt_oss_20b_lora_int8:
+  max_new_tokens: 512
+  do_sample: false
+  temperature: 0.1
+
+gpt_oss_20b_lora_kbit:
+  max_new_tokens: 512
+  do_sample: false
+  temperature: 0.1
+
 # Contrastive search
 llama:
   penalty_alpha: 0.6

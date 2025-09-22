@@ -38,6 +38,18 @@ from xturing.engines.gpt2_engine import (
     GPT2LoraEngine,
     GPT2LoraInt8Engine,
 )
+from xturing.engines.gpt_oss_engine import (
+    GPTOSS20BEngine,
+    GPTOSS20BInt8Engine,
+    GPTOSS20BLoraEngine,
+    GPTOSS20BLoraInt8Engine,
+    GPTOSS20BLoraKbitEngine,
+    GPTOSS120BEngine,
+    GPTOSS120BInt8Engine,
+    GPTOSS120BLoraEngine,
+    GPTOSS120BLoraInt8Engine,
+    GPTOSS120BLoraKbitEngine,
+)
 from xturing.engines.gptj_engine import (
     GPTJEngine,
     GPTJInt8Engine,
@@ -98,6 +110,20 @@ BaseEngine.add_to_registry(GPT2Engine.config_name, GPT2Engine)
 BaseEngine.add_to_registry(GPT2Int8Engine.config_name, GPT2Int8Engine)
 BaseEngine.add_to_registry(GPT2LoraEngine.config_name, GPT2LoraEngine)
 BaseEngine.add_to_registry(GPT2LoraInt8Engine.config_name, GPT2LoraInt8Engine)
+BaseEngine.add_to_registry(GPTOSS120BEngine.config_name, GPTOSS120BEngine)
+BaseEngine.add_to_registry(GPTOSS120BInt8Engine.config_name, GPTOSS120BInt8Engine)
+BaseEngine.add_to_registry(GPTOSS120BLoraEngine.config_name, GPTOSS120BLoraEngine)
+BaseEngine.add_to_registry(
+    GPTOSS120BLoraInt8Engine.config_name, GPTOSS120BLoraInt8Engine
+)
+BaseEngine.add_to_registry(
+    GPTOSS120BLoraKbitEngine.config_name, GPTOSS120BLoraKbitEngine
+)
+BaseEngine.add_to_registry(GPTOSS20BEngine.config_name, GPTOSS20BEngine)
+BaseEngine.add_to_registry(GPTOSS20BInt8Engine.config_name, GPTOSS20BInt8Engine)
+BaseEngine.add_to_registry(GPTOSS20BLoraEngine.config_name, GPTOSS20BLoraEngine)
+BaseEngine.add_to_registry(GPTOSS20BLoraInt8Engine.config_name, GPTOSS20BLoraInt8Engine)
+BaseEngine.add_to_registry(GPTOSS20BLoraKbitEngine.config_name, GPTOSS20BLoraKbitEngine)
 BaseEngine.add_to_registry(LLamaEngine.config_name, LLamaEngine)
 BaseEngine.add_to_registry(LLamaInt8Engine.config_name, LLamaInt8Engine)
 BaseEngine.add_to_registry(LlamaLoraEngine.config_name, LlamaLoraEngine)

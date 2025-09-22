@@ -521,7 +521,7 @@ def mark_only_lora_as_trainable(model: nn.Module, bias: str = "none") -> None:
             if isinstance(m, LoraLayer) and hasattr(m, "bias") and m.bias is not None:
                 m.bias.requires_grad = True
     else:
-        raise NotImplementedError
+        raise NotImplementedError()
 
 
 class LoraLayer:
