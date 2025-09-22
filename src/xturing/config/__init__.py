@@ -12,11 +12,14 @@ DEFAULT_DTYPE = torch.float16 if DEFAULT_DEVICE.type == "cuda" else torch.float3
 IS_INTERACTIVE = is_interactive_execution()
 
 if DEFAULT_DEVICE.type == "cpu":
-    logger.warning("WARNING: CUDA is not available, using CPU instead, can be very slow")
+    logger.warning(
+        "WARNING: CUDA is not available, using CPU instead, can be very slow"
+    )
 
 
 def assert_not_cpu_int8():
     assert DEFAULT_DEVICE.type != "cpu", "Int8 models are not supported on CPU"
+
 
 def assert_cpu_int8_on_itrex():
     if DEFAULT_DEVICE.type == "cpu":
