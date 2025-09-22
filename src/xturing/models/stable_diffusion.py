@@ -19,14 +19,15 @@ class StableDiffusion:
             dataset (Text2ImageDataset): Dataset to finetune on.
             logger (bool, optional): To be setup with a Pytorch Lightning logger when implemented.
         """
-        raise NotImplementedError
+
+        raise NotImplementedError()
 
     def generate(
         self,
         texts: Optional[Union[List[str], str]] = None,
         dataset: Optional[Text2ImageDataset] = None,
     ):
-        raise NotImplementedError
+        raise NotImplementedError()
 
     def save(self, path: Union[str, Path]):
-        raise NotImplementedError
+        raise NotImplementedError()
