@@ -2,6 +2,8 @@
 
 We welcome and appreciate contributions to xTuring! Whether it's a bug fix, a new feature, or simply a typo, every little bit helps.
 
+Before starting, please skim the [Repository Guidelines](AGENTS.md) for project structure, local commands, style, and testing conventions.
+
 ## Getting Started
 
 1. Fork the repository on GitHub

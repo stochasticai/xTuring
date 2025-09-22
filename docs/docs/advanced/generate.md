@@ -16,16 +16,16 @@ To generate a dataset we will make use of **engines** that consist of third part
 
   OpenAI api key can be obtained [here](https://beta.openai.com/account/api-keys)
 
-  
+
 ```python
 from xturing.model_apis.openai import ChatGPT, Davinci
 engine = ChatGPT("your-api-key")
 # or
 engine = Davinci("your-api-key")
 ```
-        
+
   </TabItem>
-  
+
   <TabItem value="cohere" label="Cohere">
 
   ```python
@@ -75,7 +75,7 @@ Each line of this file needs to be a _JSON_ object with the following fields:
 | __instances__ |  List[Dict[str,str]] |  A list of input-output pairs that provide examples of what the model should output for this task. Each input-output pair is an object with two fields: __input__ and __output__. |
 | __is_classification__ |  boolean | A flag that indicates whether this is a classification task or not. If this flag is set to true, the output should be a single label (e.g. a category or class), otherwise the output can be any text. The default value is false. |
 
-Here's an example of a task in the above mentioned format: 
+Here's an example of a task in the above mentioned format:
 
 ```json
 {
@@ -100,16 +100,16 @@ Here is how an sample `tasks.jsonl` file should like:
 
 ```json
 {
-  "id": "seed_task_0", 
-  "name": "breakfast_suggestion", 
-  "instruction": "Is there anything I can eat for a breakfast that doesn't include eggs, yet includes protein, and has roughly 700-1000 calories?", 
-  "instances": [{"input": "", "output": "Yes, you can have 1 oatmeal banana protein shake and 4 strips of bacon. The oatmeal banana protein shake may contain 1/2 cup oatmeal, 60 grams whey protein powder, 1/2 medium banana, 1tbsp flaxseed oil and 1/2 cup watter, totalling about 550 calories. The 4 strips of bacon contains about 200 calories."}], 
+  "id": "seed_task_0",
+  "name": "breakfast_suggestion",
+  "instruction": "Is there anything I can eat for a breakfast that doesn't include eggs, yet includes protein, and has roughly 700-1000 calories?",
+  "instances": [{"input": "", "output": "Yes, you can have 1 oatmeal banana protein shake and 4 strips of bacon. The oatmeal banana protein shake may contain 1/2 cup oatmeal, 60 grams whey protein powder, 1/2 medium banana, 1tbsp flaxseed oil and 1/2 cup watter, totalling about 550 calories. The 4 strips of bacon contains about 200 calories."}],
   "is_classification": false
 }
 {
-  "id": "seed_task_1", 
-  "name": "antonym_relation", 
-  "instruction": "What is the relation between the given pairs?", 
+  "id": "seed_task_1",
+  "name": "antonym_relation",
+  "instruction": "What is the relation between the given pairs?",
   "instances": [{"input": "Night : Day :: Right : Left", "output": "The relation between the given pairs is that they are opposites."}], "is_classification": false
 }
 ```
@@ -129,7 +129,7 @@ from xturing.model_apis.openai import Davinci
 ## Load the required engine
 engine = Davinci("your-api-key")
 
-## Generate the dataset 
+## Generate the dataset
 dataset = InstructionDataset.generate_dataset(path="./tasks.jsonl", engine=engine)
 
 ## Save the dataset instance
@@ -162,7 +162,7 @@ A cap on the size of the dataset, this can help to create a more diverse dataset
 
 ## From custom data
 
-We can also generate a dataset from our own files. 
+We can also generate a dataset from our own files.
 
 <details>
   <summary>
@@ -264,4 +264,3 @@ The number of samples that will be generated for each chunk. The default value i
 
 
 <!-- --- -->
-

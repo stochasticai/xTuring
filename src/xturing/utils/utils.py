@@ -163,19 +163,32 @@ def is_itrex_available():
         subprocess.CalledProcessError: If the pip installation process fails.
     """
     import importlib
+
     if importlib.util.find_spec("intel_extension_for_transformers") is not None:
         return True
     else:
         try:
             import subprocess
             import sys
-            subprocess.check_call([sys.executable, "-m", "pip", "install", "intel-extension-for-transformers"])
-            return importlib.util.find_spec("intel_extension_for_transformers") is not None
+
+            subprocess.check_call(
+                [
+                    sys.executable,
+                    "-m",
+                    "pip",
+                    "install",
+                    "intel-extension-for-transformers",
+                ]
+            )
+            return (
+                importlib.util.find_spec("intel_extension_for_transformers") is not None
+            )
         except:
             return False
+
 
 def assert_install_itrex():
     assert is_itrex_available(), (
         "To run int8 or k-bits model on cpu, please install the `intel-extension-for-transformers` package."
         "You can install it with `pip install intel-extension-for-transformers`."
-        )
+    )

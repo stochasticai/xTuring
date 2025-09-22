@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 from transformers import BatchEncoding
 
-from xturing.config import DEFAULT_DEVICE, assert_not_cpu_int8, assert_cpu_int8_on_itrex
+from xturing.config import DEFAULT_DEVICE, assert_cpu_int8_on_itrex, assert_not_cpu_int8
 from xturing.config.config_data_classes import FinetuningConfig, GenerationConfig
 from xturing.config.read_config import load_config
 from xturing.datasets.instruction_dataset import InstructionDataset

@@ -8,22 +8,26 @@ class StableDiffusion:
     config_name: str = "stable_diffusion"
 
     def __init__(self, weights_path: str):
-        pass
+        raise NotImplementedError(
+            "StableDiffusion is a placeholder and not yet implemented."
+        )
 
     def finetune(self, dataset: Text2ImageDataset, logger=True):
         """Finetune Stable Diffusion model on a given dataset.
-        
+
         Args:
             dataset (Text2ImageDataset): Dataset to finetune on.
-            logger (bool, optional): To be setup with a Pytorch Lightning logger when implemented."""
-        pass
+            logger (bool, optional): To be setup with a Pytorch Lightning logger when implemented.
+        """
+
+        raise NotImplementedError()
 
     def generate(
         self,
         texts: Optional[Union[List[str], str]] = None,
         dataset: Optional[Text2ImageDataset] = None,
     ):
-        pass
+        raise NotImplementedError()
 
     def save(self, path: Union[str, Path]):
-        pass
+        raise NotImplementedError()

@@ -1,6 +1,4 @@
 import pytest
-from datasets import Dataset as HFDataset
-from datasets import load_from_disk
 
 from xturing.datasets import InstructionDataset
 

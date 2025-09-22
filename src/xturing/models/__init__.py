@@ -28,6 +28,18 @@ from xturing.models.generic import (
     GenericModel,
 )
 from xturing.models.gpt2 import GPT2, GPT2Int8, GPT2Lora, GPT2LoraInt8
+from xturing.models.gpt_oss import (
+    GPTOSS20B,
+    GPTOSS120B,
+    GPTOSS20BInt8,
+    GPTOSS20BLora,
+    GPTOSS20BLoraInt8,
+    GPTOSS20BLoraKbit,
+    GPTOSS120BInt8,
+    GPTOSS120BLora,
+    GPTOSS120BLoraInt8,
+    GPTOSS120BLoraKbit,
+)
 from xturing.models.gptj import GPTJ, GPTJInt8, GPTJLora, GPTJLoraInt8
 from xturing.models.llama import (
     Llama,
@@ -79,6 +91,16 @@ BaseModel.add_to_registry(GPT2.config_name, GPT2)
 BaseModel.add_to_registry(GPT2Int8.config_name, GPT2Int8)
 BaseModel.add_to_registry(GPT2Lora.config_name, GPT2Lora)
 BaseModel.add_to_registry(GPT2LoraInt8.config_name, GPT2LoraInt8)
+BaseModel.add_to_registry(GPTOSS120B.config_name, GPTOSS120B)
+BaseModel.add_to_registry(GPTOSS120BInt8.config_name, GPTOSS120BInt8)
+BaseModel.add_to_registry(GPTOSS120BLora.config_name, GPTOSS120BLora)
+BaseModel.add_to_registry(GPTOSS120BLoraInt8.config_name, GPTOSS120BLoraInt8)
+BaseModel.add_to_registry(GPTOSS120BLoraKbit.config_name, GPTOSS120BLoraKbit)
+BaseModel.add_to_registry(GPTOSS20B.config_name, GPTOSS20B)
+BaseModel.add_to_registry(GPTOSS20BInt8.config_name, GPTOSS20BInt8)
+BaseModel.add_to_registry(GPTOSS20BLora.config_name, GPTOSS20BLora)
+BaseModel.add_to_registry(GPTOSS20BLoraInt8.config_name, GPTOSS20BLoraInt8)
+BaseModel.add_to_registry(GPTOSS20BLoraKbit.config_name, GPTOSS20BLoraKbit)
 BaseModel.add_to_registry(Llama.config_name, Llama)
 BaseModel.add_to_registry(LlamaInt8.config_name, LlamaInt8)
 BaseModel.add_to_registry(LlamaLora.config_name, LlamaLora)

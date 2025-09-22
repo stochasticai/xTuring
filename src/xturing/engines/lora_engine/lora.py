@@ -54,7 +54,7 @@ def is_gptq_available():
 
 
 if is_gptq_available():
-    from ..quant_utils import QuantLinear
+    from xturing.engines.quant_utils import QuantLinear
 
 
 class PeftType(str, enum.Enum):
@@ -521,7 +521,7 @@ def mark_only_lora_as_trainable(model: nn.Module, bias: str = "none") -> None:
             if isinstance(m, LoraLayer) and hasattr(m, "bias") and m.bias is not None:
                 m.bias.requires_grad = True
     else:
-        raise NotImplementedError
+        raise NotImplementedError()
 
 
 class LoraLayer:

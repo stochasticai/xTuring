@@ -140,7 +140,7 @@ try:
     import triton
     import triton.language as tl
 
-    from . import custom_autotune
+    from xturing.engines.quant_utils import custom_autotune
 
     # code based https://github.com/fpgaminer/GPTQ-triton
     @custom_autotune.autotune(

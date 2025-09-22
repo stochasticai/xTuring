@@ -2,8 +2,7 @@ import tempfile
 from pathlib import Path
 
 from xturing.datasets import TextDataset
-from xturing.engines import GPT2LoraEngine
-from xturing.models import GPT2, BaseModel
+from xturing.models import BaseModel
 
 EXAMPLE_BASE_MODEL = "I want to be a part of the community"
 EXAMPLE_LORA_MODEL = "I want to be a part of the community"
@@ -105,12 +104,13 @@ def test_saving_loading_model_lora():
 
 import os
 
+
 def disable_cuda(func):
     def wrapper(*args, **kwargs):
         # Save the current value of CUDA_VISIBLE_DEVICES
-        original_cuda_visible_devices = os.environ.get('CUDA_VISIBLE_DEVICES', None)
+        original_cuda_visible_devices = os.environ.get("CUDA_VISIBLE_DEVICES", None)
         # Set CUDA_VISIBLE_DEVICES to -1 to disable CUDA
-        os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+        os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
         try:
             # Call the decorated function
             return func(*args, **kwargs)
@@ -120,13 +120,14 @@ def disable_cuda(func):
         finally:
             # Restore the original value of CUDA_VISIBLE_DEVICES
             if original_cuda_visible_devices is not None:
-                os.environ['CUDA_VISIBLE_DEVICES'] = original_cuda_visible_devices
+                os.environ["CUDA_VISIBLE_DEVICES"] = original_cuda_visible_devices
             else:
                 # If CUDA_VISIBLE_DEVICES was not set before, remove it from the environment
-                if 'CUDA_VISIBLE_DEVICES' in os.environ:
-                    del os.environ['CUDA_VISIBLE_DEVICES']
+                if "CUDA_VISIBLE_DEVICES" in os.environ:
+                    del os.environ["CUDA_VISIBLE_DEVICES"]
 
     return wrapper
+
 
 @disable_cuda
 def test_gpt2_int8_woq_cpu():

@@ -40,7 +40,7 @@ class MyModel(CausalModel):
         super().__init__(MyEngine.config_name, weights_path)
 ```
 
-### 3. Then, update the model and engine registries 
+### 3. Then, update the model and engine registries
 We have to add our new model to the [`model`](https://github.com/stochasticai/xTuring/blob/main/src/xturing/models/__init__.py) and [`engine`](https://github.com/stochasticai/xTuring/blob/main/src/xturing/engines/__init__.py) registries in `xturing.{models|engines}.__init__.py`. This will allow users to create instances of your model using the `BaseModel.create('<model_name>')` method.
 
 ### 4. Alongside, update the config files
@@ -61,7 +61,7 @@ my_model:
 
 ```
 
-### 5. Do not forget to add tests 
+### 5. Do not forget to add tests
 If our model is small enough we can add tests for our new model in the [tests/](https://github.com/stochasticai/xTuring/tree/main/tests/xturing) folder. We can use existing tests as a reference. If our model is too large to be included in the tests, we can add a notebook in the [examples/](https://github.com/stochasticai/xTuring/tree/main/examples) folder to demonstrate how to use our model.
 
 ### 6. Update the documentation

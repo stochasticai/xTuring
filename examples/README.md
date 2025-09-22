@@ -1,5 +1,5 @@
 # Navigating through examples
-Here, is a brief about how to navigate through examples quick and efficiently, and get your hands dirty with `xTuring`. 
+Here, is a brief about how to navigate through examples quick and efficiently, and get your hands dirty with `xTuring`.
 
 ## Directory structure
 ```
@@ -15,14 +15,14 @@ examples/
 ```
 
 ### datsets/
-This directory consists of multiple ways to generate your custom dataset from a given set of examples. 
+This directory consists of multiple ways to generate your custom dataset from a given set of examples.
 
 ### features/
-This directory consists of files with exapmles highlighting speific major features of the library, which can be replicated to any LLM you want.  
-For example, in `dataset_generation/`, you will find an example on how to generate your custom dataset from a .jsonl file. In `evaluation/`, you will find a specific exapmle on how to evaluate your finetuned model, which can then be extended to any LLM and any dataset. 
+This directory consists of files with exapmles highlighting speific major features of the library, which can be replicated to any LLM you want.
+For example, in `dataset_generation/`, you will find an example on how to generate your custom dataset from a .jsonl file. In `evaluation/`, you will find a specific exapmle on how to evaluate your finetuned model, which can then be extended to any LLM and any dataset.
 
 ### models/
-This directory consists of examples specific to each model mentioned. 
+This directory consists of examples specific to each model mentioned.
 
 ### playground_ui/
 This directory consists of an example which demonstrates how you can play around with your LLM through a web interface.
