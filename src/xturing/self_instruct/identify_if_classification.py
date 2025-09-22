@@ -40,8 +40,9 @@ def identify_if_classification(
                 try:
                     data = json.loads(line)
                     existing_requests[data["instruction"]] = data
-                except:
-                    pass
+                except json.JSONDecodeError:
+                    # Skip malformed JSON lines
+                    continue
         print(f"Loaded {len(existing_requests)} existing requests")
 
     # Create the progress bar

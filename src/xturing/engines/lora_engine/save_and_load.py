@@ -48,7 +48,7 @@ def get_peft_model_state_dict(model, state_dict=None):
                 if bias_name in state_dict:
                     to_return[bias_name] = state_dict[bias_name]
     else:
-        raise NotImplementedError
+        raise NotImplementedError()
     to_return = {
         k: v for k, v in to_return.items() if (("lora_" in k) or ("bias" in k))
     }

@@ -16,7 +16,7 @@ class TextDatasetMeta:
 class TextDataset(BaseDataset):
     config_name: str = "text_dataset"
 
-    def __init__(self, path: Union[str, Path, HFDataset, dict]):
+    def __init__(self, path: Union[str, Path, HFDataset, DatasetDict, dict]):
         if isinstance(path, HFDataset) or isinstance(path, DatasetDict):
             self.data = path
         elif isinstance(path, dict):
