@@ -9,4 +9,4 @@ class Text2ImageDataset:
         raise NotImplementedError("Text2ImageDataset is not implemented yet.")
 
     def _validate(self):
-        raise NotImplementedError
+        raise NotImplementedError()
