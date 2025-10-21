@@ -52,6 +52,23 @@ Next, we need to start the fine-tuning
 model.finetune(dataset=instruction_dataset)
 ```
 
+### Example: Qwen3 0.6B with LoRA
+
+```python
+from xturing.datasets import InstructionDataset
+from xturing.models import BaseModel
+
+instruction_dataset = InstructionDataset("/path/to/your/dataset")
+model = BaseModel.create("qwen3_0_6b_lora")
+model.finetune(dataset=instruction_dataset)
+```
+
+You can find a runnable script at `examples/models/qwen3/qwen3_lora_finetune.py`.
+
+```bash
+xturing finetune --model qwen3_0_6b_lora --data-dir /path/to/your/dataset
+```
+
 <!-- Finally, let us test how our fine-tuned model performs using the `.generate()` function.
 
 ```python

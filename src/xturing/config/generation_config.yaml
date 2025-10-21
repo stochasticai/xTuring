@@ -317,6 +317,35 @@ mamba:
   do_sample: false
 
 # Contrastive search
+qwen3_0_6b:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 256
+  do_sample: false
+
+# Contrastive search
+qwen3_0_6b_lora:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 256
+  do_sample: false
+
+# Greedy search
+qwen3_0_6b_int8:
+  max_new_tokens: 256
+  do_sample: false
+
+# Greedy search
+qwen3_0_6b_lora_int8:
+  max_new_tokens: 256
+  do_sample: false
+
+# Greedy search
+qwen3_0_6b_lora_kbit:
+  max_new_tokens: 256
+  do_sample: false
+
+# Contrastive search
 opt:
   penalty_alpha: 0.6
   top_k: 4
