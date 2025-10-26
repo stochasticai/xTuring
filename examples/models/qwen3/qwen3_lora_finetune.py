@@ -30,5 +30,6 @@ def main():
     model.save(str(OUTPUT_DIR))
     print(f"Saved fine-tuned weights to {OUTPUT_DIR}")
 
+
 if __name__ == "__main__":
     main()

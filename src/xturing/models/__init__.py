@@ -56,6 +56,7 @@ from xturing.models.llama2 import (
     Llama2LoraKbit,
 )
 from xturing.models.mamba import Mamba
+from xturing.models.opt import OPT, OPTInt8, OPTLora, OPTLoraInt8
 from xturing.models.qwen import (
     Qwen3,
     Qwen3Int8,
@@ -63,7 +64,6 @@ from xturing.models.qwen import (
     Qwen3LoraInt8,
     Qwen3LoraKbit,
 )
-from xturing.models.opt import OPT, OPTInt8, OPTLora, OPTLoraInt8
 from xturing.models.stable_diffusion import StableDiffusion
 
 BaseModel.add_to_registry(Bloom.config_name, Bloom)
