@@ -56,6 +56,13 @@ from xturing.models.llama2 import (
     Llama2LoraKbit,
 )
 from xturing.models.mamba import Mamba
+from xturing.models.minimax_m2 import (
+    MiniMaxM2,
+    MiniMaxM2Int8,
+    MiniMaxM2Lora,
+    MiniMaxM2LoraInt8,
+    MiniMaxM2LoraKbit,
+)
 from xturing.models.qwen import (
     Qwen3,
     Qwen3Int8,
@@ -119,6 +126,11 @@ BaseModel.add_to_registry(Llama2Lora.config_name, Llama2Lora)
 BaseModel.add_to_registry(Llama2LoraInt8.config_name, Llama2LoraInt8)
 BaseModel.add_to_registry(Llama2LoraKbit.config_name, Llama2LoraKbit)
 BaseModel.add_to_registry(Mamba.config_name, Mamba)
+BaseModel.add_to_registry(MiniMaxM2.config_name, MiniMaxM2)
+BaseModel.add_to_registry(MiniMaxM2Int8.config_name, MiniMaxM2Int8)
+BaseModel.add_to_registry(MiniMaxM2Lora.config_name, MiniMaxM2Lora)
+BaseModel.add_to_registry(MiniMaxM2LoraInt8.config_name, MiniMaxM2LoraInt8)
+BaseModel.add_to_registry(MiniMaxM2LoraKbit.config_name, MiniMaxM2LoraKbit)
 BaseModel.add_to_registry(Qwen3.config_name, Qwen3)
 BaseModel.add_to_registry(Qwen3Int8.config_name, Qwen3Int8)
 BaseModel.add_to_registry(Qwen3Lora.config_name, Qwen3Lora)
