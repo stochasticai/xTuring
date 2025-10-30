@@ -17,6 +17,7 @@ description: Models Supported by xTuring
 | GPT-2  | gpt2 | ✅  | ✅ | ✅ | ✅ |
 | LLaMA  7B | llama | ✅ | ✅ | ✅ | ✅ |
 | LLaMA2  | llama2 | ✅ | ✅ | ✅ | ✅ |
+| MiniMaxM2 | minimax_m2 | ✅ | ✅ | ✅ | ✅ |
 | Qwen3 0.6B | qwen3_0_6b | ✅ | ✅ | ✅ | ✅ |
 | OPT 1.3B  | opt | ✅ | ✅ |  ✅ | ✅ |
 
