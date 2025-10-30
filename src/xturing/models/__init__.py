@@ -63,6 +63,7 @@ from xturing.models.minimax_m2 import (
     MiniMaxM2LoraInt8,
     MiniMaxM2LoraKbit,
 )
+from xturing.models.opt import OPT, OPTInt8, OPTLora, OPTLoraInt8
 from xturing.models.qwen import (
     Qwen3,
     Qwen3Int8,
@@ -70,7 +71,6 @@ from xturing.models.qwen import (
     Qwen3LoraInt8,
     Qwen3LoraKbit,
 )
-from xturing.models.opt import OPT, OPTInt8, OPTLora, OPTLoraInt8
 from xturing.models.stable_diffusion import StableDiffusion
 
 BaseModel.add_to_registry(Bloom.config_name, Bloom)

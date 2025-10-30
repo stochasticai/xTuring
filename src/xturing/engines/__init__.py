@@ -78,18 +78,18 @@ from xturing.engines.minimax_m2_engine import (
     MiniMaxM2LoraInt8Engine,
     MiniMaxM2LoraKbitEngine,
 )
+from xturing.engines.opt_engine import (
+    OPTEngine,
+    OPTInt8Engine,
+    OPTLoraEngine,
+    OPTLoraInt8Engine,
+)
 from xturing.engines.qwen_engine import (
     Qwen3Engine,
     Qwen3Int8Engine,
     Qwen3LoraEngine,
     Qwen3LoraInt8Engine,
     Qwen3LoraKbitEngine,
-)
-from xturing.engines.opt_engine import (
-    OPTEngine,
-    OPTInt8Engine,
-    OPTLoraEngine,
-    OPTLoraInt8Engine,
 )
 
 BaseEngine.add_to_registry(BloomEngine.config_name, BloomEngine)

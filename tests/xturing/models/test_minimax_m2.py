@@ -30,10 +30,7 @@ def test_minimax_m2_model_creation():
 
 def test_minimax_m2_engine_class_attributes():
     """Test that MiniMaxM2 engine classes have correct attributes."""
-    from xturing.engines.minimax_m2_engine import (
-        MiniMaxM2Engine,
-        MiniMaxM2LoraEngine,
-    )
+    from xturing.engines.minimax_m2_engine import MiniMaxM2Engine, MiniMaxM2LoraEngine
 
     # Test engine config names
     assert MiniMaxM2Engine.config_name == "minimax_m2_engine"
@@ -42,10 +39,7 @@ def test_minimax_m2_engine_class_attributes():
 
 def test_minimax_m2_model_class_attributes():
     """Test that MiniMaxM2 model classes have correct attributes."""
-    from xturing.models.minimax_m2 import (
-        MiniMaxM2,
-        MiniMaxM2Lora,
-    )
+    from xturing.models.minimax_m2 import MiniMaxM2, MiniMaxM2Lora
 
     # Test model config names
     assert MiniMaxM2.config_name == "minimax_m2"
