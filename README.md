@@ -268,6 +268,7 @@ Below is a list of all the supported models via `BaseModel` class of `xTuring` a
 |GPT-2 | gpt2|
 |LLaMA | llama|
 |LLaMA2 | llama2|
+|MiniMaxM2 | minimax_m2|
 |OPT-1.3B | opt|
 
 The above are the base variants. Use these templates for `LoRA`, `INT8`, and `INT8 + LoRA` versions:
