@@ -71,6 +71,13 @@ from xturing.engines.llama_engine import (
     LlamaLoraKbitEngine,
 )
 from xturing.engines.mamba_engine import MambaEngine
+from xturing.engines.minimax_m2_engine import (
+    MiniMaxM2Engine,
+    MiniMaxM2Int8Engine,
+    MiniMaxM2LoraEngine,
+    MiniMaxM2LoraInt8Engine,
+    MiniMaxM2LoraKbitEngine,
+)
 from xturing.engines.opt_engine import (
     OPTEngine,
     OPTInt8Engine,
@@ -142,6 +149,11 @@ BaseEngine.add_to_registry(LLama2LoraEngine.config_name, LLama2LoraEngine)
 BaseEngine.add_to_registry(LLama2LoraInt8Engine.config_name, LLama2LoraInt8Engine)
 BaseEngine.add_to_registry(LLama2LoraKbitEngine.config_name, LLama2LoraKbitEngine)
 BaseEngine.add_to_registry(MambaEngine.config_name, MambaEngine)
+BaseEngine.add_to_registry(MiniMaxM2Engine.config_name, MiniMaxM2Engine)
+BaseEngine.add_to_registry(MiniMaxM2Int8Engine.config_name, MiniMaxM2Int8Engine)
+BaseEngine.add_to_registry(MiniMaxM2LoraEngine.config_name, MiniMaxM2LoraEngine)
+BaseEngine.add_to_registry(MiniMaxM2LoraInt8Engine.config_name, MiniMaxM2LoraInt8Engine)
+BaseEngine.add_to_registry(MiniMaxM2LoraKbitEngine.config_name, MiniMaxM2LoraKbitEngine)
 BaseEngine.add_to_registry(Qwen3Engine.config_name, Qwen3Engine)
 BaseEngine.add_to_registry(Qwen3Int8Engine.config_name, Qwen3Int8Engine)
 BaseEngine.add_to_registry(Qwen3LoraEngine.config_name, Qwen3LoraEngine)

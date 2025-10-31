@@ -316,6 +316,36 @@ llama2_lora_kbit:
 mamba:
   do_sample: false
 
+# Contrastive search for MiniMaxM2
+minimax_m2:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 512
+  do_sample: false
+  temperature: 0.1
+
+minimax_m2_lora:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 512
+  do_sample: false
+  temperature: 0.1
+
+minimax_m2_int8:
+  max_new_tokens: 512
+  do_sample: false
+  temperature: 0.1
+
+minimax_m2_lora_int8:
+  max_new_tokens: 512
+  do_sample: false
+  temperature: 0.1
+
+minimax_m2_lora_kbit:
+  max_new_tokens: 512
+  do_sample: false
+  temperature: 0.1
+
 # Contrastive search
 qwen3_0_6b:
   penalty_alpha: 0.6
