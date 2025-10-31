@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from xturing.config.read_config import read_yaml
 from xturing.engines.qwen_engine import (
     Qwen3Engine,
     Qwen3Int8Engine,
@@ -15,7 +16,6 @@ from xturing.models.qwen import (
     Qwen3LoraInt8,
     Qwen3LoraKbit,
 )
-from xturing.config.read_config import read_yaml
 
 
 def test_qwen3_model_registry_entries_present():
