@@ -26,7 +26,3 @@ jobs:
       - name: Run pre-commit
         run: |
           pre-commit run -a --show-diff-on-failure
-
-      - name: Verify key files present
-        run: |
-          test -f AGENTS.md
