@@ -1,7 +1,6 @@
 # For large models contrastive search works very well.
 # For smaller models top-p sampling is better. Contrastive search repeats the tokens in small models.
 
-
 # Contrastive search
 defaults:
   max_new_tokens: 256
@@ -277,5 +276,34 @@ opt_lora_int8:
 
 # Greedy search
 opt_int8:
+  max_new_tokens: 256
+  do_sample: false
+
+  # Contrastive search
+mistral:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 256
+  do_sample: false
+
+# Contrastive search
+mistral_lora:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 256
+  do_sample: false
+
+# Greedy search
+mistral_int8:
+  max_new_tokens: 256
+  do_sample: false
+
+# Greedy search
+mistral_lora_int8:
+  max_new_tokens: 256
+  do_sample: false
+
+# Greedy search
+mistral_lora_kbit:
   max_new_tokens: 256
   do_sample: false
