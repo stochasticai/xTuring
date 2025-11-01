@@ -37,6 +37,7 @@ description: Models Supported by xTuring
 > In order to load any model's **`INT4+LoRA`** version, you will need to make use of `GenericLoraKbitModel` class from `xturing.models`. Below is how to use it:
 
 ```python
+from xturing.models import GenericLoraKbitModel
 model = GenericLoraKbitModel('/path/to/model')
 ```
 
