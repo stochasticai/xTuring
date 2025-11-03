@@ -60,6 +60,7 @@ dependencies = [
     "rouge-score >= 0.1.2",
     "accelerate==0.22.0",
     "wandb",
+    "scipy",
 ]
 
 [project.scripts]

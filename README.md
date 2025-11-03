@@ -18,7 +18,7 @@
 
 <br>
 
-___
+---
 
 `xTuring` provides fast, efficient and simple fine-tuning of open-source LLMs, such as Mistral, LLaMA, GPT-J, and more.
 By providing an easy-to-use interface for fine-tuning LLMs to your own data and application, xTuring makes it
@@ -26,6 +26,7 @@ simple to build, modify, and control LLMs. The entire process can be done inside
 private cloud, ensuring data privacy and security.
 
 With `xTuring` you can,
+
 - Ingest data from different sources and preprocess them to a format LLMs can understand
 - Scale from single to multiple GPUs for faster fine-tuning
 - Leverage memory-efficient methods (i.e. INT4, LoRA fine-tuning) to reduce hardware costs by up to 90%
@@ -67,8 +68,11 @@ You can find the data folder [here](examples/models/llama/alpaca_data).
 <br>
 
 ## 🌟 What's new?
+
 We are excited to announce the latest enhancements to our `xTuring` library:
-1. __`LLaMA 2` integration__ - You can use and fine-tune the _`LLaMA 2`_ model in different configurations: _off-the-shelf_, _off-the-shelf with INT8 precision_, _LoRA fine-tuning_, _LoRA fine-tuning with INT8 precision_ and _LoRA fine-tuning with INT4 precision_ using the `GenericModel` wrapper and/or you can use the `Llama2` class from `xturing.models` to test and finetune the model.
+
+1. **`LLaMA 2` integration** - You can use and fine-tune the _`LLaMA 2`_ model in different configurations: _off-the-shelf_, _off-the-shelf with INT8 precision_, _LoRA fine-tuning_, _LoRA fine-tuning with INT8 precision_ and _LoRA fine-tuning with INT4 precision_ using the `GenericModel` wrapper and/or you can use the `Llama2` class from `xturing.models` to test and finetune the model.
+
 ```python
 from xturing.models import Llama2
 model = Llama2()
@@ -97,7 +101,9 @@ result = model.evaluate(dataset)
 print(f"Perplexity of the evalution: {result}")
 
 ```
-3. __`INT4` Precision__ - You can now use and fine-tune any LLM with `INT4 Precision` using `GenericLoraKbitModel`.
+
+3. **`INT4` Precision** - You can now use and fine-tune any LLM with `INT4 Precision` using `GenericLoraKbitModel`.
+
 ```python
 # Make the necessary imports
 from xturing.datasets import InstructionDataset
@@ -113,7 +119,7 @@ model = GenericLoraKbitModel('tiiuae/falcon-7b')
 model.finetune(dataset)
 ```
 
-4. __CPU inference__ - The CPU, including laptop CPUs, is now fully equipped to handle LLM inference. We integrated [Intel® Extension for Transformers](https://github.com/intel/intel-extension-for-transformers) to conserve memory by compressing the model with [weight-only quantization algorithms](https://github.com/intel/intel-extension-for-transformers/blob/main/docs/weightonlyquant.md) and accelerate the inference by leveraging its highly optimized kernel on Intel platforms.
+4. **CPU inference** - The CPU, including laptop CPUs, is now fully equipped to handle LLM inference. We integrated [Intel® Extension for Transformers](https://github.com/intel/intel-extension-for-transformers) to conserve memory by compressing the model with [weight-only quantization algorithms](https://github.com/intel/intel-extension-for-transformers/blob/main/docs/weightonlyquant.md) and accelerate the inference by leveraging its highly optimized kernel on Intel platforms.
 
 ```python
 # Make the necessary imports
@@ -128,7 +134,8 @@ output = model.generate(texts=["Why LLM models are becoming so important?"])
 print(output)
 ```
 
-5. __Batch integration__ - By tweaking the 'batch_size' in the .generate() and .evaluate() functions, you can expedite results. Using a 'batch_size' greater than 1 typically enhances processing efficiency.
+5. **Batch integration** - By tweaking the 'batch_size' in the .generate() and .evaluate() functions, you can expedite results. Using a 'batch_size' greater than 1 typically enhances processing efficiency.
+
 ```python
 # Make the necessary imports
 from xturing.datasets import InstructionDataset
@@ -152,6 +159,7 @@ For an extended insight, consider examining the [GenericModel working example](e
 <br>
 
 ## CLI playground
+
 <img src=".github/cli-playground.gif" width="80%" style="margin: 0 1%;"/>
 
 ```bash
@@ -160,6 +168,7 @@ $ xturing chat -m "<path-to-model-folder>"
 ```
 
 ## UI playground
+
 <img src=".github/ui-playground2.gif" width="80%" style="margin: 0 1%;"/>
 
 ```python
@@ -181,6 +190,7 @@ Playground().launch() ## launches localhost UI
 <br>
 
 ## 📚 Tutorials
+
 - [Preparing your dataset](examples/datasets/preparing_your_dataset.py)
 - [Cerebras-GPT fine-tuning with LoRA and INT8](examples/models/cerebras/cerebras_lora_int8.ipynb) &ensp; [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1eKq3oF7dnK8KuIfsTE70Gvvniwr1O9D0?usp=sharing)
 - [Cerebras-GPT fine-tuning with LoRA](examples/models/cerebras/cerebras_lora.ipynb) &ensp; [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1VjqQhstm5pT4EjPjx4Je7b3W2X1V3vDo?usp=sharing)
@@ -210,17 +220,18 @@ Fine-tuning parameters:
 }
 ```
 
-|      LLaMA-7B      | DeepSpeed + CPU Offloading | LoRA + DeepSpeed  | LoRA + DeepSpeed + CPU Offloading |
-| :---------: | :----: | :----: | :----: |
-| GPU | 33.5 GB | 23.7 GB | 21.9 GB |
-| CPU | 190 GB  | 10.2 GB | 14.9 GB |
-| Time/epoch | 21 hours  | 20 mins | 20 mins |
+|  LLaMA-7B  | DeepSpeed + CPU Offloading | LoRA + DeepSpeed | LoRA + DeepSpeed + CPU Offloading |
+| :--------: | :------------------------: | :--------------: | :-------------------------------: |
+|    GPU     |          33.5 GB           |     23.7 GB      |              21.9 GB              |
+|    CPU     |           190 GB           |     10.2 GB      |              14.9 GB              |
+| Time/epoch |          21 hours          |     20 mins      |              20 mins              |
 
 Contribute to this by submitting your performance results on other GPUs by creating an issue with your hardware specifications, memory consumption and time per epoch.
 
 <br>
 
 ## 📎 Fine-tuned model checkpoints
+
 We have already fine-tuned some models that you can use as your base or start playing with.
 Here is how you would load them:
 
@@ -229,44 +240,49 @@ from xturing.models import BaseModel
 model = BaseModel.load("x/distilgpt2_lora_finetuned_alpaca")
 ```
 
-| model               | dataset | Path          |
-|---------------------|--------|---------------|
-| DistilGPT-2 LoRA | alpaca | `x/distilgpt2_lora_finetuned_alpaca` |
-| LLaMA LoRA          | alpaca | `x/llama_lora_finetuned_alpaca` |
+| model            | dataset | Path                                 |
+| ---------------- | ------- | ------------------------------------ |
+| DistilGPT-2 LoRA | alpaca  | `x/distilgpt2_lora_finetuned_alpaca` |
+| LLaMA LoRA       | alpaca  | `x/llama_lora_finetuned_alpaca`      |
 
 <br>
 
 ## Supported Models
+
 Below is a list of all the supported models via `BaseModel` class of `xTuring` and their corresponding keys to load them.
 
-|  Model |  Key |
-| -- | -- |
-|Bloom | bloom|
-|Cerebras | cerebras|
-|DistilGPT-2 | distilgpt2|
-|Falcon-7B | falcon|
-|Galactica | galactica|
-|GPT-J | gptj|
-|GPT-2 | gpt2|
-|LlaMA | llama|
-|LlaMA2 | llama2|
-|OPT-1.3B | opt|
+| Model       | Key        |
+| ----------- | ---------- |
+| Bloom       | bloom      |
+| Cerebras    | cerebras   |
+| DistilGPT-2 | distilgpt2 |
+| Falcon-7B   | falcon     |
+| Galactica   | galactica  |
+| GPT-J       | gptj       |
+| GPT-2       | gpt2       |
+| LlaMA       | llama      |
+| LlaMA2      | llama2     |
+| OPT-1.3B    | opt        |
+| Mistral-7B  | mistral    |
 
 The above mentioned are the base variants of the LLMs. Below are the templates to get their `LoRA`, `INT8`, `INT8 + LoRA` and `INT4 + LoRA` versions.
 
-| Version | Template |
-| -- | -- |
-| LoRA|  <model_key>_lora|
-| INT8|  <model_key>_int8|
-| INT8 + LoRA|  <model_key>_lora_int8|
+| Version     | Template               |
+| ----------- | ---------------------- |
+| LoRA        | <model_key>\_lora      |
+| INT8        | <model_key>\_int8      |
+| INT8 + LoRA | <model_key>\_lora_int8 |
 
-** In order to load any model's __`INT4+LoRA`__ version, you will need to make use of `GenericLoraKbitModel` class from `xturing.models`. Below is how to use it:
+\*\* In order to load any model's **`INT4+LoRA`** version, you will need to make use of `GenericLoraKbitModel` class from `xturing.models`. Below is how to use it:
+
 ```python
 model = GenericLoraKbitModel('<model_path>')
 ```
+
 The `model_path` can be replaced with you local directory or any HuggingFace library model like `facebook/opt-1.3b`.
 
 ## 📈 Roadmap
+
 - [x] Support for `LLaMA`, `GPT-J`, `GPT-2`, `OPT`, `Cerebras-GPT`, `Galactica` and `Bloom` models
 - [x] Dataset generation using self-instruction
 - [x] Low-precision LoRA fine-tuning and unsupervised fine-tuning
@@ -285,6 +301,7 @@ The `model_path` can be replaced with you local directory or any HuggingFace lib
 <br>
 
 ## 🤝 Help and Support
+
 If you have any questions, you can create an issue on this repository.
 
 You can also join our [Discord server](https://discord.gg/TgHXuSJEk6) and start a discussion in the `#xturing` channel.
@@ -292,9 +309,11 @@ You can also join our [Discord server](https://discord.gg/TgHXuSJEk6) and start 
 <br>
 
 ## 📝 License
+
 This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
 
 <br>
 
 ## 🌎 Contributing
+
 As an open source project in a rapidly evolving field, we welcome contributions of all kinds, including new features and better documentation. Please read our [contributing guide](CONTRIBUTING.md) to learn how you can get involved.
