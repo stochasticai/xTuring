@@ -20,7 +20,7 @@
 
 ___
 
-`xTuring` makes it simple, fast, and cost‑efficient to fine‑tune open‑source LLMs (e.g., GPT‑OSS, LLaMA/LLaMA 2, Falcon, GPT‑J, GPT‑2, OPT, Bloom, Cerebras, Galactica) on your own data — locally or in your private cloud.
+`xTuring` makes it simple, fast, and cost‑efficient to fine‑tune open‑source LLMs (e.g., GPT‑OSS, LLaMA/LLaMA 2, Falcon, Qwen3, GPT‑J, GPT‑2, OPT, Bloom, Cerebras, Galactica) on your own data — locally or in your private cloud.
 
 Why xTuring:
 - Simple API for data prep, training, and inference
@@ -161,6 +161,17 @@ model = GenericLoraKbitModel('tiiuae/falcon-7b')
 outputs = model.generate(dataset = dataset, batch_size=10)
 
 ```
+
+7. __Qwen3 0.6B supervised fine-tuning__ – The lightweight Qwen3 0.6B checkpoint now has first-class support (registry, configs, docs, and examples) so you can launch SFT/LoRA jobs immediately.
+```python
+from xturing.datasets import InstructionDataset
+from xturing.models import BaseModel
+
+dataset = InstructionDataset("./examples/models/llama/alpaca_data")
+model = BaseModel.create("qwen3_0_6b_lora")
+model.finetune(dataset=dataset)
+```
+> See `examples/models/qwen3/qwen3_lora_finetune.py` for a runnable script.
 
 An exploration of the [Llama LoRA INT4 working example](examples/features/int4_finetuning/LLaMA_lora_int4.ipynb) is recommended for an understanding of its application.
 
