@@ -43,7 +43,7 @@ keywords = [
 dependencies = [
     "torch >= 1.9.0",
     "pytorch-lightning",
-    "transformers>=4.53.0",
+    "transformers>=4.36.0",
     "datasets==2.14.5",
     "pyarrow >= 8.0.0, < 21.0.0",
     "scipy >= 1.0.0",
@@ -54,8 +54,8 @@ dependencies = [
     "gradio>=5.31.0",
     "click",
     "wget",
-    "ai21",
     "cohere",
+    "anthropic",
     "ipywidgets",
     "openai >= 0.27.0",
     "pydantic >= 1.10.0",
