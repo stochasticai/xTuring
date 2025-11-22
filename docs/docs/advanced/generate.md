@@ -34,11 +34,11 @@ engine = Davinci("your-api-key")
   ```
 
   </TabItem>
-  <TabItem value="ai21" label="AI21">
+  <TabItem value="claude" label="Claude">
 
   ```python
-  from xturing.model_apis.ai21 import J2Grande
-  engine = J2Grande("your-api-key")
+  from xturing.model_apis.claude import ClaudeSonnet
+  engine = ClaudeSonnet("your-api-key")
   ```
 
   </TabItem>

@@ -11,18 +11,6 @@ def _make_module(name):
 
 
 def _install_stub_modules():
-    if "ai21" not in sys.modules:
-        ai21_module = _make_module("ai21")
-
-        class _Completion:
-            @staticmethod
-            def execute(**_):
-                return {"prompt": {"text": ""}}
-
-        ai21_module.api_key = None
-        ai21_module.Completion = _Completion
-        sys.modules["ai21"] = ai21_module
-
     if "cohere" not in sys.modules:
         cohere_module = _make_module("cohere")
 
@@ -59,6 +47,26 @@ def _install_stub_modules():
         openai_module.ChatCompletion = _ChatCompletion
         openai_module.error = types.SimpleNamespace(OpenAIError=Exception)
         sys.modules["openai"] = openai_module
+
+    if "anthropic" not in sys.modules:
+        anthropic_module = _make_module("anthropic")
+
+        class _Messages:
+            def create(self, **_):
+                content_block = types.SimpleNamespace(type="text", text="")
+                return types.SimpleNamespace(
+                    content=[content_block], stop_reason="stop"
+                )
+
+        class _Anthropic:
+            def __init__(self, *_args, **_kwargs):
+                self.messages = _Messages()
+
+        anthropic_module.Anthropic = _Anthropic
+        anthropic_module.APIError = Exception
+        anthropic_module.APIConnectionError = Exception
+        anthropic_module.RateLimitError = Exception
+        sys.modules["anthropic"] = anthropic_module
 
     if "xturing" not in sys.modules:
         xturing_module = _make_module("xturing")

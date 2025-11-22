@@ -301,7 +301,7 @@ Replace `<model_path>` with a local directory or a Hugging Face model like `face
 - [x] Dataset generation using self-instruction
 - [x] Low-precision LoRA fine-tuning and unsupervised fine-tuning
 - [x] INT8 low-precision fine-tuning support
-- [x] OpenAI, Cohere and AI21 Studio model APIs for dataset generation
+- [x] OpenAI, Cohere, and Claude model APIs for dataset generation
 - [x] Added fine-tuned checkpoints for some models to the hub
 - [x] INT4 LLaMA LoRA fine-tuning demo
 - [x] INT4 LLaMA LoRA fine-tuning with INT4 generation
