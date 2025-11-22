@@ -20,7 +20,7 @@
 
 ___
 
-`xTuring` makes it simple, fast, and cost‑efficient to fine‑tune open‑source LLMs (e.g., GPT‑OSS, LLaMA/LLaMA 2, Falcon, GPT‑J, GPT‑2, OPT, Bloom, Cerebras, Galactica) on your own data — locally or in your private cloud.
+`xTuring` makes it simple, fast, and cost‑efficient to fine‑tune open‑source LLMs (e.g., GPT‑OSS, LLaMA/LLaMA 2, Falcon, Qwen3, GPT‑J, GPT‑2, OPT, Bloom, Cerebras, Galactica) on your own data — locally or in your private cloud.
 
 Why xTuring:
 - Simple API for data prep, training, and inference
@@ -162,6 +162,17 @@ outputs = model.generate(dataset = dataset, batch_size=10)
 
 ```
 
+7. __Qwen3 0.6B supervised fine-tuning__ – The lightweight Qwen3 0.6B checkpoint now has first-class support (registry, configs, docs, and examples) so you can launch SFT/LoRA jobs immediately.
+```python
+from xturing.datasets import InstructionDataset
+from xturing.models import BaseModel
+
+dataset = InstructionDataset("./examples/models/llama/alpaca_data")
+model = BaseModel.create("qwen3_0_6b_lora")
+model.finetune(dataset=dataset)
+```
+> See `examples/models/qwen3/qwen3_lora_finetune.py` for a runnable script.
+
 An exploration of the [Llama LoRA INT4 working example](examples/features/int4_finetuning/LLaMA_lora_int4.ipynb) is recommended for an understanding of its application.
 
 For an extended insight, consider examining the [GenericModel working example](examples/features/generic/generic_model.py) available in the repository.
@@ -290,7 +301,7 @@ Replace `<model_path>` with a local directory or a Hugging Face model like `face
 - [x] Dataset generation using self-instruction
 - [x] Low-precision LoRA fine-tuning and unsupervised fine-tuning
 - [x] INT8 low-precision fine-tuning support
-- [x] OpenAI, Cohere and AI21 Studio model APIs for dataset generation
+- [x] OpenAI, Cohere, and Claude model APIs for dataset generation
 - [x] Added fine-tuned checkpoints for some models to the hub
 - [x] INT4 LLaMA LoRA fine-tuning demo
 - [x] INT4 LLaMA LoRA fine-tuning with INT4 generation
