@@ -42,6 +42,16 @@ engine = Davinci("your-api-key")
   ```
 
   </TabItem>
+  <TabItem value="qwen" label="Qwen3-Omni (local)">
+
+  Download the desired checkpoint from [Hugging Face](https://huggingface.co/Qwen/Qwen2.5-Omni) (or point to a local directory) and load it directly.
+
+  ```python
+  from xturing.model_apis.qwen import Qwen3OmniTextGenerationAPI
+  engine = Qwen3OmniTextGenerationAPI(model_name_or_path="Qwen/Qwen2.5-Omni")
+  ```
+
+  </TabItem>
 </Tabs>
 
 ## From no data
