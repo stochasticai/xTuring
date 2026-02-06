@@ -4,7 +4,14 @@ from typing import Iterable, Optional, Union
 
 import pytorch_lightning as pl
 import torch
-from deepspeed.ops.adam import DeepSpeedCPUAdam
+
+try:
+    from deepspeed.ops.adam import DeepSpeedCPUAdam
+except ModuleNotFoundError as import_err:  # pragma: no cover - optional dependency
+    DeepSpeedCPUAdam = None
+    _DEEPSPEED_IMPORT_ERROR = import_err
+else:
+    _DEEPSPEED_IMPORT_ERROR = None
 from pytorch_lightning import callbacks
 from pytorch_lightning.loggers import Logger
 from pytorch_lightning.trainer.trainer import Trainer
@@ -51,6 +58,11 @@ class TuringLightningModule(pl.LightningModule):
                 self.pytorch_model.parameters(), lr=self.learning_rate
             )
         elif self.optimizer_name == "cpu_adam":
+            if DeepSpeedCPUAdam is None:
+                raise ModuleNotFoundError(
+                    "DeepSpeed is required for optimizer 'cpu_adam'. "
+                    "Install it with `pip install deepspeed`."
+                ) from _DEEPSPEED_IMPORT_ERROR
             optimizer = DeepSpeedCPUAdam(
                 self.pytorch_model.parameters(), lr=self.learning_rate
             )
@@ -164,13 +176,17 @@ class LightningTrainer:
             ]
 
             strategy = "auto"
-            if not IS_INTERACTIVE:
-                strategy = (
-                    "deepspeed_stage_2_offload"
-                    if optimizer_name == "cpu_adam"
-                    else "deepspeed_stage_2"
-                )
-
+            if use_deepspeed:
+                if DeepSpeedCPUAdam is None:
+                    raise ModuleNotFoundError(
+                        "use_deepspeed=True requires DeepSpeed. Install it with `pip install deepspeed`."
+                    ) from _DEEPSPEED_IMPORT_ERROR
+                if not IS_INTERACTIVE:
+                    strategy = (
+                        "deepspeed_stage_2_offload"
+                        if optimizer_name == "cpu_adam"
+                        else "deepspeed_stage_2"
+                    )
             self.trainer = Trainer(
                 num_nodes=1,
                 accelerator="gpu",
