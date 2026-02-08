@@ -16,6 +16,10 @@ examples/
 
 ### datsets/
 This directory consists of multiple ways to generate your custom dataset from a given set of examples.
+Also includes SIFT-50M helpers:
+- `examples/datasets/sift50m_subset_builder.py` builds a small English subset.
+- `examples/datasets/sift50m_audio_mapper.py` resolves `audio_path` to local files.
+- `examples/datasets/README.md` contains full CLI recipes.
 
 ### features/
 This directory consists of files with exapmles highlighting speific major features of the library, which can be replicated to any LLM you want.

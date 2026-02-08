@@ -1,0 +1,66 @@
+# Minimal HF/PEFT training template for Qwen3-Omni-30B-A3B-Instruct.
+# This is a starting point; tune for your dataset and budget.
+
+model:
+  name_or_path: Qwen/Qwen3-Omni-30B-A3B-Instruct
+  trust_remote_code: true
+  torch_dtype: bfloat16
+  use_flash_attention_2: true
+
+peft:
+  method: lora
+  r: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+  bias: none
+  task_type: CAUSAL_LM
+  target_modules:
+    - q_proj
+    - k_proj
+    - v_proj
+    - o_proj
+    - gate_proj
+    - up_proj
+    - down_proj
+
+# Data fields are placeholders. Make sure your training script maps
+# the dataset to the model's expected multimodal message format.
+data:
+  train_dataset: /path/to/sift50m_subset
+  train_split: train
+  audio_column: audio_file
+  text_column: text
+  target_column: target
+  messages_column: null
+  system_prompt: "You are Qwen, a virtual human developed by the Qwen Team, Alibaba Group, capable of perceiving auditory and visual inputs, as well as generating text and speech."
+  use_audio_in_video: false
+  load_audio_from_video: false
+  video_fps: 2.0
+  max_samples: 100000
+
+training:
+  output_dir: ./outputs/qwen3_omni_30b_a3b_instruct_lora
+  per_device_train_batch_size: 1
+  gradient_accumulation_steps: 8
+  num_train_epochs: 1
+  learning_rate: 2.0e-5
+  warmup_ratio: 0.03
+  lr_scheduler_type: cosine
+  weight_decay: 0.0
+  max_grad_norm: 1.0
+  logging_steps: 10
+  save_steps: 500
+  save_total_limit: 2
+  bf16: true
+  gradient_checkpointing: true
+  optim: adamw_torch
+  dataloader_num_workers: 4
+  remove_unused_columns: false
+
+# Optional evaluation block; fill in if you have a validation split.
+eval:
+  enabled: false
+  eval_dataset: /path/to/val
+  eval_split: validation
+  per_device_eval_batch_size: 1
+  eval_steps: 500

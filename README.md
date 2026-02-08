@@ -246,6 +246,8 @@ Playground().launch() ## launches localhost UI
 
 ## 📚 Tutorials
 - [Preparing your dataset](examples/datasets/preparing_your_dataset.py)
+- [SIFT-50M dataset helpers](examples/datasets/README.md)
+- [Qwen3-Omni HF/PEFT template (A100/H100)](examples/models/qwen3_omni/README.md)
 - [Cerebras-GPT fine-tuning with LoRA and INT8](examples/models/cerebras/cerebras_lora_int8.ipynb) &ensp; [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1eKq3oF7dnK8KuIfsTE70Gvvniwr1O9D0?usp=sharing)
 - [Cerebras-GPT fine-tuning with LoRA](examples/models/cerebras/cerebras_lora.ipynb) &ensp; [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1VjqQhstm5pT4EjPjx4Je7b3W2X1V3vDo?usp=sharing)
 - [LLaMA fine-tuning with LoRA and INT8](examples/models/llama/llama_lora_int8.py) &ensp; [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1SQUXq1AMZPSLD4mk3A3swUIc6Y2dclme?usp=sharing)
