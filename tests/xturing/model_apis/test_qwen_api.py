@@ -46,7 +46,7 @@ def _install_mocks(monkeypatch, tokenizer):
         raising=False,
     )
     monkeypatch.setattr(
-        "xturing.model_apis.qwen.AutoModelForCausalLM",
+        "xturing.model_apis.qwen.AutoModelForMultimodalLM",
         SimpleNamespace(from_pretrained=lambda *_, **__: dummy_model),
         raising=False,
     )

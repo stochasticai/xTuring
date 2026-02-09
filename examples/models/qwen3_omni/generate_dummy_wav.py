@@ -4,9 +4,8 @@ from __future__ import annotations
 
 import argparse
 import math
-from pathlib import Path
-
 import wave
+from pathlib import Path
 
 
 def main() -> None:
@@ -16,7 +15,9 @@ def main() -> None:
         default="/tmp/dummy_tone.wav",
         help="Output WAV path.",
     )
-    parser.add_argument("--seconds", type=float, default=1.0, help="Duration in seconds")
+    parser.add_argument(
+        "--seconds", type=float, default=1.0, help="Duration in seconds"
+    )
     parser.add_argument("--freq", type=float, default=440.0, help="Tone frequency (Hz)")
     parser.add_argument("--rate", type=int, default=16000, help="Sample rate")
     parser.add_argument("--amp", type=float, default=0.2, help="Amplitude (0-1)")

@@ -100,7 +100,12 @@ def build_conversation(
         {"role": "user", "content": content},
     ]
 
-    if include_assistant and target_col and target_col in example and example[target_col]:
+    if (
+        include_assistant
+        and target_col
+        and target_col in example
+        and example[target_col]
+    ):
         conversation.append(
             {
                 "role": "assistant",

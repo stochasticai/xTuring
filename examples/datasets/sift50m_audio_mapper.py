@@ -10,7 +10,7 @@ import argparse
 import json
 import os
 from pathlib import Path
-from typing import Dict, Optional, Tuple
+from typing import Dict, Optional
 
 from datasets import Dataset, DatasetDict, load_from_disk
 
@@ -164,7 +164,8 @@ def main() -> None:
 
     if args.drop_missing:
         mapped = mapped.filter(
-            lambda row: row["_audio_exists"] and row[args.resolved_audio_col] is not None,
+            lambda row: row["_audio_exists"]
+            and row[args.resolved_audio_col] is not None,
             desc="Drop missing audio",
         )
 
