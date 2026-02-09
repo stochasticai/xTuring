@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Dict, List, Optional, Sequence
 
 import torch
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelForMultimodalLM, AutoTokenizer
 
 from xturing.model_apis.base import TextGenerationAPI
 
@@ -14,7 +14,7 @@ class Qwen3OmniTextGenerationAPI(TextGenerationAPI):
 
     def __init__(
         self,
-        model_name_or_path: str = "Qwen/Qwen2.5-Omni",
+        model_name_or_path: str = "Qwen/Qwen3-Omni-30B-A3B-Instruct",
         device: Optional[str] = None,
         tokenizer_kwargs: Optional[Dict] = None,
         model_kwargs: Optional[Dict] = None,
@@ -32,7 +32,7 @@ class Qwen3OmniTextGenerationAPI(TextGenerationAPI):
         self.tokenizer = AutoTokenizer.from_pretrained(
             model_name_or_path, trust_remote_code=True, **tokenizer_kwargs
         )
-        self.model = AutoModelForCausalLM.from_pretrained(
+        self.model = AutoModelForMultimodalLM.from_pretrained(
             model_name_or_path, trust_remote_code=True, **model_kwargs
         )
 

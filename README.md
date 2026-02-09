@@ -196,8 +196,8 @@ model.finetune(dataset=dataset)
 from xturing.datasets import InstructionDataset
 from xturing.model_apis.qwen import Qwen3OmniTextGenerationAPI
 
-# Download `Qwen/Qwen2.5-Omni` (or another HF variant) ahead of time
-engine = Qwen3OmniTextGenerationAPI(model_name_or_path="Qwen/Qwen2.5-Omni")
+# Download `Qwen/Qwen3-Omni-30B-A3B-Instruct` (or another HF variant) ahead of time
+engine = Qwen3OmniTextGenerationAPI(model_name_or_path="Qwen/Qwen3-Omni-30B-A3B-Instruct")
 dataset = InstructionDataset.generate_dataset("./tasks.jsonl", engine=engine)
 ```
 

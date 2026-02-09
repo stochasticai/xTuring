@@ -15,7 +15,7 @@ import torch
 from datasets import Dataset, DatasetDict, load_from_disk
 from peft import LoraConfig, get_peft_model
 from transformers import (
-    AutoModelForCausalLM,
+    AutoModelForMultimodalLM,
     Qwen3OmniMoeProcessor,
     Trainer,
     TrainingArguments,
@@ -136,7 +136,7 @@ def main() -> None:
     if processor.tokenizer.pad_token_id is None:
         processor.tokenizer.pad_token_id = processor.tokenizer.eos_token_id
 
-    model = AutoModelForCausalLM.from_pretrained(
+    model = AutoModelForMultimodalLM.from_pretrained(
         model_cfg["name_or_path"],
         trust_remote_code=model_cfg.get("trust_remote_code", True),
         torch_dtype=getattr(torch, model_cfg.get("torch_dtype", "bfloat16")),
