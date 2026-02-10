@@ -20,7 +20,7 @@
 
 ___
 
-`xTuring` makes it simple, fast, and cost‑efficient to fine‑tune open‑source LLMs (e.g., GPT‑OSS, LLaMA/LLaMA 2, Falcon, Qwen3, GPT‑J, GPT‑2, OPT, Bloom, Cerebras, Galactica) on your own data — locally or in your private cloud.
+`xTuring` makes it simple, fast, and cost‑efficient to fine‑tune open‑source LLMs (e.g., GPT‑OSS, LLaMA/LLaMA 2, Mistral/Ministral, Falcon, Qwen3, GPT‑J, GPT‑2, OPT, Bloom, Cerebras, Galactica) on your own data — locally or in your private cloud.
 
 Why xTuring:
 - Simple API for data prep, training, and inference
@@ -276,6 +276,8 @@ Below is a list of all the supported models via `BaseModel` class of `xTuring` a
 |GPT-2 | gpt2|
 |LLaMA | llama|
 |LLaMA2 | llama2|
+|Mistral-7B | mistral_7b|
+|Ministral 3.14B | ministral_3_14b|
 |MiniMaxM2 | minimax_m2|
 |OPT-1.3B | opt|
 
