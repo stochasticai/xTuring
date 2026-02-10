@@ -42,7 +42,11 @@ Start by loading the instruction dataset and initializing the model of your choi
 
 <Test instruction={'Instruction'}/>
 
-A list of all the supported models can be found [here](/overview/supported_models).
+A list of all model keys and variant templates can be found [here](/overview/supported_models).
+
+If you prefer notebooks, start from the task-based examples:
+- `examples/notebooks/finetune_lora.ipynb`
+- `examples/notebooks/finetune_lora_int8.ipynb`
 
 
 
