@@ -212,14 +212,11 @@ Playground().launch() ## launches localhost UI
 
 ## 📚 Tutorials
 - [Preparing your dataset](examples/datasets/preparing_your_dataset.py)
-- [LLaMA fine-tuning with LoRA and INT8](examples/models/llama/llama_lora_int8.py) &ensp; [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1SQUXq1AMZPSLD4mk3A3swUIc6Y2dclme?usp=sharing)
-- [LLaMA fine-tuning with LoRA](examples/models/llama/llama_lora.py)
-- [LLaMA fine-tuning](examples/models/llama/llama.py)
-- [GPT-J fine-tuning with LoRA and INT8](examples/models/gptj/gptj_lora_int8.py) &ensp; [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1hB_8s1V9K4IzifmlmN2AovGEJzTB1c7e?usp=sharing)
-- [GPT-J fine-tuning with LoRA](examples/models/gptj/gptj_lora.py)
-- [GPT-2 fine-tuning with LoRA](examples/models/gpt2/gpt2_lora.py) &ensp; [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://drive.google.com/file/d/1Sh-ocNpKn9pS7jv6oBb_Q8DitFyj1avL/view?usp=sharing)
-- [Qwen3 LoRA fine-tuning](examples/models/qwen3/qwen3_lora_finetune.py)
-- [MiniMax M2 fine-tuning](examples/models/minimax_m2/minimax_m2_finetune.py)
+- [Task notebook: fine-tune with LoRA](examples/notebooks/finetune_lora.ipynb)
+- [Task notebook: fine-tune with LoRA + INT8](examples/notebooks/finetune_lora_int8.ipynb)
+- [Task notebook: evaluate model perplexity](examples/notebooks/evaluate_perplexity.ipynb)
+- [Qwen3 LoRA runnable script](examples/models/qwen3/qwen3_lora_finetune.py)
+- [Model key and variant reference](https://xturing.stochastic.ai/overview/supported_models)
 
 <br>
 

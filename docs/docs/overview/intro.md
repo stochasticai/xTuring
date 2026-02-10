@@ -49,20 +49,17 @@ So, if you're ready to add a personal touch to AI, welcome to xTuring. It's a jo
 
 To get started with xTuring, check out the [Quickstart](/overview/quickstart) guide or try some of the examples below.
 
-## Model examples
+## Example notebooks
 
-| Model | Examples |
+Examples are organized by task, not by model family. Start with one of these:
+
+| Task | Notebook |
 | --- | --- |
-| Bloom | [Bloom fine-tuning on Alpaca dataset with/without LoRA and with/without INT8](https://github.com/stochasticai/xturing/tree/main/examples/models/bloom) |
-| Cerebras-GPT | [Cerebras-GPT fine-tuning on Alpaca dataset with/without LoRA and with/without INT8](https://github.com/stochasticai/xturing/tree/main/examples/models/cerebras) |
-| Falcon | [Falcon 7B fine-tuning on Alpaca dataset with/without LoRA and with/without INT8](https://github.com/stochasticai/xturing/tree/main/examples/models/falcon) |
-| Galactica | [Galactica fine-tuning on Alpaca dataset with/without LoRA and with/without INT8](https://github.com/stochasticai/xturing/tree/main/examples/models/galactica) |
-| Generic Wrapper | [Any large language model fine-tuning on Alpaca dataset with/without LoRA and with/without INT8](https://github.com/stochasticai/xturing/tree/main/examples/models/generic) |
-| GPT-J | [GPT-J 6B LoRA fine-tuning with/without INT8 ](https://github.com/stochasticai/xturing/tree/main/examples/models/gptj) |
-| GPT-2 | [GPT-2 fine-tuning on Alpaca dataset with/without LoRA and with/without INT8](https://github.com/stochasticai/xturing/tree/main/examples/models/gpt2) |
-| LLaMA | [LLaMA 7B fine-tuning on Alpaca dataset with/without LoRA and with/without INT8](https://github.com/stochasticai/xturing/tree/main/examples/models/llama) |
-| LLaMA 2 | [LLaMA 2 7B fine-tuning on Alpaca dataset with/without LoRA and with/without INT8](https://github.com/stochasticai/xturing/tree/main/examples/models/llama2) |
-| OPT | [OPT fine-tuning on Alpaca dataset with/without LoRA and with/without INT8](https://github.com/stochasticai/xturing/tree/main/examples/models/opt) |
+| Fine-tune with LoRA | [examples/notebooks/finetune_lora.ipynb](https://github.com/stochasticai/xturing/blob/main/examples/notebooks/finetune_lora.ipynb) |
+| Fine-tune with LoRA + INT8 | [examples/notebooks/finetune_lora_int8.ipynb](https://github.com/stochasticai/xturing/blob/main/examples/notebooks/finetune_lora_int8.ipynb) |
+| Evaluate perplexity | [examples/notebooks/evaluate_perplexity.ipynb](https://github.com/stochasticai/xturing/blob/main/examples/notebooks/evaluate_perplexity.ipynb) |
+
+For model options and naming variants, see [Supported models and variants](/overview/supported_models).
 
 xTuring is licensed under [Apache 2.0](https://github.com/stochasticai/xturing/blob/main/LICENSE)
 
