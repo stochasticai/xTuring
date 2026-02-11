@@ -40,7 +40,7 @@ git commit -m "Commit message"
 git push origin <BRANCH_NAME>
 ```
 
-7. Create a pull request to the `dev` branch
+7. Create a pull request to the `main` branch
 
 ## Pull Request Guidelines
 
