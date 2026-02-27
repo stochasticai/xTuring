@@ -118,6 +118,7 @@ def test_saving_loading_model_lora():
     model2 = BaseModel.load(str(saving_path))
     model2.generate(texts=["Why are the LLM so important?"])
 
+
 def disable_cuda(func):
     def wrapper(*args, **kwargs):
         # Save the current value of CUDA_VISIBLE_DEVICES
@@ -144,7 +145,8 @@ def disable_cuda(func):
 
 @disable_cuda
 @pytest.mark.skipif(
-    CPU_WITHOUT_ITREX, reason="gpt2_int8 on CPU requires intel-extension-for-transformers"
+    CPU_WITHOUT_ITREX,
+    reason="gpt2_int8 on CPU requires intel-extension-for-transformers",
 )
 def test_gpt2_int8_woq_cpu():
     # test quantize gpt2 with itrex

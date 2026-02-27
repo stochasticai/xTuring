@@ -33,6 +33,7 @@ class TestClaudeTextGenerationAPI:
 
         # Ensure we do not keep a stale submodule object on the package.
         import sys
+
         import xturing.model_apis as model_apis_pkg
 
         sys.modules.pop("xturing.model_apis.claude", None)

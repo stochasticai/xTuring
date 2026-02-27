@@ -13,7 +13,6 @@ from xturing.models import (
 )
 from xturing.utils.utils import is_itrex_available
 
-
 CPU_WITHOUT_ITREX = DEFAULT_DEVICE.type == "cpu" and not is_itrex_available()
 NO_CUDA = DEFAULT_DEVICE.type != "cuda"
 
