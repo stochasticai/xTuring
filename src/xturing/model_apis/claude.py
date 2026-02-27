@@ -1,5 +1,6 @@
 import time
 from datetime import datetime
+from importlib import import_module
 
 try:
     from anthropic import Anthropic
@@ -22,20 +23,25 @@ class ClaudeTextGenerationAPI(TextGenerationAPI):
     config_name = "claude"
 
     def __init__(self, model, api_key, request_batch_size=1):
-        self._ensure_dependency()
+        anthropic_client_cls = self._ensure_dependency()
         super().__init__(
             engine=model, api_key=api_key, request_batch_size=request_batch_size
         )
-        self._client = Anthropic(api_key=api_key)
+        self._client = anthropic_client_cls(api_key=api_key)
 
     @staticmethod
     def _ensure_dependency():
-        if Anthropic is None:
+        # Resolve from the currently loaded module to stay correct across reloads.
+        module = import_module(__name__)
+        anthropic_client_cls = getattr(module, "Anthropic", None)
+        if anthropic_client_cls is None:
+            anthropic_import_error = getattr(module, "_ANTHROPIC_IMPORT_ERROR", None)
             message = (
                 "The anthropic SDK is required for ClaudeTextGenerationAPI. "
                 "Install it with `pip install anthropic`."
             )
-            raise ModuleNotFoundError(message) from _ANTHROPIC_IMPORT_ERROR
+            raise ModuleNotFoundError(message) from anthropic_import_error
+        return anthropic_client_cls
 
     def _make_request(self, prompt, max_tokens, temperature, top_p, stop_sequences):
         params = {

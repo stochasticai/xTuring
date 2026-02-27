@@ -1,8 +1,13 @@
+import os
 import tempfile
 from pathlib import Path
 
+import pytest
+
+from xturing.config import DEFAULT_DEVICE
 from xturing.datasets import TextDataset
 from xturing.models import BaseModel
+from xturing.utils.utils import is_itrex_available
 
 EXAMPLE_BASE_MODEL = "I want to be a part of the community"
 EXAMPLE_LORA_MODEL = "I want to be a part of the community"
@@ -13,6 +18,9 @@ DATASET_OTHER_EXAMPLE_DICT = {
 }
 
 model = BaseModel.create("distilgpt2")
+CPU_WITHOUT_ITREX = DEFAULT_DEVICE.type == "cpu" and not is_itrex_available()
+NO_CUDA = DEFAULT_DEVICE.type != "cuda"
+RUN_TRAINING_TESTS = os.getenv("XTURING_RUN_TRAINING_TESTS") == "1"
 
 
 def test_text_gpt2():
@@ -43,7 +51,8 @@ def test_text_dataset_gpt2_lora():
     assert other_model.generate(texts="I want to") != ""
 
 
-def test_text_dataset_gpt2_lora():
+@pytest.mark.skipif(NO_CUDA, reason="gpt2_lora_int8 requires CUDA")
+def test_text_dataset_gpt2_lora_int8():
     # Greedy search. Parameters are set to default config of HF
     other_model = BaseModel.create("gpt2_lora_int8")
     generation_config = other_model.generation_config()
@@ -54,6 +63,10 @@ def test_text_dataset_gpt2_lora():
     assert other_model.generate(texts="I want to") != ""
 
 
+@pytest.mark.skipif(
+    not RUN_TRAINING_TESTS,
+    reason="Fine-tuning tests are slow and require explicit opt-in",
+)
 def test_train_gpt2():
     dataset = TextDataset(DATASET_OTHER_EXAMPLE_DICT)
     model = BaseModel.create("distilgpt2")
@@ -69,6 +82,10 @@ def test_train_gpt2():
     assert len(result) == 2
 
 
+@pytest.mark.skipif(
+    not RUN_TRAINING_TESTS,
+    reason="Fine-tuning tests are slow and require explicit opt-in",
+)
 def test_train_gpt2_lora():
     dataset = TextDataset(DATASET_OTHER_EXAMPLE_DICT)
     model = BaseModel.create("distilgpt2_lora")
@@ -101,10 +118,6 @@ def test_saving_loading_model_lora():
     model2 = BaseModel.load(str(saving_path))
     model2.generate(texts=["Why are the LLM so important?"])
 
-
-import os
-
-
 def disable_cuda(func):
     def wrapper(*args, **kwargs):
         # Save the current value of CUDA_VISIBLE_DEVICES
@@ -130,6 +143,9 @@ def disable_cuda(func):
 
 
 @disable_cuda
+@pytest.mark.skipif(
+    CPU_WITHOUT_ITREX, reason="gpt2_int8 on CPU requires intel-extension-for-transformers"
+)
 def test_gpt2_int8_woq_cpu():
     # test quantize gpt2 with itrex
     other_model = BaseModel.create("gpt2_int8")
