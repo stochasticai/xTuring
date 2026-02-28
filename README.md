@@ -20,7 +20,9 @@
 
 ___
 
-`xTuring` makes it simple, fast, and cost‑efficient to fine‑tune open‑source LLMs (e.g., GPT‑OSS, LLaMA/LLaMA 2, Mistral/Ministral, Falcon, Qwen3, GPT‑J, GPT‑2, OPT, Bloom, Cerebras, Galactica) on your own data — locally or in your private cloud.
+
+`xTuring` makes it simple, fast, and cost‑efficient to fine‑tune open‑source LLMs (e.g., GPT‑OSS, LLaMA/LLaMA 2, Qwen3, MiniMax M2, GPT‑J, GPT‑2, DistilGPT‑2, Mamba) on your own data — locally or in your private cloud.
+
 
 Why xTuring:
 - Simple API for data prep, training, and inference
@@ -49,8 +51,8 @@ from xturing.models import BaseModel
 # Load a toy instruction dataset (Alpaca format)
 dataset = InstructionDataset("./examples/models/llama/alpaca_data")
 
-# Start small for quick iterations (works on CPU)
-model = BaseModel.create("distilgpt2_lora")
+# Start with the lightweight Qwen 0.6B LoRA checkpoint
+model = BaseModel.create("qwen3_0_6b_lora")
 
 # Fine‑tune and then generate
 model.finetune(dataset=dataset)
@@ -124,7 +126,7 @@ from xturing.models import GenericLoraKbitModel
 dataset = InstructionDataset('../llama/alpaca_data')
 
 # Load the desired model for INT4 bit fine-tuning
-model = GenericLoraKbitModel('tiiuae/falcon-7b')
+model = GenericLoraKbitModel('mistralai/Mistral-7B-Instruct-v0.2')
 
 # Run the fine-tuning
 model.finetune(dataset)
@@ -155,7 +157,7 @@ from xturing.models import GenericLoraKbitModel
 dataset = InstructionDataset('../llama/alpaca_data')
 
 # Load the desired model for INT4 bit fine-tuning
-model = GenericLoraKbitModel('tiiuae/falcon-7b')
+model = GenericLoraKbitModel('mistralai/Mistral-7B-Instruct-v0.2')
 
 # Generate outputs on desired prompts
 outputs = model.generate(dataset = dataset, batch_size=10)
@@ -266,11 +268,7 @@ Below is a list of all the supported models via `BaseModel` class of `xTuring` a
 
 |  Model |  Key |
 | -- | -- |
-|Bloom | bloom|
-|Cerebras | cerebras|
 |DistilGPT-2 | distilgpt2|
-|Falcon-7B | falcon|
-|Galactica | galactica|
 |GPT-OSS (20B/120B) | gpt_oss_20b, gpt_oss_120b|
 |GPT-J | gptj|
 |GPT-2 | gpt2|
@@ -280,6 +278,8 @@ Below is a list of all the supported models via `BaseModel` class of `xTuring` a
 |Ministral 3.14B | ministral_3_14b|
 |MiniMaxM2 | minimax_m2|
 |OPT-1.3B | opt|
+|Qwen3 0.6B | qwen3_0_6b|
+|Mamba | mamba|
 
 The above are the base variants. Use these templates for `LoRA`, `INT8`, and `INT8 + LoRA` versions:
 
@@ -293,10 +293,10 @@ To load a model’s __INT4 + LoRA__ version, use the `GenericLoraKbitModel` clas
 ```python
 model = GenericLoraKbitModel('<model_path>')
 ```
-Replace `<model_path>` with a local directory or a Hugging Face model like `facebook/opt-1.3b`.
+Replace `<model_path>` with a local directory or a Hugging Face model like `mistralai/Mistral-7B-Instruct-v0.2`.
 
 ## 📈 Roadmap
-- [x] Support for `LLaMA`, `GPT-J`, `GPT-2`, `OPT`, `Cerebras-GPT`, `Galactica` and `Bloom` models
+- [x] Support for `LLaMA`, `LLaMA 2`, `GPT-J`, `GPT-2`, and `GPT-OSS` models
 - [x] Dataset generation using self-instruction
 - [x] Low-precision LoRA fine-tuning and unsupervised fine-tuning
 - [x] INT8 low-precision fine-tuning support
@@ -305,7 +305,7 @@ Replace `<model_path>` with a local directory or a Hugging Face model like `face
 - [x] INT4 LLaMA LoRA fine-tuning demo
 - [x] INT4 LLaMA LoRA fine-tuning with INT4 generation
 - [x] Support for a `Generic model` wrapper
-- [x] Support for `Falcon-7B` model
+- [x] Support for `MiniMax M2`, `Qwen3 0.6B`, and `Mamba` models
 - [x] INT4 low-precision fine-tuning support
 - [x] Evaluation of LLM models
 - [ ] INT3, INT2, INT1 low-precision fine-tuning support
