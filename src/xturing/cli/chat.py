@@ -6,7 +6,12 @@ from xturing import BaseModel
 
 
 @click.command(name="chat")
-@click.option("-m", "--model_name_or_path")
+@click.option(
+    "-m",
+    "--model_name_or_path",
+    required=True,
+    help="Model key or path to a model directory containing xturing.json",
+)
 def chat_command(model_name_or_path: str):
     wrapped_model_path = Path(model_name_or_path)
 

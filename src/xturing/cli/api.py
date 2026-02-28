@@ -41,7 +41,12 @@ def xturing_api(user_input: UserInput):
         generation_config.do_sample = user_input.params.do_sample
         generation_config.max_new_tokens = user_input.params.max_new_tokens
 
-        output = model.generate(texts=[user_input.prompt])
+        prompts = (
+            user_input.prompt
+            if isinstance(user_input.prompt, list)
+            else [user_input.prompt]
+        )
+        output = model.generate(texts=prompts)
 
         return {"success": True, "response": output}
 
@@ -50,7 +55,12 @@ def xturing_api(user_input: UserInput):
 
 
 @click.command(name="api")
-@click.option("-m", "--model_path")
+@click.option(
+    "-m",
+    "--model_path",
+    required=True,
+    help="Path to a model directory containing xturing.json",
+)
 def api_command(model_path: str):
     # Resolve the path
     wrapped_model_path = Path(model_path)
