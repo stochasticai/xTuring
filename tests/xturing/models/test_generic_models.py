@@ -1,6 +1,9 @@
 import tempfile
 from pathlib import Path
 
+import pytest
+
+from xturing.config import DEFAULT_DEVICE
 from xturing.models import (
     GenericInt8Model,
     GenericLoraInt8Model,
@@ -8,6 +11,10 @@ from xturing.models import (
     GenericLoraModel,
     GenericModel,
 )
+from xturing.utils.utils import is_itrex_available
+
+CPU_WITHOUT_ITREX = DEFAULT_DEVICE.type == "cpu" and not is_itrex_available()
+NO_CUDA = DEFAULT_DEVICE.type != "cuda"
 
 
 def test_generic_model():
@@ -19,6 +26,10 @@ def test_generic_model():
     model2.generate(texts=["Why are the LLM so important?"])
 
 
+@pytest.mark.skipif(
+    CPU_WITHOUT_ITREX,
+    reason="GenericInt8Model on CPU requires intel-extension-for-transformers",
+)
 def test_generic_model_int8():
     saving_path = Path(tempfile.gettempdir()) / "test_xturing_generic_int8"
     model = GenericInt8Model("distilgpt2")
@@ -37,6 +48,7 @@ def test_generic_model_lora():
     model2.generate(texts=["Why are the LLM so important?"])
 
 
+@pytest.mark.skipif(NO_CUDA, reason="GenericLoraInt8Model requires CUDA")
 def test_generic_model_int8_lora():
     saving_path = Path(tempfile.gettempdir()) / "test_xturing_lora_int8"
     model = GenericLoraInt8Model("distilgpt2")
@@ -46,6 +58,7 @@ def test_generic_model_int8_lora():
     model2.generate(texts=["Why are the LLM so important?"])
 
 
+@pytest.mark.skipif(NO_CUDA, reason="GenericLoraKbitModel requires CUDA")
 def test_generic_model_lora_kbit():
     saving_path = Path(tempfile.gettempdir()) / "test_xturing_lora_kbit"
     model = GenericLoraKbitModel("distilgpt2")
