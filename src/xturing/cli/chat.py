@@ -2,8 +2,6 @@ from pathlib import Path
 
 import click
 
-from xturing import BaseModel
-
 
 @click.command(name="chat")
 @click.option(
@@ -13,6 +11,8 @@ from xturing import BaseModel
     help="Model key or path to a model directory containing xturing.json",
 )
 def chat_command(model_name_or_path: str):
+    from xturing import BaseModel
+
     wrapped_model_path = Path(model_name_or_path)
 
     click.secho("[*] Loading your model...", fg="blue", bold=True)
