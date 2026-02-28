@@ -88,6 +88,8 @@ def test_openai_chat_completions_returns_compatible_shape():
     assert payload["model"] == "dummy-model"
     assert payload["choices"][0]["message"]["role"] == "assistant"
     assert payload["choices"][0]["message"]["content"].startswith("echo:")
+    assert "usage" in payload
+    assert payload["usage"]["total_tokens"] >= payload["usage"]["prompt_tokens"]
     assert loaded_model.last_texts == ["system: Be concise.\nuser: Say hi"]
 
 
@@ -101,3 +103,77 @@ def test_openai_chat_completions_rejects_empty_messages():
 
     assert response.status_code == 400
     assert "messages must not be empty" in response.text
+
+
+def test_openai_text_completions_returns_usage_and_choices():
+    client, loaded_model = _client_with_model()
+
+    response = client.post(
+        "/v1/completions",
+        json={
+            "model": "dummy-model",
+            "prompt": ["hello", "world"],
+            "max_tokens": 32,
+        },
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["object"] == "text_completion"
+    assert len(payload["choices"]) == 2
+    assert payload["choices"][0]["text"] == "echo:hello"
+    assert payload["choices"][1]["text"] == "echo:world"
+    assert payload["usage"]["total_tokens"] >= payload["usage"]["prompt_tokens"]
+    assert loaded_model.last_texts == ["hello", "world"]
+
+
+def test_openai_chat_streaming_skeleton():
+    client, _ = _client_with_model()
+
+    response = client.post(
+        "/v1/chat/completions",
+        json={
+            "model": "dummy-model",
+            "messages": [{"role": "user", "content": "stream me"}],
+            "stream": True,
+        },
+    )
+
+    assert response.status_code == 200
+    assert response.headers["content-type"].startswith("text/event-stream")
+    assert "chat.completion.chunk" in response.text
+    assert "data: [DONE]" in response.text
+
+
+def test_openai_completions_streaming_skeleton():
+    client, _ = _client_with_model()
+
+    response = client.post(
+        "/v1/completions",
+        json={
+            "model": "dummy-model",
+            "prompt": "stream me",
+            "stream": True,
+        },
+    )
+
+    assert response.status_code == 200
+    assert response.headers["content-type"].startswith("text/event-stream")
+    assert "text_completion" in response.text
+    assert "data: [DONE]" in response.text
+
+
+def test_openai_completions_rejects_n_greater_than_one():
+    client, _ = _client_with_model()
+
+    response = client.post(
+        "/v1/completions",
+        json={
+            "model": "dummy-model",
+            "prompt": "hello",
+            "n": 2,
+        },
+    )
+
+    assert response.status_code == 400
+    assert "Only n=1 is currently supported" in response.text

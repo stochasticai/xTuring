@@ -10,7 +10,7 @@ sidebar_position: 3
 After successfully fine-tuning your model, you can perform inference using a FastAPI server. The server exposes:
 
 1. Legacy route: `/api`
-2. OpenAI-compatible routes: `/v1/models` and `/v1/chat/completions`
+2. OpenAI-compatible routes: `/v1/models`, `/v1/chat/completions`, and `/v1/completions`
 
 ### 1. Launch API server from Command Line Interface (CLI)
 
@@ -134,6 +134,54 @@ Response example:
       "finish_reason": "stop"
     }
   ]
+}
+```
+
+Streaming skeleton request:
+
+```json
+{
+  "model": "qwen3_0_6b_lora",
+  "messages": [{"role": "user", "content": "Say hi"}],
+  "stream": true
+}
+```
+
+### 5. OpenAI-compatible text completions
+
+- **URL**: `http://localhost:{PORT}/v1/completions`
+- **Method**: `POST`
+
+Request example:
+
+```json
+{
+  "model": "qwen3_0_6b_lora",
+  "prompt": ["Summarize xTuring in one sentence."],
+  "max_tokens": 64
+}
+```
+
+Response example:
+
+```json
+{
+  "id": "cmpl-abc123",
+  "object": "text_completion",
+  "created": 1700000000,
+  "model": "qwen3_0_6b_lora",
+  "choices": [
+    {
+      "index": 0,
+      "text": "xTuring is ...",
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 6,
+    "completion_tokens": 8,
+    "total_tokens": 14
+  }
 }
 ```
 

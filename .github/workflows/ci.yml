@@ -43,9 +43,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install pytest fastapi uvicorn httpx
 
+      - name: Run docs contract checks
+        run: |
+          python scripts/check_docs_contracts.py
+
       - name: Run lightweight API tests
         run: |
-          PYTHONPATH=src pytest -q tests/xturing/cli/test_api_server.py
+          PYTHONPATH=src pytest -q tests/xturing/cli/test_api_server.py tests/xturing/evaluation/test_runner.py
 
   docs-build:
     runs-on: ubuntu-latest

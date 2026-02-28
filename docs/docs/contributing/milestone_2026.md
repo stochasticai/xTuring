@@ -123,10 +123,13 @@ Dependencies:
 
 ## 5) Current execution status
 
-Started:
-1. WS-A A1: compatibility API baseline implementation.
-2. WS-D D2: docs/API synchronization fixes.
+Completed in current tranche:
+1. WS-A A1: Added OpenAI-compatible `/v1/models`, `/v1/chat/completions`, and `/v1/completions`.
+2. WS-A A2: Added stream skeleton support (`stream=true`) and basic usage accounting payloads.
+3. WS-D D1/D2: Added docs-contract checks to CI and synchronized API docs.
+4. WS-C C1: Added `xturing.evaluation` scaffold (adapter interface, lm-eval adapter scaffold, result schema, artifact persistence).
 
 Next:
-1. Complete WS-A A1 tests.
-2. Land WS-D D1 lightweight CI checks.
+1. Implement real backend execution for the `LMEvalAdapter`.
+2. Expand OpenAI compatibility to richer tool/response schema handling.
+3. Add CI threshold gates on persisted evaluation artifacts.
