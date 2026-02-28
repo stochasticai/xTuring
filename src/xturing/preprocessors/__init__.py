@@ -1,3 +1,4 @@
 from xturing.preprocessors.base import BasePreprocessor
 from xturing.preprocessors.instruction_collator import InstructionDataCollator
+from xturing.preprocessors.preference_collator import PreferenceDataCollator
 from xturing.preprocessors.text_collator import TextDataCollator
