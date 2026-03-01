@@ -11,7 +11,10 @@ from typing import Iterable, Set
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 CLI_DIR = PROJECT_ROOT / "src" / "xturing" / "cli"
 API_FILE = CLI_DIR / "api.py"
-DOC_FILES = [PROJECT_ROOT / "README.md", *(PROJECT_ROOT / "docs" / "docs").rglob("*.md")]
+DOC_FILES = [
+    PROJECT_ROOT / "README.md",
+    *(PROJECT_ROOT / "docs" / "docs").rglob("*.md"),
+]
 
 
 def _read(path: Path) -> str:
@@ -22,7 +25,9 @@ def _extract_cli_commands() -> Set[str]:
     commands = set()
     for path in CLI_DIR.glob("*.py"):
         content = _read(path)
-        commands.update(re.findall(r'@click\.command\(name="([a-zA-Z0-9_-]+)"\)', content))
+        commands.update(
+            re.findall(r'@click\.command\(name="([a-zA-Z0-9_-]+)"\)', content)
+        )
     return commands
 
 
@@ -53,7 +58,9 @@ def _extract_doc_commands(contents: Iterable[str]) -> Set[str]:
 def _extract_doc_api_routes(contents: Iterable[str]) -> Set[str]:
     routes = set()
     for content in contents:
-        routes.update(re.findall(r"http://localhost:\{PORT\}(/[-a-zA-Z0-9_/.]+)", content))
+        routes.update(
+            re.findall(r"http://localhost:\{PORT\}(/[-a-zA-Z0-9_/.]+)", content)
+        )
         routes.update(re.findall(r"`(/(?:api|health|v1[-a-zA-Z0-9_/.]*))`", content))
     return routes
 
@@ -82,7 +89,9 @@ def main() -> int:
         return 1
 
     print("Docs contract check passed.")
-    print(f"Validated {len(doc_commands)} CLI command reference(s) and {len(doc_routes)} API route reference(s).")
+    print(
+        f"Validated {len(doc_commands)} CLI command reference(s) and {len(doc_routes)} API route reference(s)."
+    )
     return 0
 
 

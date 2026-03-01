@@ -153,9 +153,7 @@ def _stream_chat_completion(
             "object": "chat.completion.chunk",
             "created": created_at,
             "model": model_id,
-            "choices": [
-                {"index": 0, "delta": {}, "finish_reason": "stop"}
-            ],
+            "choices": [{"index": 0, "delta": {}, "finish_reason": "stop"}],
         }
     )
     yield _sse_event("[DONE]")
