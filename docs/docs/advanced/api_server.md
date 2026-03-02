@@ -28,7 +28,7 @@ Ensure that the model path you provide is a directory containing a valid xturing
 
 - ### Request
 
-  - **URL** : http://localhost:{PORT}/health
+  - **URL** : `http://localhost:{PORT}/health`
 
   - **Method** : GET
 
@@ -45,7 +45,7 @@ Ensure that the model path you provide is a directory containing a valid xturing
 
 - ### Request
 
-  - **URL** : http://localhost:{PORT}/api
+  - **URL** : `http://localhost:{PORT}/api`
 
   - **Method** : POST
 
