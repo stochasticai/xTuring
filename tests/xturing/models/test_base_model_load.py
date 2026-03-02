@@ -16,7 +16,9 @@ def test_load_local_dir_without_xturing_config_with_model_name(tmp_path, monkeyp
 
     monkeypatch.setitem(BaseModel.registry, "dummy_model", _DummyModel)
 
-    loaded = BaseModel.load(str(local_weights), model_name="dummy_model", revision="main")
+    loaded = BaseModel.load(
+        str(local_weights), model_name="dummy_model", revision="main"
+    )
 
     assert isinstance(loaded, _DummyModel)
     assert loaded.weights_path == local_weights
