@@ -12,16 +12,28 @@ class BaseModel(BaseParent):
     registry = {}
 
     @classmethod
-    def load(cls, weights_dir_or_model_name):
+    def load(cls, weights_dir_or_model_name, model_name=None, **kwargs):
         path_weights_dir_or_model_name = Path(weights_dir_or_model_name)
 
-        if path_weights_dir_or_model_name.is_dir() and exists_xturing_config_file(
-            path_weights_dir_or_model_name
-        ):
-            return cls.load_from_local(weights_dir_or_model_name)
-        else:
-            print("Loading model from xTuring hub")
-            return cls.load_from_hub(weights_dir_or_model_name)
+        if path_weights_dir_or_model_name.is_dir():
+            if exists_xturing_config_file(path_weights_dir_or_model_name):
+                return cls.load_from_local(path_weights_dir_or_model_name)
+
+            if model_name is None:
+                raise ValueError(
+                    "No xturing.json found in local directory '{}'. "
+                    "Pass model_name=... to BaseModel.load(...) for local non-xTuring "
+                    "checkpoints, or use a GenericModel class directly.".format(
+                        str(path_weights_dir_or_model_name)
+                    )
+                )
+
+            return cls._load_local_path_for_model_name(
+                path_weights_dir_or_model_name, model_name, **kwargs
+            )
+
+        print("Loading model from xTuring hub")
+        return cls.load_from_hub(weights_dir_or_model_name)
 
     @classmethod
     def load_from_hub(cls, model_name):
@@ -49,16 +61,25 @@ class BaseModel(BaseParent):
             model_name is not None
         ), "The xturing.json file is not correct. model_name is not available in the configuration"
 
+        return cls._load_local_path_for_model_name(weights_dir_path, model_name)
+
+    @classmethod
+    def _load_local_path_for_model_name(cls, weights_dir_path, model_name, **kwargs):
+        weights_dir_path = Path(weights_dir_path)
+
         assert (
             cls.registry.get(model_name) is not None
         ), "The model_name {} is not valid".format(model_name)
 
         if "generic" in model_name:
             model = cls.create(
-                model_name, model_name=model_name, weights_path=weights_dir_path
+                model_name,
+                model_name=model_name,
+                weights_path=weights_dir_path,
+                **kwargs,
             )
         else:
-            model = cls.create(model_name, weights_path=weights_dir_path)
+            model = cls.create(model_name, weights_path=weights_dir_path, **kwargs)
 
         return model
 
