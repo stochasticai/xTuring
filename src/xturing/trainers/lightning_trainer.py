@@ -14,6 +14,7 @@ else:
     _DEEPSPEED_IMPORT_ERROR = None
 from pytorch_lightning import callbacks
 from pytorch_lightning.loggers import Logger
+from pytorch_lightning.strategies import DeepSpeedStrategy
 from pytorch_lightning.trainer.trainer import Trainer
 
 from xturing.config import DEFAULT_DEVICE, IS_INTERACTIVE
@@ -107,8 +108,14 @@ class LightningTrainer:
         batch_size: int = 2,
         learning_rate: float = 1e-3,
         optimizer_name: str = "adamw",
+        gradient_accumulation_steps: int = 1,
+        logging_steps: int = 50,
+        max_grad_norm: float = 2.0,
+        save_total_limit: int = 4,
+        output_dir: str = "saved_model",
         use_lora: bool = False,
         use_deepspeed: bool = False,
+        deepspeed_config_path: Optional[str] = None,
         max_training_time_in_secs: Optional[int] = None,
         lora_type: int = 16,
         logger: Union[Logger, Iterable[Logger], bool] = True,
@@ -120,9 +127,10 @@ class LightningTrainer:
             batch_size=batch_size,
             learning_rate=learning_rate,
             optimizer_name=optimizer_name,
+            saved_path=output_dir,
         )
 
-        checkpoints_dir_path = Path("saved_model")
+        checkpoints_dir_path = Path(output_dir)
 
         if not checkpoints_dir_path.exists():
             checkpoints_dir_path.mkdir(exist_ok=True, parents=True)
@@ -148,6 +156,10 @@ class LightningTrainer:
         except AttributeError:
             pass
 
+        log_every_n_steps = max(1, int(logging_steps))
+        accumulate_grad_batches = max(1, int(gradient_accumulation_steps))
+        gradient_clip_val = max(0.0, float(max_grad_norm))
+
         if DEFAULT_DEVICE.type == "cpu":
             self.trainer = Trainer(
                 num_nodes=1,
@@ -155,7 +167,9 @@ class LightningTrainer:
                 max_epochs=max_epochs,
                 callbacks=training_callbacks,
                 enable_checkpointing=False,
-                log_every_n_steps=50,
+                log_every_n_steps=log_every_n_steps,
+                accumulate_grad_batches=accumulate_grad_batches,
+                gradient_clip_val=gradient_clip_val,
                 logger=logger,
             )
         elif not use_lora and not use_deepspeed:
@@ -165,13 +179,17 @@ class LightningTrainer:
                 max_epochs=max_epochs,
                 callbacks=training_callbacks,
                 enable_checkpointing=True,
-                log_every_n_steps=50,
+                log_every_n_steps=log_every_n_steps,
+                accumulate_grad_batches=accumulate_grad_batches,
+                gradient_clip_val=gradient_clip_val,
                 logger=logger,
             )
         else:
             training_callbacks = [
                 callbacks.ModelCheckpoint(
-                    dirpath=str(checkpoints_dir_path), save_on_train_epoch_end=True
+                    dirpath=str(checkpoints_dir_path),
+                    save_on_train_epoch_end=True,
+                    save_top_k=max(1, int(save_total_limit)),
                 ),
             ]
 
@@ -187,6 +205,8 @@ class LightningTrainer:
                         if optimizer_name == "cpu_adam"
                         else "deepspeed_stage_2"
                     )
+                if deepspeed_config_path is not None:
+                    strategy = DeepSpeedStrategy(config=deepspeed_config_path)
             self.trainer = Trainer(
                 num_nodes=1,
                 accelerator="gpu",
@@ -195,7 +215,9 @@ class LightningTrainer:
                 max_epochs=max_epochs,
                 callbacks=training_callbacks,
                 enable_checkpointing=True,
-                log_every_n_steps=50,
+                log_every_n_steps=log_every_n_steps,
+                accumulate_grad_batches=accumulate_grad_batches,
+                gradient_clip_val=gradient_clip_val,
                 logger=logger,
             )
 
