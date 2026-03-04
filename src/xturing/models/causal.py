@@ -105,6 +105,15 @@ class CausalModel(BaseModel):
             int(self.finetuning_args.batch_size),
             float(self.finetuning_args.learning_rate),
             self.finetuning_args.optimizer_name,
+            gradient_accumulation_steps=int(
+                self.finetuning_args.gradient_accumulation_steps
+            ),
+            logging_steps=int(self.finetuning_args.logging_steps),
+            max_grad_norm=float(self.finetuning_args.max_grad_norm),
+            save_total_limit=int(self.finetuning_args.save_total_limit),
+            output_dir=self.finetuning_args.output_dir,
+            use_deepspeed=bool(self.finetuning_args.use_deepspeed),
+            deepspeed_config_path=self.finetuning_args.deepspeed_config_path,
             logger=logger,
         )
 
@@ -144,6 +153,15 @@ class CausalModel(BaseModel):
             float(self.finetuning_args.learning_rate),
             self.finetuning_args.optimizer_name,
             beta,
+            gradient_accumulation_steps=int(
+                self.finetuning_args.gradient_accumulation_steps
+            ),
+            logging_steps=int(self.finetuning_args.logging_steps),
+            max_grad_norm=float(self.finetuning_args.max_grad_norm),
+            save_total_limit=int(self.finetuning_args.save_total_limit),
+            output_dir=self.finetuning_args.output_dir,
+            use_deepspeed=bool(self.finetuning_args.use_deepspeed),
+            deepspeed_config_path=self.finetuning_args.deepspeed_config_path,
             logger=logger,
         )
 
@@ -411,8 +429,16 @@ class CausalLoraModel(CausalModel):
             int(self.finetuning_args.batch_size),
             float(self.finetuning_args.learning_rate),
             self.finetuning_args.optimizer_name,
-            True,
-            True,
+            gradient_accumulation_steps=int(
+                self.finetuning_args.gradient_accumulation_steps
+            ),
+            logging_steps=int(self.finetuning_args.logging_steps),
+            max_grad_norm=float(self.finetuning_args.max_grad_norm),
+            save_total_limit=int(self.finetuning_args.save_total_limit),
+            output_dir=self.finetuning_args.output_dir,
+            use_lora=True,
+            use_deepspeed=True,
+            deepspeed_config_path=self.finetuning_args.deepspeed_config_path,
             logger=logger,
         )
 
