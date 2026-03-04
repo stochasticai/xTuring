@@ -274,7 +274,10 @@ Below is a list of all the supported models via `BaseModel` class of `xTuring` a
 |GPT-2 | gpt2|
 |LLaMA | llama|
 |LLaMA2 | llama2|
-|MiniMax M2 | minimax_m2|
+|Mistral-7B | mistral_7b|
+|Ministral 3.14B | ministral_3_14b|
+|MiniMaxM2 | minimax_m2|
+|OPT-1.3B | opt|
 |Qwen3 0.6B | qwen3_0_6b|
 |Mamba | mamba|
 
