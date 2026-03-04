@@ -26,3 +26,49 @@ jobs:
       - name: Run pre-commit
         run: |
           pre-commit run -a --show-diff-on-failure
+
+  lightweight-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest fastapi uvicorn httpx
+
+      - name: Run docs contract checks
+        run: |
+          python scripts/check_docs_contracts.py
+
+      - name: Run lightweight API tests
+        run: |
+          PYTHONPATH=src pytest -q tests/xturing/cli/test_api_server.py tests/xturing/evaluation/test_runner.py
+
+  docs-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: docs
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: docs/package-lock.json
+
+      - name: Install docs dependencies
+        run: npm ci
+
+      - name: Build docs
+        run: npm run build

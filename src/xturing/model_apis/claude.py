@@ -9,9 +9,9 @@ try:
     from anthropic import RateLimitError as AnthropicRateLimitError
 except ModuleNotFoundError as import_err:  # pragma: no cover - optional dependency
     Anthropic = None
-    AnthropicAPIError = (
-        AnthropicAPIConnectionError
-    ) = AnthropicRateLimitError = Exception
+    AnthropicAPIError = AnthropicAPIConnectionError = AnthropicRateLimitError = (
+        Exception
+    )
     _ANTHROPIC_IMPORT_ERROR = import_err
 else:  # pragma: no cover - dependency import paths exercised in runtime envs
     _ANTHROPIC_IMPORT_ERROR = None

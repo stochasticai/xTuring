@@ -171,9 +171,9 @@ class CausalLoraEngine(CausalEngine):
         # That's why weights_path is None. If not model.eval() will fail later
         super().__init__(
             model_name=model_name,
-            weights_path=None
-            if exists_xturing_config_file(weights_path)
-            else weights_path,
+            weights_path=(
+                None if exists_xturing_config_file(weights_path) else weights_path
+            ),
             model=model,
             tokenizer=tokenizer,
             load_8bit=load_8bit,

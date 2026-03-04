@@ -7,7 +7,10 @@ sidebar_position: 3
 # ⚡️ Running model inference with FastAPI Server
 
 <!-- Once you have fine-tuned your model, you can run the inference using a FastAPI server. -->
-After successfully fine-tuning your model, you can perform inference using a FastAPI server. The following steps guide you through launching and utilizing the API server for your fine-tuned model.
+After successfully fine-tuning your model, you can perform inference using a FastAPI server. The server exposes:
+
+1. Legacy route: `/api`
+2. OpenAI-compatible routes: `/v1/models`, `/v1/chat/completions`, and `/v1/completions`
 
 ### 1. Launch API server from Command Line Interface (CLI)
 
@@ -25,7 +28,7 @@ Ensure that the model path you provide is a directory containing a valid xturing
 
 - ### Request
 
-  - **URL** : http://localhost:{PORT}/health
+  - **URL** : `http://localhost:{PORT}/health`
 
   - **Method** : GET
 
@@ -38,11 +41,11 @@ Ensure that the model path you provide is a directory containing a valid xturing
   }
   ```
 
-### 3. Inference API
+### 3. Legacy inference API
 
 - ### Request
 
-  - **URL** : http://localhost:{PORT}/api
+  - **URL** : `http://localhost:{PORT}/api`
 
   - **Method** : POST
 
@@ -75,4 +78,111 @@ Ensure that the model path you provide is a directory containing a valid xturing
   }
   ```
 
-By following these steps, you can effectively run your fine-tuned model for text generation through the FastAPI server, facilitating seamless inference with structured requests and responses.
+### 4. OpenAI-compatible API
+
+#### List models
+
+- **URL**: `http://localhost:{PORT}/v1/models`
+- **Method**: `GET`
+
+Response example:
+
+```json
+{
+  "object": "list",
+  "data": [
+    {
+      "id": "qwen3_0_6b_lora",
+      "object": "model"
+    }
+  ]
+}
+```
+
+#### Chat completions
+
+- **URL**: `http://localhost:{PORT}/v1/chat/completions`
+- **Method**: `POST`
+
+Request example:
+
+```json
+{
+  "model": "qwen3_0_6b_lora",
+  "messages": [
+    {"role": "system", "content": "You are a helpful assistant."},
+    {"role": "user", "content": "Give me 3 steps to start fine-tuning."}
+  ],
+  "temperature": 0.2,
+  "top_p": 0.9,
+  "max_tokens": 128
+}
+```
+
+Response example:
+
+```json
+{
+  "id": "chatcmpl-abc123",
+  "object": "chat.completion",
+  "created": 1700000000,
+  "model": "qwen3_0_6b_lora",
+  "choices": [
+    {
+      "index": 0,
+      "message": {"role": "assistant", "content": "Step 1..."},
+      "finish_reason": "stop"
+    }
+  ]
+}
+```
+
+Streaming skeleton request:
+
+```json
+{
+  "model": "qwen3_0_6b_lora",
+  "messages": [{"role": "user", "content": "Say hi"}],
+  "stream": true
+}
+```
+
+### 5. OpenAI-compatible text completions
+
+- **URL**: `http://localhost:{PORT}/v1/completions`
+- **Method**: `POST`
+
+Request example:
+
+```json
+{
+  "model": "qwen3_0_6b_lora",
+  "prompt": ["Summarize xTuring in one sentence."],
+  "max_tokens": 64
+}
+```
+
+Response example:
+
+```json
+{
+  "id": "cmpl-abc123",
+  "object": "text_completion",
+  "created": 1700000000,
+  "model": "qwen3_0_6b_lora",
+  "choices": [
+    {
+      "index": 0,
+      "text": "xTuring is ...",
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 6,
+    "completion_tokens": 8,
+    "total_tokens": 14
+  }
+}
+```
+
+By following these steps, you can run legacy and OpenAI-compatible inference from the same xTuring API server.
