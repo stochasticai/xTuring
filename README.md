@@ -295,12 +295,35 @@ model = GenericLoraKbitModel('<model_path>')
 ```
 Replace `<model_path>` with a local directory or a Hugging Face model like `mistralai/Mistral-7B-Instruct-v0.2`.
 
+### Cloud Text‑Generation APIs
+
+xTuring also ships cloud API wrappers for synthetic‑data generation and self‑instruct workflows.
+
+| Provider | Key | Default model |
+| -- | -- | -- |
+| OpenAI | openai, openai_davinci, openai_chat | davinci / gpt-3.5-turbo |
+| Cohere | cohere, cohere_medium | medium |
+| Claude | claude, claude_3_sonnet | claude-3-sonnet |
+| MiniMax | minimax, minimax_m2_7, minimax_m2_7_highspeed | MiniMax-M2.7 / MiniMax-M2.7-highspeed |
+
+```python
+from xturing.model_apis import MiniMaxM27
+
+api = MiniMaxM27(api_key="your-minimax-api-key")
+results = api.generate_text(
+    prompts=["Explain quantum computing for beginners."],
+    max_tokens=256,
+    temperature=0.7,
+)
+print(results[0]["response"]["choices"][0]["text"])
+```
+
 ## 📈 Roadmap
 - [x] Support for `LLaMA`, `LLaMA 2`, `GPT-J`, `GPT-2`, and `GPT-OSS` models
 - [x] Dataset generation using self-instruction
 - [x] Low-precision LoRA fine-tuning and unsupervised fine-tuning
 - [x] INT8 low-precision fine-tuning support
-- [x] OpenAI, Cohere, and Claude model APIs for dataset generation
+- [x] OpenAI, Cohere, Claude, and MiniMax model APIs for dataset generation
 - [x] Added fine-tuned checkpoints for some models to the hub
 - [x] INT4 LLaMA LoRA fine-tuning demo
 - [x] INT4 LLaMA LoRA fine-tuning with INT4 generation
