@@ -1,7 +1,21 @@
 import time
 from datetime import datetime
+from importlib import import_module
 
-import openai
+try:
+    import openai
+except ImportError as import_err:  # pragma: no cover - optional dependency
+    openai = None
+    OpenAIError = Exception
+    _OPENAI_IMPORT_ERROR = import_err
+else:  # pragma: no cover - dependency import paths exercised in runtime envs
+    # `openai.error` is the 0.x layout; 1.x exposes OpenAIError at the top level.
+    OpenAIError = getattr(
+        getattr(openai, "error", None),
+        "OpenAIError",
+        getattr(openai, "OpenAIError", Exception),
+    )
+    _OPENAI_IMPORT_ERROR = None
 
 from xturing.model_apis.base import TextGenerationAPI
 
@@ -10,6 +24,7 @@ class OpenAITextGenerationAPI(TextGenerationAPI):
     config_name = "openai"
 
     def __init__(self, engine, api_key, organization, request_batch_size=10):
+        self._ensure_dependency()
         super().__init__(
             engine=engine,
             api_key=api_key,
@@ -21,6 +36,18 @@ class OpenAITextGenerationAPI(TextGenerationAPI):
         if organization is not None:
             openai.organization = organization
         self.request_batch_size = request_batch_size
+
+    @staticmethod
+    def _ensure_dependency():
+        # Resolve from the currently loaded module to stay correct across reloads.
+        module = import_module(__name__)
+        openai_module = getattr(module, "openai", None)
+        if openai_module is None:
+            raise ModuleNotFoundError(
+                "The openai SDK is required for OpenAITextGenerationAPI. "
+                "Install it with `pip install openai`."
+            ) from getattr(module, "_OPENAI_IMPORT_ERROR", None)
+        return openai_module
 
     def get_completion(
         self,
@@ -86,7 +113,7 @@ class OpenAITextGenerationAPI(TextGenerationAPI):
                     best_of=best_of,
                 )
                 break
-            except openai.error.OpenAIError as e:
+            except OpenAIError as e:
                 print(f"OpenAIError: {e}.")
                 if "Please reduce your prompt" in str(e):
                     target_length = int(target_length * 0.8)
