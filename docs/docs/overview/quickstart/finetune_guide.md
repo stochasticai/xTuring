@@ -42,7 +42,11 @@ Start by loading the instruction dataset and initializing the model of your choi
 
 <Test instruction={'Instruction'}/>
 
-A list of all the supported models can be found [here](/overview/supported_models).
+A list of all model keys and variant templates can be found [here](/overview/supported_models).
+
+If you prefer notebooks, start from the task-based examples:
+- `examples/notebooks/finetune_lora.ipynb`
+- `examples/notebooks/finetune_lora_int8.ipynb`
 
 
 
@@ -64,10 +68,6 @@ model.finetune(dataset=instruction_dataset)
 ```
 
 You can find a runnable script at `examples/models/qwen3/qwen3_lora_finetune.py`.
-
-```bash
-xturing finetune --model qwen3_0_6b_lora --data-dir /path/to/your/dataset
-```
 
 <!-- Finally, let us test how our fine-tuned model performs using the `.generate()` function.
 

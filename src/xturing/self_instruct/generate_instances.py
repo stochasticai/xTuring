@@ -109,9 +109,11 @@ def generate_instances(
                 results = engine.generate_text(
                     prompts=prompts,
                     # because the clf template is longer, we need to decrease the max_tokens
-                    max_tokens=300
-                    if any(task_clf_types[task["instruction"]] for task in batch)
-                    else 350,
+                    max_tokens=(
+                        300
+                        if any(task_clf_types[task["instruction"]] for task in batch)
+                        else 350
+                    ),
                     temperature=0,
                     top_p=0,
                     frequency_penalty=0,

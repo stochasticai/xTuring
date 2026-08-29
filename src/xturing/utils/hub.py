@@ -1,5 +1,7 @@
 import shutil
 import sys
+import tempfile
+from os import environ
 from pathlib import Path
 from zipfile import ZipFile
 
@@ -11,7 +13,22 @@ class Hub:
 
     def __init__(self, prefix: str, cache_path: Path):
         self.prefix = prefix
-        self.cache_path = Path.home() / ".xturing" / cache_path
+        self.cache_path = self._resolve_cache_path(cache_path)
+
+    @staticmethod
+    def _resolve_cache_path(cache_path: Path) -> Path:
+        custom_cache = environ.get("XTURING_CACHE_DIR")
+        if custom_cache:
+            return Path(custom_cache) / cache_path
+
+        home_cache = Path.home() / ".xturing" / cache_path
+        try:
+            home_cache.mkdir(parents=True, exist_ok=True)
+            return home_cache
+        except OSError:
+            tmp_cache = Path(tempfile.gettempdir()) / ".xturing" / cache_path
+            tmp_cache.mkdir(parents=True, exist_ok=True)
+            return tmp_cache
 
     def __contains__(self, item):
         return item in self.static_path_map
@@ -69,7 +86,7 @@ class Hub:
                 print(f"Error downloading model {model_name} from {url}: {e}")
                 raise e
             finally:
-                zip_filename.unlink()
+                zip_filename.unlink(missing_ok=True)
 
         return model_dir
 
