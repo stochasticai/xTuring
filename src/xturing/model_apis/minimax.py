@@ -2,11 +2,15 @@ import time
 from datetime import datetime
 
 try:
-    from openai import OpenAI
     from openai import APIConnectionError as OpenAIAPIConnectionError
     from openai import APIError as OpenAIAPIError
+    from openai import OpenAI
     from openai import RateLimitError as OpenAIRateLimitError
-except ModuleNotFoundError as import_err:  # pragma: no cover - optional dependency
+# `OpenAI` only exists in openai>=1.0.0. On 0.x the package imports fine but
+# the symbol is missing, which raises ImportError rather than
+# ModuleNotFoundError -- catch the broader class so a 0.x install degrades
+# gracefully instead of breaking `import xturing.model_apis`.
+except ImportError as import_err:  # pragma: no cover - optional dependency
     OpenAI = None
     OpenAIAPIError = OpenAIAPIConnectionError = OpenAIRateLimitError = Exception
     _OPENAI_IMPORT_ERROR = import_err
@@ -26,9 +30,7 @@ class MiniMaxTextGenerationAPI(TextGenerationAPI):
         super().__init__(
             engine=model, api_key=api_key, request_batch_size=request_batch_size
         )
-        self._client = openai_cls(
-            api_key=api_key, base_url=_MINIMAX_BASE_URL
-        )
+        self._client = openai_cls(api_key=api_key, base_url=_MINIMAX_BASE_URL)
 
     @staticmethod
     def _ensure_dependency():
