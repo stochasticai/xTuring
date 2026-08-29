@@ -37,7 +37,7 @@ Why xTuring:
 ```bash
 pip install xturing
 ```
-Note: Qwen3-Omni support in Hugging Face Transformers requires `transformers>=4.57.0`. citeturn0open0
+Note: Qwen3-Omni support in Hugging Face Transformers requires `transformers>=4.57.0`.
 
 <br>
 
