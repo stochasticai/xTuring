@@ -1,8 +1,21 @@
 from datetime import datetime
+from importlib import import_module
 from typing import Dict, List, Optional, Sequence
 
 import torch
-from transformers import AutoModelForMultimodalLM, AutoTokenizer
+
+# `AutoModelForMultimodalLM` was introduced in transformers 5.0.0. On older
+# releases the package imports fine but the symbol is missing, which raises
+# ImportError rather than ModuleNotFoundError -- catch the broader class so
+# importing xturing.model_apis keeps working without Qwen3-Omni support.
+try:
+    from transformers import AutoModelForMultimodalLM, AutoTokenizer
+except ImportError as import_err:  # pragma: no cover - optional dependency
+    AutoModelForMultimodalLM = None
+    AutoTokenizer = None
+    _TRANSFORMERS_IMPORT_ERROR = import_err
+else:  # pragma: no cover - dependency import paths exercised in runtime envs
+    _TRANSFORMERS_IMPORT_ERROR = None
 
 from xturing.model_apis.base import TextGenerationAPI
 
@@ -20,6 +33,7 @@ class Qwen3OmniTextGenerationAPI(TextGenerationAPI):
         model_kwargs: Optional[Dict] = None,
         default_generate_kwargs: Optional[Dict] = None,
     ):
+        auto_model_cls, auto_tokenizer_cls = self._ensure_dependency()
         super().__init__(
             engine=model_name_or_path,
             api_key=None,
@@ -29,10 +43,10 @@ class Qwen3OmniTextGenerationAPI(TextGenerationAPI):
         model_kwargs = model_kwargs or {}
         self.default_generate_kwargs = default_generate_kwargs or {}
 
-        self.tokenizer = AutoTokenizer.from_pretrained(
+        self.tokenizer = auto_tokenizer_cls.from_pretrained(
             model_name_or_path, trust_remote_code=True, **tokenizer_kwargs
         )
-        self.model = AutoModelForMultimodalLM.from_pretrained(
+        self.model = auto_model_cls.from_pretrained(
             model_name_or_path, trust_remote_code=True, **model_kwargs
         )
 
@@ -43,6 +57,24 @@ class Qwen3OmniTextGenerationAPI(TextGenerationAPI):
         if self.tokenizer.pad_token is None:
             self.tokenizer.pad_token = self.tokenizer.eos_token
             self.tokenizer.pad_token_id = self.tokenizer.eos_token_id
+
+    @staticmethod
+    def _ensure_dependency():
+        # Resolve from the currently loaded module to stay correct across reloads.
+        module = import_module(__name__)
+        auto_model_cls = getattr(module, "AutoModelForMultimodalLM", None)
+        auto_tokenizer_cls = getattr(module, "AutoTokenizer", None)
+        if auto_model_cls is None or auto_tokenizer_cls is None:
+            transformers_import_error = getattr(
+                module, "_TRANSFORMERS_IMPORT_ERROR", None
+            )
+            message = (
+                "Qwen3OmniTextGenerationAPI requires transformers>=5.0.0, which "
+                "provides AutoModelForMultimodalLM. Upgrade with "
+                "`pip install 'transformers>=5.0.0'`."
+            )
+            raise ImportError(message) from transformers_import_error
+        return auto_model_cls, auto_tokenizer_cls
 
     def _trim_stop_sequences(
         self, text: str, stop_sequences: Optional[Sequence[str]]

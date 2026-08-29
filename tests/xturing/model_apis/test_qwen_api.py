@@ -43,12 +43,10 @@ def _install_mocks(monkeypatch, tokenizer):
     monkeypatch.setattr(
         "xturing.model_apis.qwen.AutoTokenizer",
         SimpleNamespace(from_pretrained=lambda *_, **__: dummy_tokenizer),
-        raising=False,
     )
     monkeypatch.setattr(
         "xturing.model_apis.qwen.AutoModelForMultimodalLM",
         SimpleNamespace(from_pretrained=lambda *_, **__: dummy_model),
-        raising=False,
     )
     return dummy_tokenizer, dummy_model
 
@@ -117,3 +115,22 @@ def test_qwen3_omni_registered():
         BaseApi.registry[Qwen3OmniTextGenerationAPI.config_name]
         is Qwen3OmniTextGenerationAPI
     )
+
+
+def test_qwen3_omni_requires_transformers_5(monkeypatch):
+    """Without AutoModelForMultimodalLM the API raises a clear, actionable error."""
+    import pytest
+
+    from xturing.model_apis.qwen import Qwen3OmniTextGenerationAPI
+
+    monkeypatch.setattr("xturing.model_apis.qwen.AutoModelForMultimodalLM", None)
+    with pytest.raises(ImportError, match="transformers>=5.0.0"):
+        Qwen3OmniTextGenerationAPI(model_name_or_path="local-qwen", device="cpu")
+
+
+def test_model_apis_imports_without_transformers_5():
+    """Importing the package must not hard-fail on transformers 4.x."""
+    import importlib
+
+    module = importlib.import_module("xturing.model_apis.qwen")
+    assert hasattr(module, "AutoModelForMultimodalLM")
