@@ -20,7 +20,7 @@ def parse_args():
     parser.add_argument(
         "--base_model",
         type=str,
-        default="decapoda-research/llama-7b-hf",
+        default="huggyllama/llama-7b",
         help="The base model.",
     )
     parser.add_argument(

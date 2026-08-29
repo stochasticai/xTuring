@@ -51,7 +51,7 @@ def cache_distillation_outputs(
 
 
 if __name__ == "__main__":
-    base_model = "decapoda-research/llama-7b-hf"
+    base_model = "huggyllama/llama-7b"
     seqlen = 2048
     n_samples = 10000
     train_cache_dir = ...  ###ANONYMIZED###

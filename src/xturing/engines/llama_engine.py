@@ -14,7 +14,7 @@ class LLamaEngine(CausalEngine):
     config_name: str = "llama_engine"
 
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
-        model_name = "aleksickx/llama-7b-hf"
+        model_name = "huggyllama/llama-7b"
         model = LlamaForCausalLM.from_pretrained(model_name, torch_dtype=DEFAULT_DTYPE)
         tokenizer = LlamaTokenizer.from_pretrained(model_name, add_bos_token=False)
         tokenizer.pad_token = tokenizer.eos_token
@@ -31,7 +31,7 @@ class LlamaLoraEngine(CausalLoraEngine):
     config_name: str = "llama_lora_engine"
 
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
-        model_name = "aleksickx/llama-7b-hf"
+        model_name = "huggyllama/llama-7b"
         model = LlamaForCausalLM.from_pretrained(
             model_name,
             torch_dtype=DEFAULT_DTYPE,
@@ -52,7 +52,7 @@ class LLamaInt8Engine(CausalEngine):
     config_name: str = "llama_int8_engine"
 
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
-        model_name = "aleksickx/llama-7b-hf"
+        model_name = "huggyllama/llama-7b"
         device_map = {"": int(os.environ.get("LOCAL_RANK") or 0)}
         model = LlamaForCausalLM.from_pretrained(
             model_name,
@@ -78,7 +78,7 @@ class LlamaLoraInt8Engine(CausalLoraEngine):
     config_name: str = "llama_lora_int8_engine"
 
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
-        model_name = "aleksickx/llama-7b-hf"
+        model_name = "huggyllama/llama-7b"
         device_map = {"": int(os.environ.get("LOCAL_RANK") or 0)}
         model = LlamaForCausalLM.from_pretrained(
             model_name,
@@ -118,7 +118,7 @@ class LlamaLoraKbitEngine(CausalLoraKbitEngine):
     config_name: str = "llama_lora_kbit_engine"
 
     def __init__(self, weights_path: Optional[Union[str, Path]] = None):
-        model_name = "decapoda-research/llama-7b-hf"
+        model_name = "huggyllama/llama-7b"
 
         tokenizer = LlamaTokenizer.from_pretrained(model_name, add_bos_token=False)
         tokenizer.pad_token = tokenizer.eos_token
