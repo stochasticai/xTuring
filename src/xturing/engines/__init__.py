@@ -78,6 +78,14 @@ from xturing.engines.minimax_m2_engine import (
     MiniMaxM2LoraInt8Engine,
     MiniMaxM2LoraKbitEngine,
 )
+from xturing.engines.mistral_engine import (
+    Ministral314BEngine,
+    Ministral314BInt8Engine,
+    Ministral314BLoraEngine,
+    Ministral314BLoraInt8Engine,
+    Ministral314BLoraKbitEngine,
+    Mistral7BEngine,
+)
 from xturing.engines.opt_engine import (
     OPTEngine,
     OPTInt8Engine,
@@ -149,6 +157,16 @@ BaseEngine.add_to_registry(LLama2LoraEngine.config_name, LLama2LoraEngine)
 BaseEngine.add_to_registry(LLama2LoraInt8Engine.config_name, LLama2LoraInt8Engine)
 BaseEngine.add_to_registry(LLama2LoraKbitEngine.config_name, LLama2LoraKbitEngine)
 BaseEngine.add_to_registry(MambaEngine.config_name, MambaEngine)
+BaseEngine.add_to_registry(Mistral7BEngine.config_name, Mistral7BEngine)
+BaseEngine.add_to_registry(Ministral314BEngine.config_name, Ministral314BEngine)
+BaseEngine.add_to_registry(Ministral314BInt8Engine.config_name, Ministral314BInt8Engine)
+BaseEngine.add_to_registry(Ministral314BLoraEngine.config_name, Ministral314BLoraEngine)
+BaseEngine.add_to_registry(
+    Ministral314BLoraInt8Engine.config_name, Ministral314BLoraInt8Engine
+)
+BaseEngine.add_to_registry(
+    Ministral314BLoraKbitEngine.config_name, Ministral314BLoraKbitEngine
+)
 BaseEngine.add_to_registry(MiniMaxM2Engine.config_name, MiniMaxM2Engine)
 BaseEngine.add_to_registry(MiniMaxM2Int8Engine.config_name, MiniMaxM2Int8Engine)
 BaseEngine.add_to_registry(MiniMaxM2LoraEngine.config_name, MiniMaxM2LoraEngine)

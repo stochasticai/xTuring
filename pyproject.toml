@@ -53,6 +53,8 @@ dependencies = [
     "deepspeed>=0.15.1",
     "gradio>=5.31.0",
     "click",
+    "fastapi",
+    "uvicorn",
     "wget",
     "cohere",
     "anthropic",

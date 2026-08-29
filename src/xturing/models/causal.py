@@ -12,11 +12,13 @@ from xturing.config import DEFAULT_DEVICE, assert_cpu_int8_on_itrex, assert_not_
 from xturing.config.config_data_classes import FinetuningConfig, GenerationConfig
 from xturing.config.read_config import load_config
 from xturing.datasets.instruction_dataset import InstructionDataset
+from xturing.datasets.preference_dataset import PreferenceDataset
 from xturing.datasets.text_dataset import TextDataset
 from xturing.engines.base import BaseEngine
 from xturing.models import BaseModel
 from xturing.preprocessors.base import BasePreprocessor
 from xturing.trainers.base import BaseTrainer
+from xturing.trainers.dpo_trainer import DPOTrainer
 from xturing.trainers.lightning_trainer import LightningTrainer
 from xturing.utils.logging import configure_logger
 from xturing.utils.prompt import OpenAICreateChatPrompt, OpenAICreatePrompt, Prompt
@@ -103,6 +105,15 @@ class CausalModel(BaseModel):
             int(self.finetuning_args.batch_size),
             float(self.finetuning_args.learning_rate),
             self.finetuning_args.optimizer_name,
+            gradient_accumulation_steps=int(
+                self.finetuning_args.gradient_accumulation_steps
+            ),
+            logging_steps=int(self.finetuning_args.logging_steps),
+            max_grad_norm=float(self.finetuning_args.max_grad_norm),
+            save_total_limit=int(self.finetuning_args.save_total_limit),
+            output_dir=self.finetuning_args.output_dir,
+            use_deepspeed=bool(self.finetuning_args.use_deepspeed),
+            deepspeed_config_path=self.finetuning_args.deepspeed_config_path,
             logger=logger,
         )
 
@@ -116,6 +127,63 @@ class CausalModel(BaseModel):
             "instruction_dataset",
         ], "Please make sure the dataset_type is text_dataset or instruction_dataset"
         trainer = self._make_trainer(dataset, logger)
+        trainer.fit()
+
+    def _make_dpo_collate_fn(self, dataset: PreferenceDataset):
+        return BasePreprocessor.create(
+            dataset.config_name,
+            self.engine.tokenizer,
+            int(self.finetuning_args.max_length),
+            dataset.meta,
+        )
+
+    def _make_dpo_trainer(
+        self,
+        dataset: PreferenceDataset,
+        beta: float = 0.1,
+        logger: Union[Logger, Iterable[Logger], bool] = True,
+    ):
+        return BaseTrainer.create(
+            DPOTrainer.config_name,
+            self.engine,
+            dataset,
+            self._make_dpo_collate_fn(dataset),
+            int(self.finetuning_args.num_train_epochs),
+            int(self.finetuning_args.batch_size),
+            float(self.finetuning_args.learning_rate),
+            self.finetuning_args.optimizer_name,
+            beta,
+            gradient_accumulation_steps=int(
+                self.finetuning_args.gradient_accumulation_steps
+            ),
+            logging_steps=int(self.finetuning_args.logging_steps),
+            max_grad_norm=float(self.finetuning_args.max_grad_norm),
+            save_total_limit=int(self.finetuning_args.save_total_limit),
+            output_dir=self.finetuning_args.output_dir,
+            use_deepspeed=bool(self.finetuning_args.use_deepspeed),
+            deepspeed_config_path=self.finetuning_args.deepspeed_config_path,
+            logger=logger,
+        )
+
+    def dpo_finetune(
+        self,
+        dataset: PreferenceDataset,
+        beta: float = 0.1,
+        logger: Union[Logger, Iterable[Logger], bool] = True,
+    ):
+        """Fine-tune the model using Direct Preference Optimization (DPO).
+
+        Args:
+            dataset: A :class:`PreferenceDataset` containing prompt, chosen,
+                and rejected columns.
+            beta: Temperature parameter for DPO.  Higher values keep the model
+                closer to the reference policy.
+            logger: PyTorch Lightning logger(s) for tracking training metrics.
+        """
+        assert (
+            dataset.config_name == "preference_dataset"
+        ), "Please provide a PreferenceDataset for DPO training"
+        trainer = self._make_dpo_trainer(dataset, beta, logger)
         trainer.fit()
 
     def _generate_from_iterable(
@@ -361,8 +429,16 @@ class CausalLoraModel(CausalModel):
             int(self.finetuning_args.batch_size),
             float(self.finetuning_args.learning_rate),
             self.finetuning_args.optimizer_name,
-            True,
-            True,
+            gradient_accumulation_steps=int(
+                self.finetuning_args.gradient_accumulation_steps
+            ),
+            logging_steps=int(self.finetuning_args.logging_steps),
+            max_grad_norm=float(self.finetuning_args.max_grad_norm),
+            save_total_limit=int(self.finetuning_args.save_total_limit),
+            output_dir=self.finetuning_args.output_dir,
+            use_lora=True,
+            use_deepspeed=True,
+            deepspeed_config_path=self.finetuning_args.deepspeed_config_path,
             logger=logger,
         )
 

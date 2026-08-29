@@ -3,6 +3,7 @@
 We welcome and appreciate contributions to xTuring! Whether it's a bug fix, a new feature, or simply a typo, every little bit helps.
 
 Before starting, please skim the [Repository Guidelines](AGENTS.md) for project structure, local commands, style, and testing conventions.
+For the active modernization scope, see the [2026 milestone roadmap](docs/docs/contributing/milestone_2026.md).
 
 ## Getting Started
 
@@ -40,7 +41,7 @@ git commit -m "Commit message"
 git push origin <BRANCH_NAME>
 ```
 
-7. Create a pull request to the `dev` branch
+7. Create a pull request to the `main` branch
 
 ## Pull Request Guidelines
 
