@@ -65,7 +65,7 @@ model.finetune(dataset=instruction_dataset)
 - `optimizer_name`: optimizer that will be used
 - `output_dir`: the output directory where the model predictions and checkpoints will be written. -->
 
-| Name | Type | Range | Default | Desription |
+| Name | Type | Range | Default | Description |
 | ---  | ---  | ----- | ------- | ---------- |
 | learning_rate | float | >0 | 1e-5 | The initial learning rate for the optimizer. |
 | gradient_accumulation_steps | int | ≥1 | 1 | The number of updates steps to accumulate the gradients for, before performing a backward/update pass. |
@@ -81,6 +81,8 @@ model.finetune(dataset=instruction_dataset)
 | save_total_limit | int | ≥1 | 4 | If a value is passed, will limit the total amount of checkpoints. Deletes the older checkpoints in output_dir. |
 | optimizer_name | string | N/A | adamw | The optimizer to be used. |
 | output_dir | string | N/A | saved_model | The output directory where the model predictions and checkpoints will be written. |
+| use_deepspeed | bool | N/A | false | Enables DeepSpeed strategy in training when set to true. |
+| deepspeed_config_path | string or null | N/A | null | Optional path to a custom DeepSpeed JSON config file. |
 
 
 

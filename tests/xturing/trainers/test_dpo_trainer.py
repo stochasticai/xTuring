@@ -261,12 +261,26 @@ def test_dpo_finetune_end_to_end(monkeypatch):
             learning_rate,
             optimizer_name,
             beta=0.1,
+            gradient_accumulation_steps=1,
+            logging_steps=50,
+            max_grad_norm=2.0,
+            save_total_limit=4,
+            output_dir="saved_model",
+            use_deepspeed=False,
+            deepspeed_config_path=None,
             logger=True,
         ):
             self.engine = engine
             self.dataset = dataset
             self.collate_fn = collate_fn
             self.beta = beta
+            self.gradient_accumulation_steps = gradient_accumulation_steps
+            self.logging_steps = logging_steps
+            self.max_grad_norm = max_grad_norm
+            self.save_total_limit = save_total_limit
+            self.output_dir = output_dir
+            self.use_deepspeed = use_deepspeed
+            self.deepspeed_config_path = deepspeed_config_path
             self.fit_called = False
             trainers.append(self)
 
@@ -298,7 +312,21 @@ def test_dpo_finetune_end_to_end(monkeypatch):
     )
 
     model = BaseModel.create("qwen3_0_6b_lora")
+    model.finetuning_args.gradient_accumulation_steps = 4
+    model.finetuning_args.logging_steps = 15
+    model.finetuning_args.max_grad_norm = 1.2
+    model.finetuning_args.save_total_limit = 1
+    model.finetuning_args.output_dir = "dpo-out"
+    model.finetuning_args.use_deepspeed = True
+    model.finetuning_args.deepspeed_config_path = "dpo_deepspeed_config.json"
     model.dpo_finetune(dataset=dataset, beta=0.1)
 
     assert trainers and trainers[0].fit_called
     assert trainers[0].beta == 0.1
+    assert trainers[0].gradient_accumulation_steps == 4
+    assert trainers[0].logging_steps == 15
+    assert trainers[0].max_grad_norm == 1.2
+    assert trainers[0].save_total_limit == 1
+    assert trainers[0].output_dir == "dpo-out"
+    assert trainers[0].use_deepspeed is True
+    assert trainers[0].deepspeed_config_path == "dpo_deepspeed_config.json"

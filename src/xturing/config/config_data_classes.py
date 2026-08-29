@@ -18,6 +18,8 @@ class FinetuningConfig(BaseModel):
     save_total_limit: int
     optimizer_name: str
     output_dir: str
+    use_deepspeed: bool = False
+    deepspeed_config_path: Optional[str] = None
 
     @validator("optimizer_name")
     def validate_optimizer_name(cls, v):

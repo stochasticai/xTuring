@@ -40,6 +40,7 @@ class PeftConfigMixin(PushToHubMixin):
     Args:
         peft_type (Union[[`~peft.utils.config.PeftType`], `str`]): The type of Peft method to use.
     """
+
     peft_type: Optional[PeftType] = field(
         default=None, metadata={"help": "The type of PEFT model."}
     )

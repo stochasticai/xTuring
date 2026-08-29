@@ -106,7 +106,7 @@ class Playground:
                     #     label="Select model",
                     # )
 
-                    def load_func(model_path, model_name):
+                    def load_func(model_path, model_name=None):
                         success, message = self.set_model(model_path, model_name)
 
                         if success:

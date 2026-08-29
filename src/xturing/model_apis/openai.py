@@ -102,9 +102,11 @@ class OpenAITextGenerationAPI(TextGenerationAPI):
             for j, prompt in enumerate(prompts):
                 data = {
                     "prompt": prompt,
-                    "response": {"choices": response["choices"][j * n : (j + 1) * n]}
-                    if response
-                    else None,
+                    "response": (
+                        {"choices": response["choices"][j * n : (j + 1) * n]}
+                        if response
+                        else None
+                    ),
                     "created_at": str(datetime.now()),
                 }
                 results.append(data)
