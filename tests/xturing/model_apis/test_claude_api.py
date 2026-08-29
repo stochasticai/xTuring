@@ -4,9 +4,21 @@ import pytest
 
 
 def _build_anthropic_error(error_cls, message):
+    """Build an SDK error instance that `except error_cls` still catches.
+
+    The anthropic SDK's error signatures differ across releases (APIError takes
+    `request`, RateLimitError takes `response`), so constructing them directly
+    ties the suite to one version. Subclassing with a permissive __init__ keeps
+    the isinstance relationship without depending on the signature.
+    """
     if error_cls is Exception:
         return Exception(message)
-    return error_cls(message, response=None, body=None)
+    stub_cls = type(
+        f"Stub{error_cls.__name__}",
+        (error_cls,),
+        {"__init__": lambda self, msg: Exception.__init__(self, msg)},
+    )
+    return stub_cls(message)
 
 
 class TestClaudeTextGenerationAPI:
