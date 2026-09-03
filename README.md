@@ -37,7 +37,9 @@ Why xTuring:
 ```bash
 pip install xturing
 ```
-Note: Qwen3-Omni is optional and requires `transformers>=5.0.0`, which provides `AutoModelForMultimodalLM`. The rest of xTuring works on `transformers>=4.36.0`; note that 5.x drops the `load_in_8bit`/`load_in_4bit` loading kwargs used by the INT8/INT4 engines.
+Note: xTuring requires `transformers>=4.36.0`. Do not upgrade to `transformers` 5.x yet — 5.x drops the `load_in_8bit`/`load_in_4bit` loading kwargs that the INT8/INT4 engines rely on, and nothing currently shipped needs 5.x.
+
+Qwen3-Omni support (which requires `transformers>=5.0.0`) is not released yet — see [#318](https://github.com/stochasticai/xTuring/pull/318).
 
 <br>
 
