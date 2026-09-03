@@ -3,6 +3,7 @@ import tempfile
 from pathlib import Path
 
 import pytest
+import torch
 
 from xturing.config import DEFAULT_DEVICE
 from xturing.datasets import TextDataset
@@ -80,6 +81,26 @@ def test_train_gpt2():
     generation_config.top_p = 1.0
     result = model.generate(dataset=dataset)
     assert len(result) == 2
+
+
+@pytest.mark.skipif(
+    not RUN_TRAINING_TESTS,
+    reason="Fine-tuning tests are slow and require explicit opt-in",
+)
+def test_train_gpt2_updates_weights():
+    dataset = TextDataset(DATASET_OTHER_EXAMPLE_DICT)
+    model = BaseModel.create("distilgpt2")
+    finetuning_config = model.finetuning_config()
+    finetuning_config.num_train_epochs = 1
+    finetuning_config.batch_size = 1
+    layer = model.engine.model.transformer.h[0].mlp.c_fc
+    original_weight = layer.weight.detach().cpu().clone()
+
+    model.finetune(dataset=dataset)
+
+    updated_weight = layer.weight.detach().cpu()
+    weight_shift = torch.sum(torch.abs(original_weight - updated_weight)).item()
+    assert weight_shift > 0.0
 
 
 @pytest.mark.skipif(
