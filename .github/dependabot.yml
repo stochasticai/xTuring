@@ -1,0 +1,46 @@
+version: 2
+
+updates:
+  # Docs site (Docusaurus). Everything here is devDependencies of a
+  # `private: true` package that is never published, so these bumps are
+  # build-time only and do not reach users of the Python package.
+  #
+  # Grouped deliberately: ungrouped, Dependabot opens one PR per package
+  # against a single 30k-line lockfile. They conflict with each other and
+  # with any hand-written lockfile work, and each merge forces a rebase of
+  # the rest. One grouped PR per week keeps the lockfile serialized.
+  - package-ecosystem: "npm"
+    directory: "/docs"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 3
+    groups:
+      docs-npm:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+    commit-message:
+      prefix: "build(deps)"
+    labels:
+      - "dependencies"
+      - "docs"
+
+  # GitHub Actions used by .github/workflows/. Low volume; grouped so a
+  # week's action bumps land as one PR.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    groups:
+      actions:
+        patterns:
+          - "*"
+    commit-message:
+      prefix: "ci(deps)"
+    labels:
+      - "dependencies"
+      - "ci"
