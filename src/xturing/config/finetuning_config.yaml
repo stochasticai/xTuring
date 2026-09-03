@@ -302,6 +302,58 @@ mamba:
   learning_rate: 5e-5
   weight_decay: 0.01
 
+mistral_7b:
+  learning_rate: 5e-5
+  weight_decay: 0.01
+  num_train_epochs: 3
+  optimizer_name: cpu_adam
+
+# Ministral 3.14B model fine-tuning configurations
+ministral_3_14b:
+  learning_rate: 1e-5
+  weight_decay: 0.01
+  num_train_epochs: 1
+  batch_size: 1
+  gradient_accumulation_steps: 8
+  max_length: 2048
+  warmup_steps: 100
+
+ministral_3_14b_lora:
+  learning_rate: 2e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 2
+  gradient_accumulation_steps: 4
+  max_length: 2048
+  warmup_steps: 100
+
+ministral_3_14b_int8:
+  learning_rate: 1e-4
+  weight_decay: 0.01
+  num_train_epochs: 2
+  batch_size: 2
+  gradient_accumulation_steps: 4
+  max_length: 2048
+  warmup_steps: 100
+
+ministral_3_14b_lora_int8:
+  learning_rate: 2e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 4
+  gradient_accumulation_steps: 2
+  max_length: 2048
+  warmup_steps: 100
+
+ministral_3_14b_lora_kbit:
+  learning_rate: 2e-4
+  weight_decay: 0.01
+  num_train_epochs: 3
+  batch_size: 8
+  gradient_accumulation_steps: 1
+  max_length: 2048
+  warmup_steps: 100
+
 # MiniMaxM2 model fine-tuning configurations
 minimax_m2:
   learning_rate: 1e-5

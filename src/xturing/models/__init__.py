@@ -63,6 +63,14 @@ from xturing.models.minimax_m2 import (
     MiniMaxM2LoraInt8,
     MiniMaxM2LoraKbit,
 )
+from xturing.models.mistral import (
+    Ministral314B,
+    Ministral314BInt8,
+    Ministral314BLora,
+    Ministral314BLoraInt8,
+    Ministral314BLoraKbit,
+    Mistral7B,
+)
 from xturing.models.opt import OPT, OPTInt8, OPTLora, OPTLoraInt8
 from xturing.models.qwen import (
     Qwen3,
@@ -126,6 +134,12 @@ BaseModel.add_to_registry(Llama2Lora.config_name, Llama2Lora)
 BaseModel.add_to_registry(Llama2LoraInt8.config_name, Llama2LoraInt8)
 BaseModel.add_to_registry(Llama2LoraKbit.config_name, Llama2LoraKbit)
 BaseModel.add_to_registry(Mamba.config_name, Mamba)
+BaseModel.add_to_registry(Mistral7B.config_name, Mistral7B)
+BaseModel.add_to_registry(Ministral314B.config_name, Ministral314B)
+BaseModel.add_to_registry(Ministral314BInt8.config_name, Ministral314BInt8)
+BaseModel.add_to_registry(Ministral314BLora.config_name, Ministral314BLora)
+BaseModel.add_to_registry(Ministral314BLoraInt8.config_name, Ministral314BLoraInt8)
+BaseModel.add_to_registry(Ministral314BLoraKbit.config_name, Ministral314BLoraKbit)
 BaseModel.add_to_registry(MiniMaxM2.config_name, MiniMaxM2)
 BaseModel.add_to_registry(MiniMaxM2Int8.config_name, MiniMaxM2Int8)
 BaseModel.add_to_registry(MiniMaxM2Lora.config_name, MiniMaxM2Lora)

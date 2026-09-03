@@ -239,8 +239,14 @@ def test_qwen3_lora_instruction_sft(monkeypatch):
             batch_size,
             learning_rate,
             optimizer_name,
+            gradient_accumulation_steps=1,
+            logging_steps=50,
+            max_grad_norm=2.0,
+            save_total_limit=4,
+            output_dir="saved_model",
             use_lora=False,
             use_deepspeed=False,
+            deepspeed_config_path=None,
             logger=True,
         ):
             self.engine = engine
@@ -250,8 +256,14 @@ def test_qwen3_lora_instruction_sft(monkeypatch):
             self.batch_size = batch_size
             self.learning_rate = learning_rate
             self.optimizer_name = optimizer_name
+            self.gradient_accumulation_steps = gradient_accumulation_steps
+            self.logging_steps = logging_steps
+            self.max_grad_norm = max_grad_norm
+            self.save_total_limit = save_total_limit
+            self.output_dir = output_dir
             self.use_lora = use_lora
             self.use_deepspeed = use_deepspeed
+            self.deepspeed_config_path = deepspeed_config_path
             self.logger = logger
             self.fit_called = False
             trainers.append(self)
@@ -285,6 +297,20 @@ def test_qwen3_lora_instruction_sft(monkeypatch):
     )
 
     model = BaseModel.create("qwen3_0_6b_lora")
+    model.finetuning_args.gradient_accumulation_steps = 3
+    model.finetuning_args.logging_steps = 12
+    model.finetuning_args.max_grad_norm = 0.9
+    model.finetuning_args.save_total_limit = 2
+    model.finetuning_args.output_dir = "trainer-out"
+    model.finetuning_args.use_deepspeed = True
+    model.finetuning_args.deepspeed_config_path = "deepspeed_config.json"
     model.finetune(dataset=dataset)
 
     assert trainers and trainers[0].fit_called
+    assert trainers[0].gradient_accumulation_steps == 3
+    assert trainers[0].logging_steps == 12
+    assert trainers[0].max_grad_norm == 0.9
+    assert trainers[0].save_total_limit == 2
+    assert trainers[0].output_dir == "trainer-out"
+    assert trainers[0].use_deepspeed is True
+    assert trainers[0].deepspeed_config_path == "deepspeed_config.json"

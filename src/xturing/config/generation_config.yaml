@@ -316,6 +316,43 @@ llama2_lora_kbit:
 mamba:
   do_sample: false
 
+# Contrastive search
+mistral_7b:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 256
+  do_sample: false
+
+# Contrastive search for Ministral 3.14B
+ministral_3_14b:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 512
+  do_sample: false
+  temperature: 0.1
+
+ministral_3_14b_lora:
+  penalty_alpha: 0.6
+  top_k: 4
+  max_new_tokens: 512
+  do_sample: false
+  temperature: 0.1
+
+ministral_3_14b_int8:
+  max_new_tokens: 512
+  do_sample: false
+  temperature: 0.1
+
+ministral_3_14b_lora_int8:
+  max_new_tokens: 512
+  do_sample: false
+  temperature: 0.1
+
+ministral_3_14b_lora_kbit:
+  max_new_tokens: 512
+  do_sample: false
+  temperature: 0.1
+
 # Contrastive search for MiniMaxM2
 minimax_m2:
   penalty_alpha: 0.6
