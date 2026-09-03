@@ -158,33 +158,10 @@ def is_itrex_available():
 
     Returns:
         bool: True if 'intel_extension_for_transformers' is available, False otherwise.
-
-    Raises:
-        subprocess.CalledProcessError: If the pip installation process fails.
     """
     import importlib
 
-    if importlib.util.find_spec("intel_extension_for_transformers") is not None:
-        return True
-    else:
-        try:
-            import subprocess
-            import sys
-
-            subprocess.check_call(
-                [
-                    sys.executable,
-                    "-m",
-                    "pip",
-                    "install",
-                    "intel-extension-for-transformers",
-                ]
-            )
-            return (
-                importlib.util.find_spec("intel_extension_for_transformers") is not None
-            )
-        except:
-            return False
+    return importlib.util.find_spec("intel_extension_for_transformers") is not None
 
 
 def assert_install_itrex():

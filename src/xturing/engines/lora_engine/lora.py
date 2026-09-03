@@ -350,9 +350,9 @@ class LoraModel(torch.nn.Module):
                                 "fan_in_fan_out is set to True but the target module is not a Conv1D. "
                                 "Setting fan_in_fan_out to False."
                             )
-                            kwargs[
-                                "fan_in_fan_out"
-                            ] = self.peft_config.fan_in_fan_out = False
+                            kwargs["fan_in_fan_out"] = (
+                                self.peft_config.fan_in_fan_out
+                            ) = False
                     new_module = MergedLinear(
                         in_features, out_features, bias=bias, **kwargs
                     )

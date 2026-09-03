@@ -3,6 +3,12 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 
+def _build_anthropic_error(error_cls, message):
+    if error_cls is Exception:
+        return Exception(message)
+    return error_cls(message, response=None, body=None)
+
+
 class TestClaudeTextGenerationAPI:
     """Test suite for ClaudeTextGenerationAPI"""
 
@@ -24,6 +30,15 @@ class TestClaudeTextGenerationAPI:
                     model="claude-3-sonnet-20240229",
                     api_key="test-key",
                 )
+
+        # Ensure we do not keep a stale submodule object on the package.
+        import sys
+
+        import xturing.model_apis as model_apis_pkg
+
+        sys.modules.pop("xturing.model_apis.claude", None)
+        if hasattr(model_apis_pkg, "claude"):
+            delattr(model_apis_pkg, "claude")
 
     def test_initialization(self):
         """Test ClaudeTextGenerationAPI initialization"""
@@ -255,10 +270,12 @@ class TestClaudeTextGenerationAPI:
                 mock_response.stop_reason = "end_turn"
 
                 # First call fails, second succeeds
-                from anthropic import RateLimitError
+                from xturing.model_apis import claude as claude_module
 
                 mock_client.messages.create.side_effect = [
-                    RateLimitError("Rate limit exceeded", response=None, body=None),
+                    _build_anthropic_error(
+                        claude_module.AnthropicRateLimitError, "Rate limit exceeded"
+                    ),
                     mock_response,
                 ]
 
@@ -289,10 +306,10 @@ class TestClaudeTextGenerationAPI:
                 mock_anthropic.return_value = mock_client
 
                 # Always fail
-                from anthropic import APIError
+                from xturing.model_apis import claude as claude_module
 
-                mock_client.messages.create.side_effect = APIError(
-                    "API Error", response=None, body=None
+                mock_client.messages.create.side_effect = _build_anthropic_error(
+                    claude_module.AnthropicAPIError, "API Error"
                 )
 
                 api = ClaudeTextGenerationAPI(

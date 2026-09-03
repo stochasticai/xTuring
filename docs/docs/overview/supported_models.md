@@ -33,6 +33,8 @@ Use one task notebook from `examples/notebooks/`, then choose a model key from t
 | LLaMA | `llama` | `base`, `lora`, `int8`, `lora_int8`, `lora_kbit` |
 | LLaMA 2 | `llama2` | `base`, `lora`, `int8`, `lora_int8`, `lora_kbit` |
 | Mamba | `mamba` | `base` |
+| Mistral 7B | `mistral_7b` | `base` |
+| Ministral 3.14B | `ministral_3_14b` | `base`, `lora`, `int8`, `lora_int8`, `lora_kbit` |
 | MiniMaxM2 | `minimax_m2` | `base`, `lora`, `int8`, `lora_int8`, `lora_kbit` |
 | OPT 1.3B | `opt` | `base`, `lora`, `int8`, `lora_int8` |
 | Qwen3 0.6B | `qwen3_0_6b` | `base`, `lora`, `int8`, `lora_int8`, `lora_kbit` |
