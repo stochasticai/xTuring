@@ -91,7 +91,7 @@ You are encouraged to submit your performance results on other GPUs/configs/mode
 
 ## 📚 Tutorial
 
-All instructions are inside the example [notebook](LLaMA_lora_int4.ipynb). **_Special Note:_** Using this demo requires you to have appropriate access to LLaMA weights. To apply access to it through this [link](https://docs.google.com/forms/d/e/1FAIpQLSfqNECQnMkycAp2jP4Z9TFX0cGR4uf7b_fBxjY_OjhJILlKGA/viewform).
+All instructions are inside the example [notebook](LLaMA_lora_int4.ipynb). **_Special Note:_** some older mirrored LLaMA checkpoints are no longer compatible with recent `transformers` versions. Use a currently maintained checkpoint path (for example `Qwen/Qwen2.5-0.5B`) in the notebook for reliable setup.
 
 <br>
 
