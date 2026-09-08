@@ -37,6 +37,9 @@ Why xTuring:
 ```bash
 pip install xturing
 ```
+Note: xTuring requires `transformers>=4.36.0`. Do not upgrade to `transformers` 5.x yet — 5.x drops the `load_in_8bit`/`load_in_4bit` loading kwargs that the INT8/INT4 engines rely on, and nothing currently shipped needs 5.x.
+
+Qwen3-Omni support (which requires `transformers>=5.0.0`) is not released yet — see [#318](https://github.com/stochasticai/xTuring/pull/318).
 
 ### Development Installation
 

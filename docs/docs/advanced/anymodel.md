@@ -31,13 +31,15 @@ dataset = InstructionDataset(dataset_path)
 
 To initialize the model, simply run the following 2 commands:
 ```python
-from xturing.models import GenericModel
+from xturing.models import GenericLoraModel
 
-model_path = 'aleksickx/llama-7b-hf'
+model_path = "Qwen/Qwen2.5-0.5B"
 
 model = GenericLoraModel(model_path)
 ```
 The _'model_path'_ can be a locally saved model and/or any model available on the HuggingFace's [Model Hub](https://huggingface.co/models).
+
+If you are following older notebooks that reference legacy `llama-7b-hf` mirrors, prefer current upstream checkpoints. Legacy mirrors can fail on newer `transformers` releases.
 
 To fine-tune the model on a dataset, we will use the default configuration for the fine-tuning.
 
