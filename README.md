@@ -41,6 +41,24 @@ Note: xTuring requires `transformers>=4.36.0`. Do not upgrade to `transformers` 
 
 Qwen3-Omni support (which requires `transformers>=5.0.0`) is not released yet — see [#318](https://github.com/stochasticai/xTuring/pull/318).
 
+### Development Installation
+
+If you want to contribute to xTuring or run from source:
+
+```bash
+# Clone the repository
+git clone https://github.com/stochasticai/xturing.git
+cd xturing
+
+# Install in editable mode with development dependencies
+pip install -e .
+pip install -r requirements-dev.txt
+
+# Set up pre-commit hooks (required before contributing)
+pre-commit install
+pre-commit install --hook-type commit-msg
+```
+
 <br>
 
 ## 🚀 Quickstart
@@ -163,7 +181,7 @@ dataset = InstructionDataset('../llama/alpaca_data')
 model = GenericLoraKbitModel('mistralai/Mistral-7B-Instruct-v0.2')
 
 # Generate outputs on desired prompts
-outputs = model.generate(dataset = dataset, batch_size=10)
+ outputs = model.generate(dataset = dataset, batch_size=10)
 
 ```
 
@@ -178,6 +196,16 @@ model.finetune(dataset=dataset)
 ```
 > See `examples/models/qwen3/qwen3_lora_finetune.py` for a runnable script.
 
+8. __Qwen3-Omni dataset generation__ – Run the multimodal checkpoint locally (download from Hugging Face) to bootstrap instruction corpora without leaving your machine.
+```python
+from xturing.datasets import InstructionDataset
+from xturing.model_apis.qwen import Qwen3OmniTextGenerationAPI
+
+# Download `Qwen/Qwen3-Omni-30B-A3B-Instruct` (or another HF variant) ahead of time
+engine = Qwen3OmniTextGenerationAPI(model_name_or_path="Qwen/Qwen3-Omni-30B-A3B-Instruct")
+dataset = InstructionDataset.generate_dataset("./tasks.jsonl", engine=engine)
+```
+
 An exploration of the [Llama LoRA INT4 working example](examples/features/int4_finetuning/LLaMA_lora_int4.ipynb) is recommended for an understanding of its application.
 
 For an extended insight, consider examining the [GenericModel working example](examples/features/generic/generic_model.py) available in the repository.
@@ -187,9 +215,17 @@ For an extended insight, consider examining the [GenericModel working example](e
 ## CLI playground
 <img src=".github/cli-playground.gif" width="80%" style="margin: 0 1%;"/>
 
-```bash
-$ xturing chat -m "<path-to-model-folder>"
+The `xturing` CLI provides interactive tools for working with fine-tuned models:
 
+```bash
+# Chat with a fine-tuned model
+xturing chat -m "<path-to-model-folder>"
+
+# Launch the UI playground (alternative to programmatic Playground)
+xturing ui
+
+# Get help and see all available commands
+xturing --help
 ```
 
 ## UI playground
@@ -215,6 +251,8 @@ Playground().launch() ## launches localhost UI
 
 ## 📚 Tutorials
 - [Preparing your dataset](examples/datasets/preparing_your_dataset.py)
+- [SIFT-50M dataset helpers](examples/datasets/README.md)
+- [Qwen3-Omni HF/PEFT template (A100/H100)](examples/models/qwen3_omni/README.md)
 - [Task notebook: fine-tune with LoRA](examples/notebooks/finetune_lora.ipynb)
 - [Task notebook: fine-tune with LoRA + INT8](examples/notebooks/finetune_lora_int8.ipynb)
 - [Task notebook: evaluate model perplexity](examples/notebooks/evaluate_perplexity.ipynb)
@@ -252,12 +290,26 @@ Contribute to this by submitting your performance results on other GPUs by creat
 
 ## 📎 Fine‑tuned model checkpoints
 We have already fine-tuned some models that you can use as your base or start playing with.
-Here is how you would load them:
 
+### Loading Models
+
+**Load from xTuring hub:**
 ```python
 from xturing.models import BaseModel
 model = BaseModel.load("x/distilgpt2_lora_finetuned_alpaca")
 ```
+
+**Load from local directory:**
+```python
+model = BaseModel.load("/path/to/saved/model")
+```
+
+**Create a new model for fine-tuning:**
+```python
+model = BaseModel.create("llama_lora")
+```
+
+### Available Pre-trained Models
 
 | model               | dataset | Path          |
 |---------------------|--------|---------------|
@@ -316,10 +368,71 @@ Replace `<model_path>` with a local directory or a Hugging Face model like `mist
 
 <br>
 
+## 🧪 Running Tests
+
+The project uses pytest for testing. Test files are located in the `tests/` directory.
+
+Run all tests:
+```bash
+pytest
+```
+
+Run a specific test file:
+```bash
+pytest tests/xturing/models/test_qwen_model.py
+```
+
+Skip slow tests:
+```bash
+pytest -m "not slow"
+```
+
+Skip GPU tests (for CPU-only environments):
+```bash
+pytest -m "not gpu"
+```
+
+Test markers used in this project:
+- `@pytest.mark.slow` - Tests that take significant time to run
+- `@pytest.mark.gpu` - Tests requiring GPU hardware
+
+<br>
+
 ## 🤝 Help and Support
 If you have any questions, you can create an issue on this repository.
 
 You can also join our [Discord server](https://discord.gg/TgHXuSJEk6) and start a discussion in the `#xturing` channel.
+
+<br>
+
+## 🏗️ Project Structure
+
+Understanding the codebase organization:
+
+```
+src/xturing/
+├── models/          # Model classes and registry (BaseModel, LLaMA, GPT-2, etc.)
+├── engines/         # Low-level model loading, tokenization, and operations
+├── datasets/        # Dataset loaders (InstructionDataset, TextDataset)
+├── trainers/        # Training loops (LightningTrainer with DeepSpeed support)
+├── preprocessors/   # Data preprocessing and tokenization
+├── config/          # YAML configurations for finetuning and generation
+├── cli/             # CLI commands (chat, ui, api)
+├── ui/              # Gradio UI playground
+├── self_instruct/   # Dataset generation utilities
+└── utils/           # Shared utilities
+
+tests/xturing/       # Test suite mirroring src structure
+examples/            # Example scripts organized by model and feature
+```
+
+**Key architectural patterns:**
+- **Registry Pattern**: Models and engines use a registry-based factory pattern via `BaseModel.create()` and `BaseEngine.create()`
+- **Model Variants**: Each model family has multiple variants following the naming template `<base>_[lora]_[int8|kbit]`
+  - Example: `llama`, `llama_lora`, `llama_int8`, `llama_lora_int8`
+- **Configuration**: Training and generation parameters are defined in YAML files per model in `src/xturing/config/`
+- **Engines**: Handle the low-level operations (loading weights, tokenization, DeepSpeed integration)
+- **Models**: Provide high-level API (`finetune()`, `generate()`, `evaluate()`, `save()`, `load()`)
 
 <br>
 
@@ -330,3 +443,26 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 
 ## 🌎 Contributing
 As an open source project in a rapidly evolving field, we welcome contributions of all kinds, including new features and better documentation. Please read our [contributing guide](CONTRIBUTING.md) to learn how you can get involved.
+
+### Quick Contribution Guidelines
+
+**Important:** All pull requests should target the `dev` branch, not `main`.
+
+The project uses pre-commit hooks to enforce code quality:
+- **black** - Code formatting
+- **isort** - Import sorting (black profile)
+- **autoflake** - Remove unused imports
+- **absolufy-imports** - Convert relative to absolute imports
+- **gitlint** - Commit message linting
+
+You can manually format code:
+```bash
+black src/ tests/
+isort src/ tests/
+```
+
+Pre-commit hooks will automatically run these checks when you commit. Make sure to install them:
+```bash
+pre-commit install
+pre-commit install --hook-type commit-msg
+```

@@ -46,6 +46,15 @@ model = GenericLoraKbitModel("<model_path>")
 
 `<model_path>` can be a local directory or a Hugging Face model path.
 
+## Dataset helpers
+
+`examples/datasets/` holds multiple ways to generate a custom dataset from a given set of
+examples, including SIFT-50M helpers:
+
+- `examples/datasets/sift50m_subset_builder.py` builds a small English subset.
+- `examples/datasets/sift50m_audio_mapper.py` resolves `audio_path` to local files.
+- `examples/datasets/README.md` contains full CLI recipes.
+
 ## Legacy model folders
 
 Legacy model-specific notebooks are archived in `examples/legacy/model_notebooks/`.
