@@ -1,46 +1,34 @@
 version: 2
 
+# One Dependabot PR per week, total. Both ecosystems below belong to the
+# same multi-ecosystem group, so their bumps are combined into a single
+# PR on the group's schedule instead of one PR per ecosystem.
+#
+# No update-types filter: majors ride in the same PR as minors/patches.
+# Previously majors fell outside the docs-npm group and each opened its
+# own PR against the 30k-line docs lockfile, which then conflicted with
+# the group PR and with each other.
+multi-ecosystem-groups:
+  weekly-deps:
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels:
+      - "dependencies"
+
 updates:
   # Docs site (Docusaurus). Everything here is devDependencies of a
   # `private: true` package that is never published, so these bumps are
   # build-time only and do not reach users of the Python package.
-  #
-  # Grouped deliberately: ungrouped, Dependabot opens one PR per package
-  # against a single 30k-line lockfile. They conflict with each other and
-  # with any hand-written lockfile work, and each merge forces a rebase of
-  # the rest. One grouped PR per week keeps the lockfile serialized.
   - package-ecosystem: "npm"
     directory: "/docs"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-    open-pull-requests-limit: 3
-    groups:
-      docs-npm:
-        patterns:
-          - "*"
-        update-types:
-          - "minor"
-          - "patch"
-    commit-message:
-      prefix: "build(deps)"
-    labels:
-      - "dependencies"
-      - "docs"
+    patterns:
+      - "*"
+    multi-ecosystem-group: "weekly-deps"
 
-  # GitHub Actions used by .github/workflows/. Low volume; grouped so a
-  # week's action bumps land as one PR.
+  # GitHub Actions used by .github/workflows/.
   - package-ecosystem: "github-actions"
     directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-    groups:
-      actions:
-        patterns:
-          - "*"
-    commit-message:
-      prefix: "ci(deps)"
-    labels:
-      - "dependencies"
-      - "ci"
+    patterns:
+      - "*"
+    multi-ecosystem-group: "weekly-deps"
