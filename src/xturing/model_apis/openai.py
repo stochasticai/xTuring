@@ -170,11 +170,32 @@ class ChatGPT(OpenAITextGenerationAPI):
             request_batch_size=request_batch_size,
         )
 
-    def get_completion(self, prompts, **kwargs):
+    def get_completion(
+        self,
+        prompts,
+        target_length,
+        temperature,
+        top_p,
+        frequency_penalty,
+        presence_penalty,
+        stop_sequences,
+        logprobs,
+        n,
+        best_of,
+    ):
         messages = [{"role": "user", "content": prompt} for prompt in prompts]
-        completion = openai.ChatCompletion.create(
-            model=self.engine,
-            messages=messages,
-            temperature=0,
-        )
-        return completion["choices"][0]["message"]["content"]
+        kwargs = {"model": self.engine, "messages": messages}
+        if target_length is not None:
+            kwargs["max_tokens"] = target_length
+        if temperature is not None:
+            kwargs["temperature"] = temperature
+        if top_p is not None:
+            kwargs["top_p"] = top_p
+        if frequency_penalty is not None:
+            kwargs["frequency_penalty"] = frequency_penalty
+        if presence_penalty is not None:
+            kwargs["presence_penalty"] = presence_penalty
+        if stop_sequences is not None:
+            kwargs["stop"] = stop_sequences
+        completion = openai.ChatCompletion.create(**kwargs)
+        return completion
