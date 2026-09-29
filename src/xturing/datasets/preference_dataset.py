@@ -6,7 +6,7 @@ from typing import Union
 from datasets import Dataset as HFDataset
 from datasets import DatasetDict, load_from_disk
 
-from xturing.datasets.base import BaseDataset
+from xturing.datasets.base import BaseDataset, as_dataset_dict
 
 
 @dataclass
@@ -46,6 +46,7 @@ class PreferenceDataset(BaseDataset):
                     f"Unsupported file format: {path.suffix}. Use a directory or .jsonl file."
                 )
 
+        self.data = as_dataset_dict(self.data)
         self._validate()
         self._meta = PreferenceDatasetMeta()
 
