@@ -7,7 +7,7 @@ from datasets import Dataset
 from datasets import Dataset as HFDataset
 from datasets import DatasetDict, load_from_disk
 
-from xturing.datasets.base import BaseDataset
+from xturing.datasets.base import BaseDataset, as_dataset_dict
 from xturing.model_apis import TextGenerationAPI
 from xturing.self_instruct import (
     bootstrap_instructions,
@@ -63,6 +63,7 @@ class InstructionDataset(BaseDataset):
             elif path.suffix == ".jsonl":
                 self.data = {"train": HFDataset.from_dict(self.from_jsonl(path))}
 
+        self.data = as_dataset_dict(self.data)
         self._validate()
 
         list_prompt_template = None

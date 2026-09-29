@@ -5,7 +5,7 @@ from typing import Union
 from datasets import Dataset as HFDataset
 from datasets import DatasetDict, load_from_disk
 
-from xturing.datasets.base import BaseDataset
+from xturing.datasets.base import BaseDataset, as_dataset_dict
 
 
 @dataclass
@@ -20,10 +20,11 @@ class TextDataset(BaseDataset):
         if isinstance(path, HFDataset) or isinstance(path, DatasetDict):
             self.data = path
         elif isinstance(path, dict):
-            self.data = {"train": HFDataset.from_dict(path)}
+            self.data = DatasetDict({"train": HFDataset.from_dict(path)})
         else:
             assert Path(path).exists(), "path does not exist"
             self.data = load_from_disk(path)
+        self.data = as_dataset_dict(self.data)
         self._validate()
         self._meta = TextDatasetMeta()
         self._template = None
